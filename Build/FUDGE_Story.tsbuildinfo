@@ -1,0 +1,63 @@
+{
+  "bundle": {
+    "commonSourceDirectory": "..",
+    "sourceFiles": [
+      "../Source/Base.ts",
+      "../Source/Character.ts",
+      "../Source/Event.ts",
+      "../Source/Location.ts",
+      "../Source/Menu.ts",
+      "../Source/Position.ts",
+      "../Source/Progress.ts",
+      "../Source/Sound.ts",
+      "../Source/Speech.ts",
+      "../Source/Stage.ts",
+      "../Source/Text.ts",
+      "../Source/Transition.ts"
+    ],
+    "js": {
+      "sections": [
+        {
+          "pos": 0,
+          "end": 13,
+          "kind": "prologue",
+          "data": "use strict"
+        },
+        {
+          "pos": 15,
+          "end": 41443,
+          "kind": "text"
+        }
+      ],
+      "sources": {
+        "prologues": [
+          {
+            "file": 0,
+            "text": "",
+            "directives": [
+              {
+                "pos": -1,
+                "end": -1,
+                "expression": {
+                  "pos": -1,
+                  "end": -1,
+                  "text": "use strict"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "dts": {
+      "sections": [
+        {
+          "pos": 0,
+          "end": 16358,
+          "kind": "text"
+        }
+      ]
+    }
+  },
+  "version": "4.0.2"
+}

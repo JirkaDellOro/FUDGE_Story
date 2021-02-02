@@ -1,0 +1,432 @@
+declare namespace FudgeStory {
+    import ƒ = FudgeCore;
+    /**
+     * Holds some core functionality to load images and build FUDGE-nodes from them for display
+     */
+    class Base {
+        private static mesh;
+        name: string;
+        constructor(_name: string);
+        static createImageNode(_name: string, _request: RequestInfo, _origin?: ƒ.ORIGIN2D, _size?: ƒ.Vector2): Promise<ƒ.Node>;
+        private static adjustMesh;
+    }
+}
+declare namespace FudgeStory {
+    import ƒ = FudgeCore;
+    /**
+     * ## Pattern for the definition of characters
+     * Define characters to appear on the stage in various poses using this pattern
+     * ```plaintext
+     * {
+     *   id of the character: {
+     *     name: "Name of the character to appear on the text board",
+     *     origin: the origin of the image, in most cases Theater.ORIGIN.BOTTOMCENTER,
+     *     pose: {
+     *       id of 1st pose: "path to the image to be used for 1st pose",
+     *       id of 2nd pose: "path to the image to be used for 2nd pose",
+     *       ...
+     *     }
+     *   },
+     *   id of the character: {
+     *     ... same pattern as above
+     *   },
+     *   ... more characters as above
+     * }
+     * ```
+     * ## Example
+     * ```typescript
+     * export let chars = {
+     *   Sue: {
+     *     name: "Susan Rice",
+     *     origin: Theater.ORIGIN.BOTTOMCENTER,
+     *     pose: {
+     *       normal: "../Characters/placeholder_girl.png",
+     *       talk: "../Characters/placeholder_girl_talk.png"
+     *     }
+     *   },
+     *   John: {
+     *     name: "John Wick"
+     *     ...
+     *   },
+     * }
+     * ```
+     */
+    interface Character {
+        /** Name of the character to appear on the text board */
+        name: string;
+        /** The origin of the characters images, in most cases Theater.ORIGIN.BOTTOMCENTER, */
+        origin: ORIGIN;
+        /** A list of key-value-pairs defining various poses of the character and holding the urls to the according images
+         * ```typescript
+         * {
+         *   id of 1st pose: "path to the image to be used for 1st pose",
+         *   id of 2nd pose: "path to the image to be used for 2nd pose",
+         *   ...
+         * }
+         * ```
+         */
+        pose: {
+            [id: string]: RequestInfo;
+        };
+    }
+    /**
+     *  Holds the internal data needed to display a character
+     */
+    class CharacterNode extends Base {
+        private static characters;
+        poses: Map<RequestInfo, ƒ.Node>;
+        origin: ƒ.ORIGIN2D;
+        private character;
+        private constructor();
+        /**
+         * Retrieve the [[CharacterNode]] from the name defined in the [[Character]]-object given or creates a new [[CharacterNode]] using that object
+         */
+        static get(_character: Character): CharacterNode;
+        /**
+         * Retrieve the [[CharacterNode]] from the name given or null if not defined yet
+         */
+        static getByName(_name: string): CharacterNode;
+        /**
+         * Retrieves a node displaying the pose defined by the given url of an image file. Creates a new one if not yet existent.
+         */
+        getPose(_pose: RequestInfo): Promise<ƒ.Node>;
+        private createPose;
+    }
+}
+declare namespace FudgeStory {
+    enum EVENT {
+        KEYDOWN = "keydown",
+        KEYUP = "keyup",
+        POINTERDOWN = "pointerdown",
+        POINTERUP = "pointerup"
+    }
+    type Signal = () => Promise<Event>;
+    class Input {
+        /**
+         * Wait for the viewers input. See [[EVENT]] for predefined events to wait for.
+         */
+        static getInput(_eventTypes: string[]): Promise<Event>;
+    }
+}
+declare namespace FudgeStory {
+    import ƒ = FudgeCore;
+    interface Location {
+        name?: string;
+        background: string;
+        foreground?: string;
+    }
+    /**
+     * Define locations to use on the stage using this pattern:
+     * ```plaintext
+     * {
+     *   id of the location: {
+     *     name: "Name of the location" (optional),
+     *     background: "path to the image to be used as the background",
+     *     foreground: "path to the image to be used as the foreground" (optional),
+     *   },
+     *   id of the location: {
+     *     ... same pattern as above
+     *   },
+     *   ... more locations as above
+     * }
+     * ```
+     */
+    interface Locations {
+        [id: string]: Location;
+    }
+    /**
+     * Holds internal data to effectively load and display the location images
+     */
+    class LocationNodes extends Base {
+        private static locations;
+        background: ƒ.Node;
+        foreground: ƒ.Node;
+        private constructor();
+        /**
+         * Retrieves the [[LocationNode]] associated with the given description
+         */
+        static get(_description: Location): Promise<LocationNodes>;
+        private load;
+    }
+}
+declare namespace FudgeStory {
+    class Menu {
+        private dialog;
+        private callback;
+        private constructor();
+        /**
+         * Displays a modal dialog showing buttons with the texts given as values with the options-object to be selected by the user.
+         * Use with `await` to receive the text the user selected while the dialog closes.
+         * The class-parameter allows for specific styling with css.
+         */
+        static getInput(_options: Object, _cssClass?: string): Promise<string>;
+        /**
+         * Displays a non-modal dialog showing buttons with the texts given as values with the options-object to be selected by the user.
+         * When the user uses a button, the given callback function is envolde with the key the selected text is associated with. The class-parameter allows for specific styling with css.
+         * Returns a [[Menu]]-object.
+         */
+        static create(_options: Object, _callback: (_option: string) => void, _cssClass?: string): Menu;
+        private static createDialog;
+        close(): void;
+        open(): void;
+        private hndSelect;
+    }
+}
+declare namespace FudgeStory {
+    import ƒ = FudgeCore;
+    export import ORIGIN = FudgeCore.ORIGIN2D;
+    type Position = ƒ.Vector2;
+    let Position: typeof ƒ.Vector2;
+}
+declare namespace FudgeStory {
+    type SceneReturn = Promise<void | string>;
+    type SceneFunction = () => SceneReturn;
+    type SceneDescriptor = {
+        scene: SceneFunction;
+        name: string;
+        id?: string;
+        next?: string;
+    };
+    type Scenes = (SceneDescriptor | Scenes)[];
+    /**
+     * Controls the main flow of the story, tracks logical data and provides load/save
+     */
+    class Progress {
+        private static data;
+        private static serialization;
+        private static scenes;
+        private static currentSceneDescriptor;
+        /**
+         * Starts the story with the scenes-object given.
+         * Creates the [[Stage]] and reads the url-searchstring to enter at a point previously saved
+         */
+        static play(_scenes: Scenes): Promise<void>;
+        /**
+         * Defines the object to track containing logical data like score, states, textual inputs given by the play etc.
+         */
+        static setData(_data: Object): void;
+        /**
+         * Opens a dialog for file selection, loads selected file and restarts the program with its contents as url-searchstring
+         */
+        static load(): Promise<void>;
+        /**
+         * Saves the state the program was in when starting the current scene from [[Progress]].play(...)
+         */
+        static save(): Promise<void>;
+        /**
+         * Defines a [[Signal]] which is a bundle of promises waiting for a set of events to happen.
+         * Example:
+         * ```typescript
+         * // define a signal to observe the keyboard for a keydown-event and a timeout of 5 seconds
+         * let signal: Signal = Progress.defineSignal([ƒT.EVENT.KEYDOWN, () => ƒT.Progress.delay(5)]);
+         * // wait for the signal to become active
+         * await signal();
+         * ```
+         *
+         */
+        static defineSignal(_promiseFactoriesOrEventTypes: (Function | EVENT)[]): Signal;
+        /**
+         * Wait for the given amount of time in milliseconds to pass
+         */
+        static delay(_lapse: number): Promise<void>;
+        private static bundlePromises;
+        private static act;
+        private static restoreData;
+        private static storeData;
+        private static splash;
+    }
+}
+declare namespace FudgeStory {
+    import ƒ = FudgeCore;
+    /**
+     * Controls the audio signals emitted
+     */
+    class Sound {
+        private static sounds;
+        private static node;
+        private cmpAudio;
+        private loop;
+        private fadingToVolume;
+        private constructor();
+        /**
+         * Plays the audiofile defined by the given url with the given volume and loops it, if desired
+         */
+        static play(_url: RequestInfo, _volume: number, _loop?: boolean): Sound;
+        /**
+         * Changes the volume of the sound defined by the url linearly of the given duration to the define volume.
+         * If the sound is not currently playing, it starts it respecting the loop-flag.
+         */
+        static fade(_url: RequestInfo, _toVolume: number, _duration: number, _loop?: boolean): Promise<void>;
+        static serialize(): ƒ.Serialization[];
+        static deserialize(_serialization: ƒ.Serialization[]): void;
+        private static setup;
+    }
+}
+declare namespace FudgeStory {
+    import ƒ = FudgeCore;
+    /**
+     * The textboard displaying the phrases told by the characters or the narrator
+     */
+    class Speech {
+        static signalForwardTicker: Signal;
+        static signalNext: Signal;
+        private static element;
+        private static time;
+        private static delayLetter;
+        private static delayParagraph;
+        private static get div();
+        /**
+         * Displays the [[Character]]s name and the given text at once
+         */
+        static set(_character: Object, _text: string): void;
+        /**
+         * Displays the [[Character]]s name and slowly writes the text on the board letter by letter
+         */
+        static tell(_character: Object, _text: string, _waitForSignalNext?: boolean): Promise<void>;
+        /**
+         * Defines the pauses used by ticker between letters and before a paragraph
+         */
+        static setTickerDelays(_letter: number, _paragraph?: number): void;
+        /**
+         * Clears the board
+         */
+        static clear(): void;
+        /**
+         * Hides the board
+         */
+        static hide(): void;
+        /**
+         * Shows the board
+         */
+        static show(): void;
+        /**
+         * Displays an input field to be filled by the user and returns the input
+         */
+        static getInput(): Promise<string>;
+        /**
+         * Returns a serialization-object holding the current state of the board
+         */
+        static serialize(): ƒ.Serialization;
+        /**
+         * Restores the state of the board given with the serialization-object
+         */
+        static deserialize(_serialization: ƒ.Serialization): void;
+        private static copyByLetter;
+    }
+}
+declare namespace FudgeStory {
+    import ƒ = FudgeCore;
+    /**
+     * The [[Stage]] is where the [[Character]]s and [[Location]] show up. It's the main instance to work with.
+     */
+    class Stage {
+        static positions: {
+            topleft: ƒ.Vector2;
+            topright: ƒ.Vector2;
+            topcenter: ƒ.Vector2;
+            centerleft: ƒ.Vector2;
+            centerright: ƒ.Vector2;
+            center: ƒ.Vector2;
+            bottomleft: ƒ.Vector2;
+            bottomright: ƒ.Vector2;
+            bottomcenter: ƒ.Vector2;
+            left: ƒ.Vector2;
+            right: ƒ.Vector2;
+        };
+        static viewport: ƒ.Viewport;
+        private static aspectRatio;
+        private static graph;
+        private static back;
+        private static middle;
+        private static front;
+        private static board;
+        private static size;
+        /**
+         * Will be called once by [[Progress]] before anything else may happen on the [[Stage]].
+         */
+        static create(): void;
+        /**
+         * Calculates and returns a position on the [[Stage]] to be used to place [[Character]]s or objects on the [[Stage]].
+         * Pass values in percent relative to the upper left corner.
+         */
+        static positionPercent(_x: number, _y: number): Position;
+        /**
+         * Show the given location on the [[Stage]]. See [[Location]] for the definition of a location.
+         */
+        static showLocation(_location: Location): Promise<void>;
+        /**
+         * Show the given [[Character]] in the specified pose at the given position on the stage. See [[Character]] for the definition of a character.
+         */
+        static showCharacter(_character: Character, _pose: RequestInfo, _position: Position): Promise<void>;
+        /**
+         * Hide the given [[Character]], removing it from the [[Stage]]
+         */
+        static hideCharacter(_character: Character): Promise<void>;
+        /**
+         * Remove all [[Character]]s and objects from the stage
+         */
+        static free(): void;
+        /**
+         * Display the recent changes to the [[Stage]]. If a parameters are specified, they are used blend from the previous display to the new
+         * as described in [[Transition]]
+         */
+        static update(_duration?: number, _url?: RequestInfo, _edge?: number): Promise<void>;
+        /**
+         * Wait for the viewers input. See [[EVENT]] for predefined events to wait for.
+         */
+        static getInput(_eventTypes: string[]): Promise<Event>;
+        /**
+         * Calls the given scene to be played on the stage. A scene is a sequence of commands defining a small piece of the whole play.
+         * A scene needs to be defined in the following format, where NameOfTheScene is a placeholder and should be chosen arbitrarily.
+         * Calling this function directly will not register the scene as a save-point for saving and loading. Use Progress.play for this!
+         * ```typescript
+         * export async function NameOfTheScene(): SceneReturn {
+         *   ...
+         *   ...
+         * }
+         * ```
+         */
+        static act(_scene: SceneFunction): Promise<void | string>;
+        /**
+         * Creates a serialization-object representing the current state of the [[Character]]s currently shown on the stage
+         */
+        static serialize(): ƒ.Serialization;
+        /**
+         * Reconstructs the [[CharacterNode]]s from a serialization-object and places them on the stage
+         * @param _serialization
+         */
+        static deserialize(_serialization: ƒ.Serialization): Promise<void>;
+        private static calculatePositions;
+        private static resize;
+    }
+}
+declare namespace FudgeStory {
+    /**
+     * Displays a longer narrative text to convey larger parts of the story not told by a character
+     * (Better name required)
+     */
+    class Text extends HTMLDialogElement {
+        private static get dialog();
+        /**
+         * Prints the text in a modal dialog stylable with css
+         */
+        static print(_text: string): Promise<void>;
+        /**
+         * sets the classname of the dialog to enable specific styling
+         */
+        static setClass(_class: string): void;
+        /**
+         * adds a classname to the classlist of the dialog to enable cascading styles
+         */
+        static addClass(_class: string): void;
+        static close(): void;
+    }
+}
+declare namespace FudgeStory {
+    class Transition {
+        private static transitions;
+        static blend(_imgOld: ImageData, _imgNew: ImageData, _duration: number, _transition: Uint8ClampedArray, _factor?: number): Promise<void>;
+        static get(_url: RequestInfo): Promise<Uint8ClampedArray>;
+        private static getPromise;
+    }
+}

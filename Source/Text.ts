@@ -1,0 +1,55 @@
+namespace FudgeStory {
+
+  /**
+   * Displays a longer narrative text to convey larger parts of the story not told by a character
+   * (Better name required)
+   */
+  export class Text extends HTMLDialogElement {
+    private static get dialog(): HTMLDialogElement {
+      return <HTMLDialogElement>document.querySelector("dialog[is=novel-page]");
+    }
+
+    /**
+     * Prints the text in a modal dialog stylable with css
+     */
+    public static async print(_text: string): Promise<void> {
+      if (!customElements.get("novel-page"))
+        customElements.define("novel-page", FudgeStory.Text, { extends: "dialog" });
+
+      let dialog: HTMLDialogElement = Text.dialog;
+      dialog.close();
+      dialog.innerHTML = _text;
+      dialog.showModal();
+
+      return new Promise((_resolve) => {
+        let hndSelect = (_event: Event) => {
+          if (_event.target != dialog)
+            return;
+
+          dialog.removeEventListener(EVENT.POINTERDOWN, hndSelect);
+          dialog.close();
+          _resolve();
+        };
+        dialog.addEventListener(EVENT.POINTERDOWN, hndSelect);
+      });
+    }
+
+    /**
+     * sets the classname of the dialog to enable specific styling
+     */
+    public static setClass(_class: string): void {
+      Text.dialog.className = _class;
+    }
+
+    /**
+     * adds a classname to the classlist of the dialog to enable cascading styles
+     */
+    public static addClass(_class: string): void {
+      Text.dialog.classList.add(_class);
+    }
+
+    public static close(): void {
+      Text.dialog.close();
+    }
+  }
+}
