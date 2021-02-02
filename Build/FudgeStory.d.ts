@@ -7,7 +7,7 @@ declare namespace FudgeStory {
 declare namespace FudgeStory {
     import ƒ = FudgeCore;
     /**
-     * The [[Stage]] is where the [[Character]]s and [[Location]] show up. It's the main instance to work with.
+     * Holds core functionality for the inner workings
      */
     abstract class Base {
         protected static viewport: ƒ.Viewport;
@@ -19,15 +19,15 @@ declare namespace FudgeStory {
         private static graph;
         private static size;
         /**
-         * Will be called once by [[Progress]] before anything else may happen on the [[Stage]].
+         * Will be called once by [[Progress]] before anything else may happen.
          */
         protected static create(): void;
         /**
-         * Creates a serialization-object representing the current state of the [[Character]]s currently shown on the stage
+         * Creates a serialization-object representing the current state of the [[Character]]s currently shown
          */
         protected static serialize(): ƒ.Serialization;
         /**
-         * Reconstructs the [[CharacterNode]]s from a serialization-object and places them on the stage
+         * Reconstructs the [[Character]]s from a serialization-object and shows them
          * @param _serialization
          */
         protected static deserialize(_serialization: ƒ.Serialization): Promise<void>;
@@ -41,11 +41,11 @@ declare namespace FudgeStory {
     import ƒ = FudgeCore;
     /**
      * ## Pattern for the definition of characters
-     * Define characters to appear on the stage in various poses using this pattern
+     * Define characters to appear in various poses using this pattern
      * ```plaintext
      * {
      *   id of the character: {
-     *     name: "Name of the character to appear on the text board",
+     *     name: "Name of the character to appear when speaking",
      *     origin: the origin of the image, in most cases FudgeStory.ORIGIN.BOTTOMCENTER,
      *     pose: {
      *       id of 1st pose: "path to the image to be used for 1st pose",
@@ -78,7 +78,7 @@ declare namespace FudgeStory {
      * ```
      */
     interface CharacterDefinition {
-        /** Name of the character to appear on the text board */
+        /** Name of the character to appear when speaking */
         name: string;
         /** The origin of the characters images, in most cases FudgeStory.ORIGIN.BOTTOMCENTER, */
         origin: ORIGIN;
@@ -113,15 +113,15 @@ declare namespace FudgeStory {
          */
         static getByName(_name: string): Character;
         /**
-         * Show the given [[Character]] in the specified pose at the given position on the stage. See [[Character]] for the definition of a character.
+         * Show the given [[Character]] in the specified pose at the given position. See [[CharacterDefinition]] for the definition of a character.
          */
         static show(_character: CharacterDefinition, _pose: RequestInfo, _position: Position): Promise<void>;
         /**
-         * Hide the given [[Character]], removing it from the [[Stage]]
+         * Hide the given [[Character]]
          */
         static hide(_character: CharacterDefinition): Promise<void>;
         /**
-         * Remove all [[Character]]s and objects from the stage
+         * Remove all [[Character]]s and objects
          */
         static hideAll(): void;
         /**
@@ -161,7 +161,7 @@ declare namespace FudgeStory {
      */
     function insert(_scene: SceneFunction): Promise<void | string>;
     /**
-     * Display the recent changes to the [[Stage]]. If a parameters are specified, they are used blend from the previous display to the new
+     * Display the recent changes. If parameters are specified, they are used blend from the previous display to the new
      * as described in [[Transition]]
      */
     function update(_duration?: number, _url?: RequestInfo, _edge?: number): Promise<void>;
@@ -183,7 +183,7 @@ declare namespace FudgeStory {
         right: ƒ.Vector2;
     };
     /**
-     * Calculates and returns a position on the [[Stage]] to be used to place [[Character]]s or objects on the [[Stage]].
+     * Calculates and returns a position to place [[Character]]s or objects.
      * Pass values in percent relative to the upper left corner.
      */
     function positionPercent(_x: number, _y: number): Position;
@@ -227,7 +227,7 @@ declare namespace FudgeStory {
          */
         static get(_description: LocationDefinition): Promise<Location>;
         /**
-         * Show the given location on the [[Stage]]. See [[Location]] for the definition of a location.
+         * Show the location given as [[LocationDefinition]].
          */
         static show(_location: LocationDefinition): Promise<void>;
         private load;
@@ -275,8 +275,7 @@ declare namespace FudgeStory {
         private static scenes;
         private static currentSceneDescriptor;
         /**
-         * Starts the story with the scenes-object given.
-         * Creates the [[Stage]] and reads the url-searchstring to enter at a point previously saved
+         * Starts the story with the scenes-object given and reads the url-searchstring to enter at a point previously saved
          */
         static go(_scenes: Scenes): Promise<void>;
         /**
@@ -304,7 +303,7 @@ declare namespace FudgeStory {
          */
         static defineSignal(_promiseFactoriesOrEventTypes: (Function | EVENT)[]): Signal;
         /**
-         * Wait for the given amount of time in milliseconds to pass
+         * Wait for the given amount of time in seconds to pass
          */
         static delay(_lapse: number): Promise<void>;
         private static bundlePromises;
@@ -363,7 +362,7 @@ declare namespace FudgeStory {
          */
         static tell(_character: Object, _text: string, _waitForSignalNext?: boolean): Promise<void>;
         /**
-         * Defines the pauses used by ticker between letters and before a paragraph
+         * Defines the pauses used by ticker between letters and before a paragraph in milliseconds
          */
         static setTickerDelays(_letter: number, _paragraph?: number): void;
         /**
@@ -416,7 +415,7 @@ declare namespace FudgeStory {
     }
 }
 declare namespace FudgeStory {
-    class Transition {
+    class Transition extends Base {
         private static transitions;
         static blend(_imgOld: ImageData, _imgNew: ImageData, _duration: number, _transition: Uint8ClampedArray, _factor?: number): Promise<void>;
         static get(_url: RequestInfo): Promise<Uint8ClampedArray>;

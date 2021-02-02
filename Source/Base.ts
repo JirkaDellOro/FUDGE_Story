@@ -4,7 +4,7 @@ namespace FudgeStory {
   import ƒ = FudgeCore;
 
   /**
-   * The [[Stage]] is where the [[Character]]s and [[Location]] show up. It's the main instance to work with.
+   * Holds core functionality for the inner workings
    */
   export abstract class Base {
 
@@ -16,39 +16,34 @@ namespace FudgeStory {
 
     private static aspectRatio: number;
     private static graph: ƒ.Node;
-    // private static board: ƒ.Node;
     private static size: ƒ.Vector2;
 
     /**
-     * Will be called once by [[Progress]] before anything else may happen on the [[Stage]].
+     * Will be called once by [[Progress]] before anything else may happen.
      */
     protected static create(): void {
       if (Base.viewport)
         return;
 
-      let theater: HTMLDivElement = document.body.querySelector("scene");
-      Base.aspectRatio = theater.clientWidth / theater.clientHeight;
+      let client: HTMLDivElement = document.body.querySelector("scene");
+      Base.aspectRatio = client.clientWidth / client.clientHeight;
 
       Base.graph = new ƒ.Node("Graph");
       Base.back = new ƒ.Node("Back");
       Base.middle = new ƒ.Node("Middle");
       Base.front = new ƒ.Node("Front");
-      // Stage.board = new ƒ.Node("Board");
-      // Stage.menu = new ƒ.Node("Menu");
 
       let canvas: HTMLCanvasElement = document.querySelector("canvas");
 
-      Base.size = new ƒ.Vector2(theater.clientWidth, theater.clientHeight);
-      console.log("StageSize", Base.size.toString());
+      Base.size = new ƒ.Vector2(client.clientWidth, client.clientHeight);
+      console.log("Size", Base.size.toString());
 
       Base.graph.appendChild(Base.back);
       Base.graph.appendChild(Base.middle);
       Base.graph.appendChild(Base.front);
-      // Stage.graph.appendChild(Stage.board);
 
       Base.back.addComponent(new ƒ.ComponentTransform(ƒ.Matrix4x4.TRANSLATION(ƒ.Vector3.Z(-1))));
       Base.front.addComponent(new ƒ.ComponentTransform(ƒ.Matrix4x4.TRANSLATION(ƒ.Vector3.Z(1))));
-      // Stage.board.addComponent(new ƒ.ComponentTransform(ƒ.Matrix4x4.TRANSLATION(ƒ.Vector3.Z(2))));
 
 
       let cmpCamera: ƒ.ComponentCamera = new ƒ.ComponentCamera();
@@ -70,7 +65,7 @@ namespace FudgeStory {
 
 
     /**
-     * Creates a serialization-object representing the current state of the [[Character]]s currently shown on the stage
+     * Creates a serialization-object representing the current state of the [[Character]]s currently shown
      */
     protected static serialize(): ƒ.Serialization {
       let serialization: ƒ.Serialization = { characters: [] };
@@ -88,7 +83,7 @@ namespace FudgeStory {
     }
 
     /**
-     * Reconstructs the [[CharacterNode]]s from a serialization-object and places them on the stage
+     * Reconstructs the [[Character]]s from a serialization-object and shows them
      * @param _serialization
      */
     protected static async deserialize(_serialization: ƒ.Serialization): Promise<void> {
@@ -107,18 +102,13 @@ namespace FudgeStory {
         Base.adjustMesh(cmpMesh, _origin, _size);
       node.addComponent(cmpMesh);
 
-      // let material: ƒ.Material = new ƒ.Material(_name, ƒ.ShaderUniColor, new ƒ.CoatColored(ƒ.Color.CSS("red")));
       let texture: ƒ.TextureImage = new ƒ.TextureImage();
       await texture.load(_request);
       let coat: ƒ.CoatTextured = new ƒ.CoatTextured(ƒ.Color.CSS("white"), texture);
       let material: ƒ.Material = new ƒ.Material(_name, ƒ.ShaderTexture, coat);
 
       if (!_size)
-        // texture.image.addEventListener("load", (_event: Event): void => {
         this.adjustMesh(cmpMesh, _origin, new ƒ.Vector2(texture.image.width, texture.image.height));
-      // cmpMesh.pivot.scale(new ƒ.Vector3(texture.image.width, texture.image.height, 1));
-      // });
-      // texture.image.addEventListener("load", Stage.update);
 
       let cmpMaterial: ƒ.ComponentMaterial = new ƒ.ComponentMaterial(material);
       node.addComponent(cmpMaterial);
@@ -151,12 +141,9 @@ namespace FudgeStory {
       let bodyHeight: number = document.body.clientHeight;
       let aspectWindow: number = bodyWidth / bodyHeight;
 
-      // console.log(aspectCanvas, aspectWindow);
-
       let height: number;
       let width: number;
 
-      // aspectWindow > aspectCanvas -> scaleToHeight
       if (Base.aspectRatio / aspectWindow < 1) {
         height = bodyHeight;
         width = bodyHeight * Base.aspectRatio;

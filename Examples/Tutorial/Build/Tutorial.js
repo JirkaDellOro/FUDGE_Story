@@ -5,14 +5,14 @@ var Tutorial;
         console.log("Main Menu");
         await Tutorial.ƒS.Location.show(Tutorial.locations.city);
         await Tutorial.ƒS.Character.show(Tutorial.characters.Sue, Tutorial.characters.Sue.pose.normal, Tutorial.ƒS.positions.bottomcenter);
-        // await ƒT.Stage.showCharacter(characters.John, characters.John.pose.smile, ƒT.Stage.positions.right);
-        /** Now lift the curtain */
         await Tutorial.ƒS.update( /* Transition */);
+        await Tutorial.ƒS.Speech.tell(Tutorial.characters.Sue, "Willkommen zum Tutorial für FUDGE-Story", false);
     }
     Tutorial.Main = Main;
 })(Tutorial || (Tutorial = {}));
 var Tutorial;
 (function (Tutorial) {
+    Tutorial.ƒ = FudgeCore;
     Tutorial.ƒS = FudgeStory;
     console.log("Start");
     // define transitions
@@ -56,5 +56,18 @@ var Tutorial;
     ];
     // start the sequence
     Tutorial.ƒS.Progress.go(Tutorial.scenes);
+    document.addEventListener("keydown", hndKeypress);
+    async function hndKeypress(_event) {
+        switch (_event.code) {
+            case Tutorial.ƒ.KEYBOARD_CODE.F4:
+                console.log("Save");
+                await Tutorial.ƒS.Progress.save();
+                break;
+            case Tutorial.ƒ.KEYBOARD_CODE.F9:
+                console.log("Load");
+                await Tutorial.ƒS.Progress.load();
+                break;
+        }
+    }
 })(Tutorial || (Tutorial = {}));
 //# sourceMappingURL=Tutorial.js.map

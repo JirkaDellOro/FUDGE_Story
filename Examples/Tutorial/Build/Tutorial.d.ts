@@ -2,6 +2,7 @@ declare namespace Tutorial {
     function Main(): ƒS.SceneReturn;
 }
 declare namespace Tutorial {
+    export import ƒ = FudgeCore;
     export import ƒS = FudgeStory;
     let transitions: {
         clock: {
@@ -28,7 +29,7 @@ declare namespace Tutorial {
     let characters: {
         Sue: {
             name: string;
-            origin: ƒS.ORIGIN;
+            origin: ƒ.ORIGIN2D;
             pose: {
                 normal: string;
             };

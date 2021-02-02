@@ -18,8 +18,7 @@ namespace FudgeStory {
     private static currentSceneDescriptor: SceneDescriptor;
 
     /**
-     * Starts the story with the scenes-object given.  
-     * Creates the [[Stage]] and reads the url-searchstring to enter at a point previously saved 
+     * Starts the story with the scenes-object given and reads the url-searchstring to enter at a point previously saved 
      */
     public static async go(_scenes: Scenes): Promise<void> {
       Base.create();
@@ -33,8 +32,8 @@ namespace FudgeStory {
         let json = JSON.parse(decodeURI(urlSearch));
         await Progress.splash(json.sceneDescriptor.name);
         Progress.restoreData(json.data);
-        Speech.deserialize(json.board);
-        await Base.deserialize(json.stage);
+        Speech.deserialize(json.speech);
+        await Base.deserialize(json.base);
         Sound.deserialize(json.sound);
         index = parseInt(json.sceneDescriptor.index);
       }
@@ -103,7 +102,7 @@ namespace FudgeStory {
     }
 
     /**
-     * Wait for the given amount of time in milliseconds to pass
+     * Wait for the given amount of time in seconds to pass
      */
     public static async delay(_lapse: number): Promise<void> {
       await ƒ.Time.game.delay(_lapse * 1000);
@@ -141,8 +140,8 @@ namespace FudgeStory {
       Progress.serialization = {
         sceneDescriptor: Progress.currentSceneDescriptor,
         data: JSON.parse(JSON.stringify(Progress.data)), //make a copy of the data instead of referring to it
-        board: Speech.serialize(),
-        stage: Base.serialize(),
+        speech: Speech.serialize(),
+        base: Base.serialize(),
         sound: Sound.serialize()
       };
       console.log("Stored", Progress.serialization);

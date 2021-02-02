@@ -20,7 +20,7 @@ namespace FudgeStory {
   }
 
   /**
-   * Display the recent changes to the [[Stage]]. If a parameters are specified, they are used blend from the previous display to the new
+   * Display the recent changes. If parameters are specified, they are used blend from the previous display to the new
    * as described in [[Transition]]
    */
   export async function update(_duration?: number, _url?: RequestInfo, _edge?: number): Promise<void> {
@@ -69,7 +69,7 @@ namespace FudgeStory {
   
 
   /**
-   * Calculates and returns a position on the [[Stage]] to be used to place [[Character]]s or objects on the [[Stage]].
+   * Calculates and returns a position to place [[Character]]s or objects.
    * Pass values in percent relative to the upper left corner.
    */
   export function positionPercent(_x: number, _y: number): Position {

@@ -3,7 +3,7 @@ namespace FudgeStory {
 
   // export type TransitionFunction = (_imgOld: ImageData, _imgNew: ImageData, _duration: number, _transition: Uint8ClampedArray, _factor: number) => Promise<void>;
 
-  export class Transition {
+  export class Transition extends Base {
     private static transitions: Map<RequestInfo, Uint8ClampedArray> = new Map();
 
     public static async blend(_imgOld: ImageData, _imgNew: ImageData, _duration: number = 1000, _transition: Uint8ClampedArray, _factor: number = 0.5): Promise<void> {

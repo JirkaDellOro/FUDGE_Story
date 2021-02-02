@@ -54,7 +54,7 @@ namespace FudgeStory {
 
     
     /**
-     * Show the given location on the [[Stage]]. See [[Location]] for the definition of a location.
+     * Show the location given as [[LocationDefinition]].
      */
     public static async show(_location: LocationDefinition): Promise<void> {
       Base.back.removeAllChildren();
@@ -68,9 +68,9 @@ namespace FudgeStory {
     }
 
     private async load(_location: LocationDefinition): Promise<void> {
-      this.background = await Base.createImageNode(_location.name + "|" + "Background", _location.background, ƒ.ORIGIN2D.CENTER); //, Stage.getSize());
+      this.background = await Base.createImageNode(_location.name + "|" + "Background", _location.background, ƒ.ORIGIN2D.CENTER);
       if (Reflect.get(this, "foreground"))
-        this.foreground = await Base.createImageNode(_location.name + "|" + "Foreground", _location.foreground, ƒ.ORIGIN2D.CENTER); //, Stage.getSize());
+        this.foreground = await Base.createImageNode(_location.name + "|" + "Foreground", _location.foreground, ƒ.ORIGIN2D.CENTER);
     }
   }
 }

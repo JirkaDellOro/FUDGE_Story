@@ -1,4 +1,5 @@
 namespace Tutorial {
+  export import ƒ = FudgeCore;
   export import ƒS = FudgeStory;
 
   console.log("Start");
@@ -49,4 +50,19 @@ namespace Tutorial {
 
   // start the sequence
   ƒS.Progress.go(scenes);
+
+
+  document.addEventListener("keydown", hndKeypress);
+  async function hndKeypress(_event: KeyboardEvent): Promise<void> {
+    switch (_event.code) {
+      case ƒ.KEYBOARD_CODE.F4:
+        console.log("Save");
+        await ƒS.Progress.save();
+        break;
+      case ƒ.KEYBOARD_CODE.F9:
+        console.log("Load");
+        await ƒS.Progress.load();
+        break;
+    }
+  }
 }

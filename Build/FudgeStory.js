@@ -17,33 +17,29 @@ var FudgeStory;
 (function (FudgeStory) {
     var ƒ = FudgeCore;
     /**
-     * The [[Stage]] is where the [[Character]]s and [[Location]] show up. It's the main instance to work with.
+     * Holds core functionality for the inner workings
      */
     class Base {
         /**
-         * Will be called once by [[Progress]] before anything else may happen on the [[Stage]].
+         * Will be called once by [[Progress]] before anything else may happen.
          */
         static create() {
             if (Base.viewport)
                 return;
-            let theater = document.body.querySelector("scene");
-            Base.aspectRatio = theater.clientWidth / theater.clientHeight;
+            let client = document.body.querySelector("scene");
+            Base.aspectRatio = client.clientWidth / client.clientHeight;
             Base.graph = new ƒ.Node("Graph");
             Base.back = new ƒ.Node("Back");
             Base.middle = new ƒ.Node("Middle");
             Base.front = new ƒ.Node("Front");
-            // Stage.board = new ƒ.Node("Board");
-            // Stage.menu = new ƒ.Node("Menu");
             let canvas = document.querySelector("canvas");
-            Base.size = new ƒ.Vector2(theater.clientWidth, theater.clientHeight);
-            console.log("StageSize", Base.size.toString());
+            Base.size = new ƒ.Vector2(client.clientWidth, client.clientHeight);
+            console.log("Size", Base.size.toString());
             Base.graph.appendChild(Base.back);
             Base.graph.appendChild(Base.middle);
             Base.graph.appendChild(Base.front);
-            // Stage.graph.appendChild(Stage.board);
             Base.back.addComponent(new ƒ.ComponentTransform(ƒ.Matrix4x4.TRANSLATION(ƒ.Vector3.Z(-1))));
             Base.front.addComponent(new ƒ.ComponentTransform(ƒ.Matrix4x4.TRANSLATION(ƒ.Vector3.Z(1))));
-            // Stage.board.addComponent(new ƒ.ComponentTransform(ƒ.Matrix4x4.TRANSLATION(ƒ.Vector3.Z(2))));
             let cmpCamera = new ƒ.ComponentCamera();
             Base.viewport = new ƒ.Viewport();
             Base.viewport.initialize("Viewport", Base.graph, cmpCamera, canvas);
@@ -58,7 +54,7 @@ var FudgeStory;
             window.addEventListener("resize", Base.resize);
         }
         /**
-         * Creates a serialization-object representing the current state of the [[Character]]s currently shown on the stage
+         * Creates a serialization-object representing the current state of the [[Character]]s currently shown
          */
         static serialize() {
             let serialization = { characters: [] };
@@ -70,7 +66,7 @@ var FudgeStory;
             return serialization;
         }
         /**
-         * Reconstructs the [[CharacterNode]]s from a serialization-object and places them on the stage
+         * Reconstructs the [[Character]]s from a serialization-object and shows them
          * @param _serialization
          */
         static async deserialize(_serialization) {
@@ -86,17 +82,12 @@ var FudgeStory;
             if (_size)
                 Base.adjustMesh(cmpMesh, _origin, _size);
             node.addComponent(cmpMesh);
-            // let material: ƒ.Material = new ƒ.Material(_name, ƒ.ShaderUniColor, new ƒ.CoatColored(ƒ.Color.CSS("red")));
             let texture = new ƒ.TextureImage();
             await texture.load(_request);
             let coat = new ƒ.CoatTextured(ƒ.Color.CSS("white"), texture);
             let material = new ƒ.Material(_name, ƒ.ShaderTexture, coat);
             if (!_size)
-                // texture.image.addEventListener("load", (_event: Event): void => {
                 this.adjustMesh(cmpMesh, _origin, new ƒ.Vector2(texture.image.width, texture.image.height));
-            // cmpMesh.pivot.scale(new ƒ.Vector3(texture.image.width, texture.image.height, 1));
-            // });
-            // texture.image.addEventListener("load", Stage.update);
             let cmpMaterial = new ƒ.ComponentMaterial(material);
             node.addComponent(cmpMaterial);
             return node;
@@ -122,10 +113,8 @@ var FudgeStory;
             let bodyWidth = document.body.clientWidth;
             let bodyHeight = document.body.clientHeight;
             let aspectWindow = bodyWidth / bodyHeight;
-            // console.log(aspectCanvas, aspectWindow);
             let height;
             let width;
-            // aspectWindow > aspectCanvas -> scaleToHeight
             if (Base.aspectRatio / aspectWindow < 1) {
                 height = bodyHeight;
                 width = bodyHeight * Base.aspectRatio;
@@ -173,7 +162,7 @@ var FudgeStory;
             return Character.characters.get(_name);
         }
         /**
-         * Show the given [[Character]] in the specified pose at the given position on the stage. See [[Character]] for the definition of a character.
+         * Show the given [[Character]] in the specified pose at the given position. See [[CharacterDefinition]] for the definition of a character.
          */
         static async show(_character, _pose, _position) {
             let character = Character.get(_character);
@@ -182,18 +171,18 @@ var FudgeStory;
             FudgeStory.Base.middle.appendChild(pose);
         }
         /**
-         * Hide the given [[Character]], removing it from the [[Stage]]
+         * Hide the given [[Character]]
          */
         static async hide(_character) {
             let found = FudgeStory.Base.middle.getChildrenByName(_character.name);
             if (found.length == 0)
-                console.warn(`No character with name ${_character.name} to hide on the stage`);
+                console.warn(`No character with name ${_character.name} to hide`);
             if (found.length > 1)
-                console.warn(`Multiple characters with name ${_character.name} on the stage, removing first`);
+                console.warn(`Multiple characters with name ${_character.name} exist, removing first`);
             FudgeStory.Base.middle.removeChild(found[0]);
         }
         /**
-         * Remove all [[Character]]s and objects from the stage
+         * Remove all [[Character]]s and objects
          */
         static hideAll() {
             FudgeStory.Base.middle.removeAllChildren();
@@ -265,7 +254,7 @@ var FudgeStory;
     }
     FudgeStory.insert = insert;
     /**
-     * Display the recent changes to the [[Stage]]. If a parameters are specified, they are used blend from the previous display to the new
+     * Display the recent changes. If parameters are specified, they are used blend from the previous display to the new
      * as described in [[Transition]]
      */
     async function update(_duration, _url, _edge) {
@@ -310,7 +299,7 @@ var FudgeStory;
         left: pos0, right: pos0
     };
     /**
-     * Calculates and returns a position on the [[Stage]] to be used to place [[Character]]s or objects on the [[Stage]].
+     * Calculates and returns a position to place [[Character]]s or objects.
      * Pass values in percent relative to the upper left corner.
      */
     function positionPercent(_x, _y) {
@@ -345,7 +334,7 @@ var FudgeStory;
             return result;
         }
         /**
-         * Show the given location on the [[Stage]]. See [[Location]] for the definition of a location.
+         * Show the location given as [[LocationDefinition]].
          */
         static async show(_location) {
             FudgeStory.Base.back.removeAllChildren();
@@ -356,9 +345,9 @@ var FudgeStory;
                 FudgeStory.Base.front.appendChild(location.foreground);
         }
         async load(_location) {
-            this.background = await FudgeStory.Base.createImageNode(_location.name + "|" + "Background", _location.background, ƒ.ORIGIN2D.CENTER); //, Stage.getSize());
+            this.background = await FudgeStory.Base.createImageNode(_location.name + "|" + "Background", _location.background, ƒ.ORIGIN2D.CENTER);
             if (Reflect.get(this, "foreground"))
-                this.foreground = await FudgeStory.Base.createImageNode(_location.name + "|" + "Foreground", _location.foreground, ƒ.ORIGIN2D.CENTER); //, Stage.getSize());
+                this.foreground = await FudgeStory.Base.createImageNode(_location.name + "|" + "Foreground", _location.foreground, ƒ.ORIGIN2D.CENTER);
         }
     }
     Location.locations = new Map();
@@ -444,8 +433,7 @@ var FudgeStory;
      */
     class Progress extends FudgeStory.Base {
         /**
-         * Starts the story with the scenes-object given.
-         * Creates the [[Stage]] and reads the url-searchstring to enter at a point previously saved
+         * Starts the story with the scenes-object given and reads the url-searchstring to enter at a point previously saved
          */
         static async go(_scenes) {
             FudgeStory.Base.create();
@@ -456,8 +444,8 @@ var FudgeStory;
                 let json = JSON.parse(decodeURI(urlSearch));
                 await Progress.splash(json.sceneDescriptor.name);
                 Progress.restoreData(json.data);
-                FudgeStory.Speech.deserialize(json.board);
-                await FudgeStory.Base.deserialize(json.stage);
+                FudgeStory.Speech.deserialize(json.speech);
+                await FudgeStory.Base.deserialize(json.base);
                 FudgeStory.Sound.deserialize(json.sound);
                 index = parseInt(json.sceneDescriptor.index);
             }
@@ -516,7 +504,7 @@ var FudgeStory;
             };
         }
         /**
-         * Wait for the given amount of time in milliseconds to pass
+         * Wait for the given amount of time in seconds to pass
          */
         static async delay(_lapse) {
             await ƒ.Time.game.delay(_lapse * 1000);
@@ -547,8 +535,8 @@ var FudgeStory;
             Progress.serialization = {
                 sceneDescriptor: Progress.currentSceneDescriptor,
                 data: JSON.parse(JSON.stringify(Progress.data)),
-                board: FudgeStory.Speech.serialize(),
-                stage: FudgeStory.Base.serialize(),
+                speech: FudgeStory.Speech.serialize(),
+                base: FudgeStory.Base.serialize(),
                 sound: FudgeStory.Sound.serialize()
             };
             console.log("Stored", Progress.serialization);
@@ -681,6 +669,7 @@ var FudgeStory;
          * Displays the [[Character]]s name and the given text at once
          */
         static set(_character, _text) {
+            Speech.show();
             let name = _character ? Reflect.get(_character, "name") : "";
             let nameTag = Speech.div.querySelector("name");
             let textTag = Speech.div.querySelector("content");
@@ -695,6 +684,7 @@ var FudgeStory;
          * Displays the [[Character]]s name and slowly writes the text letter by letter
          */
         static async tell(_character, _text, _waitForSignalNext = true) {
+            Speech.show();
             let done = false;
             Speech.set(_character, "");
             let buffer = document.createElement("div");
@@ -717,11 +707,11 @@ var FudgeStory;
             await Speech.signalNext();
         }
         /**
-         * Defines the pauses used by ticker between letters and before a paragraph
+         * Defines the pauses used by ticker between letters and before a paragraph in milliseconds
          */
         static setTickerDelays(_letter, _paragraph = 1000) {
-            Speech.delayLetter = _letter * 1000;
-            Speech.delayParagraph = _paragraph * 1000;
+            Speech.delayLetter = _letter;
+            Speech.delayParagraph = _paragraph;
         }
         /**
          * Clears the speech
@@ -865,7 +855,7 @@ var FudgeStory;
 (function (FudgeStory) {
     var ƒ = FudgeCore;
     // export type TransitionFunction = (_imgOld: ImageData, _imgNew: ImageData, _duration: number, _transition: Uint8ClampedArray, _factor: number) => Promise<void>;
-    class Transition {
+    class Transition extends FudgeStory.Base {
         static async blend(_imgOld, _imgNew, _duration = 1000, _transition, _factor = 0.5) {
             let crc2 = FudgeStory.Base.viewport.getContext();
             let bmpNew = await createImageBitmap(_imgNew);

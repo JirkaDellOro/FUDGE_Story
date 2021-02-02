@@ -5,11 +5,11 @@ namespace FudgeStory {
 
   /**
    * ## Pattern for the definition of characters
-   * Define characters to appear on the stage in various poses using this pattern 
+   * Define characters to appear in various poses using this pattern 
    * ```plaintext
    * {
    *   id of the character: {
-   *     name: "Name of the character to appear on the text board",
+   *     name: "Name of the character to appear when speaking",
    *     origin: the origin of the image, in most cases FudgeStory.ORIGIN.BOTTOMCENTER,
    *     pose: {
    *       id of 1st pose: "path to the image to be used for 1st pose",
@@ -42,7 +42,7 @@ namespace FudgeStory {
    * ```
    */
   export interface CharacterDefinition {
-    /** Name of the character to appear on the text board */
+    /** Name of the character to appear when speaking */
     name: string;
     /** The origin of the characters images, in most cases FudgeStory.ORIGIN.BOTTOMCENTER, */
     origin: ORIGIN;
@@ -91,7 +91,7 @@ namespace FudgeStory {
     }
     
     /**
-     * Show the given [[Character]] in the specified pose at the given position on the stage. See [[Character]] for the definition of a character.
+     * Show the given [[Character]] in the specified pose at the given position. See [[CharacterDefinition]] for the definition of a character.
      */
     public static async show(_character: CharacterDefinition, _pose: RequestInfo, _position: Position): Promise<void> {
       let character: Character = Character.get(_character);
@@ -101,19 +101,19 @@ namespace FudgeStory {
     }
 
     /**
-     * Hide the given [[Character]], removing it from the [[Stage]]
+     * Hide the given [[Character]]
      */
     public static async hide(_character: CharacterDefinition): Promise<void> {
       let found: ƒ.Node[] = Base.middle.getChildrenByName(_character.name);
       if (found.length == 0)
-        console.warn(`No character with name ${_character.name} to hide on the stage`);
+        console.warn(`No character with name ${_character.name} to hide`);
       if (found.length > 1)
-        console.warn(`Multiple characters with name ${_character.name} on the stage, removing first`);
+        console.warn(`Multiple characters with name ${_character.name} exist, removing first`);
       Base.middle.removeChild(found[0]);
     }
 
     /**
-     * Remove all [[Character]]s and objects from the stage
+     * Remove all [[Character]]s and objects
      */
     public static hideAll(): void {
       Base.middle.removeAllChildren();

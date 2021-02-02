@@ -7,7 +7,7 @@ namespace FudgeStory {
   export class Speech {
     public static signalForwardTicker = Progress.defineSignal([EVENT.KEYUP, EVENT.POINTERDOWN]);
     public static signalNext = Progress.defineSignal([EVENT.KEYUP, EVENT.POINTERDOWN]);
-    
+
     private static element: HTMLDivElement;
     private static time = new ƒ.Time();
     private static delayLetter: number = 50;
@@ -23,6 +23,7 @@ namespace FudgeStory {
      * Displays the [[Character]]s name and the given text at once
      */
     public static set(_character: Object, _text: string): void {
+      Speech.show();
       let name: string = _character ? Reflect.get(_character, "name") : "";
       let nameTag: HTMLSpanElement = Speech.div.querySelector("name");
       let textTag: HTMLElement = Speech.div.querySelector("content");
@@ -41,6 +42,7 @@ namespace FudgeStory {
      * Displays the [[Character]]s name and slowly writes the text letter by letter
      */
     public static async tell(_character: Object, _text: string, _waitForSignalNext: boolean = true): Promise<void> {
+      Speech.show();
       let done: boolean = false;
       Speech.set(_character, "");
       let buffer: HTMLDivElement = document.createElement("div");
@@ -68,11 +70,11 @@ namespace FudgeStory {
     }
 
     /**
-     * Defines the pauses used by ticker between letters and before a paragraph
+     * Defines the pauses used by ticker between letters and before a paragraph in milliseconds
      */
     public static setTickerDelays(_letter: number, _paragraph: number = 1000): void {
-      Speech.delayLetter = _letter * 1000;
-      Speech.delayParagraph = _paragraph * 1000;
+      Speech.delayLetter = _letter;
+      Speech.delayParagraph = _paragraph;
     }
 
     /**
