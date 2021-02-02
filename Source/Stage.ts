@@ -31,7 +31,7 @@ namespace FudgeStory {
       if (Stage.viewport)
         return;
 
-      let theater: HTMLDivElement = document.body.querySelector("theater");
+      let theater: HTMLDivElement = document.body.querySelector("scene");
       Stage.aspectRatio = theater.clientWidth / theater.clientHeight;
 
       Stage.graph = new ƒ.Node("Graph");
@@ -103,8 +103,8 @@ namespace FudgeStory {
     /**
      * Show the given [[Character]] in the specified pose at the given position on the stage. See [[Character]] for the definition of a character.
      */
-    public static async showCharacter(_character: Character, _pose: RequestInfo, _position: Position): Promise<void> {
-      let character: CharacterNode = CharacterNode.get(_character);
+    public static async showCharacter(_character: CharacterDefinition, _pose: RequestInfo, _position: Position): Promise<void> {
+      let character: Character = Character.get(_character);
       let pose: ƒ.Node = await character.getPose(_pose);
       pose.mtxLocal.translation = _position.toVector3(0);
       Stage.middle.appendChild(pose);
@@ -113,7 +113,7 @@ namespace FudgeStory {
     /**
      * Hide the given [[Character]], removing it from the [[Stage]]
      */
-    public static async hideCharacter(_character: Character): Promise<void> {
+    public static async hideCharacter(_character: CharacterDefinition): Promise<void> {
       let found: ƒ.Node[] = Stage.middle.getChildrenByName(_character.name);
       if (found.length == 0)
         console.warn(`No character with name ${_character.name} to hide on the stage`);
@@ -209,7 +209,7 @@ namespace FudgeStory {
      */
     public static async deserialize(_serialization: ƒ.Serialization): Promise<void> {
       for (let characterData of _serialization.characters) {
-        let character: Character = {name: characterData.name, pose: {id: characterData.pose}, origin: characterData.origin };
+        let character: CharacterDefinition = {name: characterData.name, pose: {id: characterData.pose}, origin: characterData.origin };
         let position: ƒ.Vector2 = <ƒ.Vector2>await new ƒ.Vector2().deserialize(characterData.position);
         Stage.showCharacter(character, characterData.pose, position);
       }
@@ -227,7 +227,7 @@ namespace FudgeStory {
     }
 
     private static resize(): void {
-      let theater: HTMLDivElement = document.body.querySelector("theater");
+      let theater: HTMLDivElement = document.body.querySelector("scene");
       let bodyWidth: number = document.body.clientWidth;
       let bodyHeight: number = document.body.clientHeight;
       let aspectWindow: number = bodyWidth / bodyHeight;

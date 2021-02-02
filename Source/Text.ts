@@ -6,15 +6,15 @@ namespace FudgeStory {
    */
   export class Text extends HTMLDialogElement {
     private static get dialog(): HTMLDialogElement {
-      return <HTMLDialogElement>document.querySelector("dialog[is=novel-page]");
+      return <HTMLDialogElement>document.querySelector("dialog[is=text-page]");
     }
 
     /**
      * Prints the text in a modal dialog stylable with css
      */
     public static async print(_text: string): Promise<void> {
-      if (!customElements.get("novel-page"))
-        customElements.define("novel-page", FudgeStory.Text, { extends: "dialog" });
+      if (!customElements.get("text-page"))
+        customElements.define("text-page", FudgeStory.Text, { extends: "dialog" });
 
       let dialog: HTMLDialogElement = Text.dialog;
       dialog.close();

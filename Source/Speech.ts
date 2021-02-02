@@ -5,7 +5,7 @@ namespace FudgeStory {
   import ƒ = FudgeCore;
 
   /**
-   * The textboard displaying the phrases told by the characters or the narrator
+   * Displays the phrases told by the characters or the narrator
    */
   export class Speech {
     public static signalForwardTicker = Progress.defineSignal([EVENT.KEYUP, EVENT.POINTERDOWN]);
@@ -18,7 +18,7 @@ namespace FudgeStory {
 
 
     private static get div(): HTMLDivElement {
-      Speech.element = Speech.element || document.querySelector("board");
+      Speech.element = Speech.element || document.querySelector("speech");
       return Speech.element;
     }
 
@@ -41,7 +41,7 @@ namespace FudgeStory {
     }
 
     /**
-     * Displays the [[Character]]s name and slowly writes the text on the board letter by letter
+     * Displays the [[Character]]s name and slowly writes the text letter by letter
      */
     public static async tell(_character: Object, _text: string, _waitForSignalNext: boolean = true): Promise<void> {
       let done: boolean = false;
@@ -79,7 +79,7 @@ namespace FudgeStory {
     }
 
     /**
-     * Clears the board
+     * Clears the speech
      */
     public static clear(): void {
       let nameTag: HTMLSpanElement = Speech.div.querySelector("name");
@@ -90,13 +90,13 @@ namespace FudgeStory {
     }
 
     /**
-     * Hides the board
+     * Hides the speech
      */
     public static hide(): void {
       Speech.div.style.visibility = "hidden";
     }
     /**
-     * Shows the board
+     * Shows the speech
      */
     public static show(): void {
       Speech.div.style.visibility = "visible";
@@ -123,7 +123,7 @@ namespace FudgeStory {
     }
 
     /**
-     * Returns a serialization-object holding the current state of the board
+     * Returns a serialization-object holding the current state of the speech
      */
     public static serialize(): ƒ.Serialization {
       let serialization: ƒ.Serialization = {
@@ -137,7 +137,7 @@ namespace FudgeStory {
     }
 
     /**
-     * Restores the state of the board given with the serialization-object
+     * Restores the state of the speech given with the serialization-object
      */
     public static deserialize(_serialization: ƒ.Serialization): void {
       Speech.setTickerDelays(_serialization.delayLetter, _serialization.delayParagraph);

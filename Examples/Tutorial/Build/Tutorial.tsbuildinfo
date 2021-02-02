@@ -2,18 +2,8 @@
   "bundle": {
     "commonSourceDirectory": "..",
     "sourceFiles": [
-      "../Source/Base.ts",
-      "../Source/Character.ts",
-      "../Source/Event.ts",
-      "../Source/Location.ts",
-      "../Source/Menu.ts",
-      "../Source/Position.ts",
-      "../Source/Progress.ts",
-      "../Source/Sound.ts",
-      "../Source/Speech.ts",
-      "../Source/Stage.ts",
-      "../Source/Text.ts",
-      "../Source/Transition.ts"
+      "../Source/Main.ts",
+      "../Source/Tutorial.ts"
     ],
     "js": {
       "sections": [
@@ -25,7 +15,7 @@
         },
         {
           "pos": 15,
-          "end": 41443,
+          "end": 1943,
           "kind": "text"
         }
       ],
@@ -53,7 +43,7 @@
       "sections": [
         {
           "pos": 0,
-          "end": 16358,
+          "end": 1136,
           "kind": "text"
         }
       ]

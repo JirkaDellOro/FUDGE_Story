@@ -20,7 +20,7 @@ declare namespace FudgeStory {
      * {
      *   id of the character: {
      *     name: "Name of the character to appear on the text board",
-     *     origin: the origin of the image, in most cases Theater.ORIGIN.BOTTOMCENTER,
+     *     origin: the origin of the image, in most cases FudgeStory.ORIGIN.BOTTOMCENTER,
      *     pose: {
      *       id of 1st pose: "path to the image to be used for 1st pose",
      *       id of 2nd pose: "path to the image to be used for 2nd pose",
@@ -38,7 +38,7 @@ declare namespace FudgeStory {
      * export let chars = {
      *   Sue: {
      *     name: "Susan Rice",
-     *     origin: Theater.ORIGIN.BOTTOMCENTER,
+     *     origin: FudgeStory.ORIGIN.BOTTOMCENTER,
      *     pose: {
      *       normal: "../Characters/placeholder_girl.png",
      *       talk: "../Characters/placeholder_girl_talk.png"
@@ -51,10 +51,10 @@ declare namespace FudgeStory {
      * }
      * ```
      */
-    interface Character {
+    interface CharacterDefinition {
         /** Name of the character to appear on the text board */
         name: string;
-        /** The origin of the characters images, in most cases Theater.ORIGIN.BOTTOMCENTER, */
+        /** The origin of the characters images, in most cases FudgeStory.ORIGIN.BOTTOMCENTER, */
         origin: ORIGIN;
         /** A list of key-value-pairs defining various poses of the character and holding the urls to the according images
          * ```typescript
@@ -72,20 +72,20 @@ declare namespace FudgeStory {
     /**
      *  Holds the internal data needed to display a character
      */
-    class CharacterNode extends Base {
+    class Character extends Base {
         private static characters;
         poses: Map<RequestInfo, ƒ.Node>;
         origin: ƒ.ORIGIN2D;
-        private character;
+        private definition;
         private constructor();
         /**
          * Retrieve the [[CharacterNode]] from the name defined in the [[Character]]-object given or creates a new [[CharacterNode]] using that object
          */
-        static get(_character: Character): CharacterNode;
+        static get(_character: CharacterDefinition): Character;
         /**
          * Retrieve the [[CharacterNode]] from the name given or null if not defined yet
          */
-        static getByName(_name: string): CharacterNode;
+        static getByName(_name: string): Character;
         /**
          * Retrieves a node displaying the pose defined by the given url of an image file. Creates a new one if not yet existent.
          */
@@ -234,6 +234,7 @@ declare namespace FudgeStory {
         private static restoreData;
         private static storeData;
         private static splash;
+        private static splashBlob;
     }
 }
 declare namespace FudgeStory {
@@ -265,7 +266,7 @@ declare namespace FudgeStory {
 declare namespace FudgeStory {
     import ƒ = FudgeCore;
     /**
-     * The textboard displaying the phrases told by the characters or the narrator
+     * Displays the phrases told by the characters or the narrator
      */
     class Speech {
         static signalForwardTicker: Signal;
@@ -280,7 +281,7 @@ declare namespace FudgeStory {
          */
         static set(_character: Object, _text: string): void;
         /**
-         * Displays the [[Character]]s name and slowly writes the text on the board letter by letter
+         * Displays the [[Character]]s name and slowly writes the text letter by letter
          */
         static tell(_character: Object, _text: string, _waitForSignalNext?: boolean): Promise<void>;
         /**
@@ -288,15 +289,15 @@ declare namespace FudgeStory {
          */
         static setTickerDelays(_letter: number, _paragraph?: number): void;
         /**
-         * Clears the board
+         * Clears the speech
          */
         static clear(): void;
         /**
-         * Hides the board
+         * Hides the speech
          */
         static hide(): void;
         /**
-         * Shows the board
+         * Shows the speech
          */
         static show(): void;
         /**
@@ -304,11 +305,11 @@ declare namespace FudgeStory {
          */
         static getInput(): Promise<string>;
         /**
-         * Returns a serialization-object holding the current state of the board
+         * Returns a serialization-object holding the current state of the speech
          */
         static serialize(): ƒ.Serialization;
         /**
-         * Restores the state of the board given with the serialization-object
+         * Restores the state of the speech given with the serialization-object
          */
         static deserialize(_serialization: ƒ.Serialization): void;
         private static copyByLetter;
@@ -357,11 +358,11 @@ declare namespace FudgeStory {
         /**
          * Show the given [[Character]] in the specified pose at the given position on the stage. See [[Character]] for the definition of a character.
          */
-        static showCharacter(_character: Character, _pose: RequestInfo, _position: Position): Promise<void>;
+        static showCharacter(_character: CharacterDefinition, _pose: RequestInfo, _position: Position): Promise<void>;
         /**
          * Hide the given [[Character]], removing it from the [[Stage]]
          */
-        static hideCharacter(_character: Character): Promise<void>;
+        static hideCharacter(_character: CharacterDefinition): Promise<void>;
         /**
          * Remove all [[Character]]s and objects from the stage
          */
