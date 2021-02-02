@@ -1,14 +1,40 @@
 declare namespace FudgeStory {
     import ƒ = FudgeCore;
+    export import ORIGIN = FudgeCore.ORIGIN2D;
+    type Position = ƒ.Vector2;
+    let Position: typeof ƒ.Vector2;
+}
+declare namespace FudgeStory {
+    import ƒ = FudgeCore;
     /**
-     * Holds some core functionality to load images and build FUDGE-nodes from them for display
+     * The [[Stage]] is where the [[Character]]s and [[Location]] show up. It's the main instance to work with.
      */
-    class Base {
+    abstract class Base {
+        protected static viewport: ƒ.Viewport;
+        protected static back: ƒ.Node;
+        protected static middle: ƒ.Node;
+        protected static front: ƒ.Node;
         private static mesh;
-        name: string;
-        constructor(_name: string);
-        static createImageNode(_name: string, _request: RequestInfo, _origin?: ƒ.ORIGIN2D, _size?: ƒ.Vector2): Promise<ƒ.Node>;
+        private static aspectRatio;
+        private static graph;
+        private static size;
+        /**
+         * Will be called once by [[Progress]] before anything else may happen on the [[Stage]].
+         */
+        protected static create(): void;
+        /**
+         * Creates a serialization-object representing the current state of the [[Character]]s currently shown on the stage
+         */
+        protected static serialize(): ƒ.Serialization;
+        /**
+         * Reconstructs the [[CharacterNode]]s from a serialization-object and places them on the stage
+         * @param _serialization
+         */
+        protected static deserialize(_serialization: ƒ.Serialization): Promise<void>;
+        protected static createImageNode(_name: string, _request: RequestInfo, _origin?: ƒ.ORIGIN2D, _size?: ƒ.Vector2): Promise<ƒ.Node>;
         private static adjustMesh;
+        private static calculatePositions;
+        private static resize;
     }
 }
 declare namespace FudgeStory {
@@ -87,6 +113,18 @@ declare namespace FudgeStory {
          */
         static getByName(_name: string): Character;
         /**
+         * Show the given [[Character]] in the specified pose at the given position on the stage. See [[Character]] for the definition of a character.
+         */
+        static show(_character: CharacterDefinition, _pose: RequestInfo, _position: Position): Promise<void>;
+        /**
+         * Hide the given [[Character]], removing it from the [[Stage]]
+         */
+        static hide(_character: CharacterDefinition): Promise<void>;
+        /**
+         * Remove all [[Character]]s and objects from the stage
+         */
+        static hideAll(): void;
+        /**
          * Retrieves a node displaying the pose defined by the given url of an image file. Creates a new one if not yet existent.
          */
         getPose(_pose: RequestInfo): Promise<ƒ.Node>;
@@ -105,18 +143,60 @@ declare namespace FudgeStory {
         /**
          * Wait for the viewers input. See [[EVENT]] for predefined events to wait for.
          */
-        static getInput(_eventTypes: string[]): Promise<Event>;
+        static get(_eventTypes: string[]): Promise<Event>;
     }
 }
 declare namespace FudgeStory {
     import ƒ = FudgeCore;
-    interface Location {
+    /**
+     * Inserts the given scene. A scene is a sequence of commands defining a small piece of the whole story.
+     * A scene needs to be defined in the following format, where NameOfTheScene is a placeholder and should be chosen arbitrarily.
+     * ```typescript
+     * export async function NameOfTheScene(): SceneReturn {
+     *   ...
+     *   ...
+     * }
+     * ```
+     * Calling [[insert]] directly will not register the scene as a save-point for saving and loading.
+     */
+    function insert(_scene: SceneFunction): Promise<void | string>;
+    /**
+     * Display the recent changes to the [[Stage]]. If a parameters are specified, they are used blend from the previous display to the new
+     * as described in [[Transition]]
+     */
+    function update(_duration?: number, _url?: RequestInfo, _edge?: number): Promise<void>;
+    /**
+     * Wait for the viewers input. See [[EVENT]] for predefined events to wait for.
+     */
+    function getInput(_eventTypes: string[]): Promise<Event>;
+    let positions: {
+        topleft: ƒ.Vector2;
+        topright: ƒ.Vector2;
+        topcenter: ƒ.Vector2;
+        centerleft: ƒ.Vector2;
+        centerright: ƒ.Vector2;
+        center: ƒ.Vector2;
+        bottomleft: ƒ.Vector2;
+        bottomright: ƒ.Vector2;
+        bottomcenter: ƒ.Vector2;
+        left: ƒ.Vector2;
+        right: ƒ.Vector2;
+    };
+    /**
+     * Calculates and returns a position on the [[Stage]] to be used to place [[Character]]s or objects on the [[Stage]].
+     * Pass values in percent relative to the upper left corner.
+     */
+    function positionPercent(_x: number, _y: number): Position;
+}
+declare namespace FudgeStory {
+    import ƒ = FudgeCore;
+    interface LocationDefinition {
         name?: string;
         background: string;
         foreground?: string;
     }
     /**
-     * Define locations to use on the stage using this pattern:
+     * Define locations using this pattern:
      * ```plaintext
      * {
      *   id of the location: {
@@ -131,13 +211,13 @@ declare namespace FudgeStory {
      * }
      * ```
      */
-    interface Locations {
-        [id: string]: Location;
+    interface LocationDefinitions {
+        [id: string]: LocationDefinition;
     }
     /**
      * Holds internal data to effectively load and display the location images
      */
-    class LocationNodes extends Base {
+    class Location extends Base {
         private static locations;
         background: ƒ.Node;
         foreground: ƒ.Node;
@@ -145,7 +225,11 @@ declare namespace FudgeStory {
         /**
          * Retrieves the [[LocationNode]] associated with the given description
          */
-        static get(_description: Location): Promise<LocationNodes>;
+        static get(_description: LocationDefinition): Promise<Location>;
+        /**
+         * Show the given location on the [[Stage]]. See [[Location]] for the definition of a location.
+         */
+        static show(_location: LocationDefinition): Promise<void>;
         private load;
     }
 }
@@ -173,12 +257,6 @@ declare namespace FudgeStory {
     }
 }
 declare namespace FudgeStory {
-    import ƒ = FudgeCore;
-    export import ORIGIN = FudgeCore.ORIGIN2D;
-    type Position = ƒ.Vector2;
-    let Position: typeof ƒ.Vector2;
-}
-declare namespace FudgeStory {
     type SceneReturn = Promise<void | string>;
     type SceneFunction = () => SceneReturn;
     type SceneDescriptor = {
@@ -191,7 +269,7 @@ declare namespace FudgeStory {
     /**
      * Controls the main flow of the story, tracks logical data and provides load/save
      */
-    class Progress {
+    class Progress extends Base {
         private static data;
         private static serialization;
         private static scenes;
@@ -200,7 +278,7 @@ declare namespace FudgeStory {
          * Starts the story with the scenes-object given.
          * Creates the [[Stage]] and reads the url-searchstring to enter at a point previously saved
          */
-        static play(_scenes: Scenes): Promise<void>;
+        static go(_scenes: Scenes): Promise<void>;
         /**
          * Defines the object to track containing logical data like score, states, textual inputs given by the play etc.
          */
@@ -230,7 +308,7 @@ declare namespace FudgeStory {
          */
         static delay(_lapse: number): Promise<void>;
         private static bundlePromises;
-        private static act;
+        private static start;
         private static restoreData;
         private static storeData;
         private static splash;
@@ -313,92 +391,6 @@ declare namespace FudgeStory {
          */
         static deserialize(_serialization: ƒ.Serialization): void;
         private static copyByLetter;
-    }
-}
-declare namespace FudgeStory {
-    import ƒ = FudgeCore;
-    /**
-     * The [[Stage]] is where the [[Character]]s and [[Location]] show up. It's the main instance to work with.
-     */
-    class Stage {
-        static positions: {
-            topleft: ƒ.Vector2;
-            topright: ƒ.Vector2;
-            topcenter: ƒ.Vector2;
-            centerleft: ƒ.Vector2;
-            centerright: ƒ.Vector2;
-            center: ƒ.Vector2;
-            bottomleft: ƒ.Vector2;
-            bottomright: ƒ.Vector2;
-            bottomcenter: ƒ.Vector2;
-            left: ƒ.Vector2;
-            right: ƒ.Vector2;
-        };
-        static viewport: ƒ.Viewport;
-        private static aspectRatio;
-        private static graph;
-        private static back;
-        private static middle;
-        private static front;
-        private static board;
-        private static size;
-        /**
-         * Will be called once by [[Progress]] before anything else may happen on the [[Stage]].
-         */
-        static create(): void;
-        /**
-         * Calculates and returns a position on the [[Stage]] to be used to place [[Character]]s or objects on the [[Stage]].
-         * Pass values in percent relative to the upper left corner.
-         */
-        static positionPercent(_x: number, _y: number): Position;
-        /**
-         * Show the given location on the [[Stage]]. See [[Location]] for the definition of a location.
-         */
-        static showLocation(_location: Location): Promise<void>;
-        /**
-         * Show the given [[Character]] in the specified pose at the given position on the stage. See [[Character]] for the definition of a character.
-         */
-        static showCharacter(_character: CharacterDefinition, _pose: RequestInfo, _position: Position): Promise<void>;
-        /**
-         * Hide the given [[Character]], removing it from the [[Stage]]
-         */
-        static hideCharacter(_character: CharacterDefinition): Promise<void>;
-        /**
-         * Remove all [[Character]]s and objects from the stage
-         */
-        static free(): void;
-        /**
-         * Display the recent changes to the [[Stage]]. If a parameters are specified, they are used blend from the previous display to the new
-         * as described in [[Transition]]
-         */
-        static update(_duration?: number, _url?: RequestInfo, _edge?: number): Promise<void>;
-        /**
-         * Wait for the viewers input. See [[EVENT]] for predefined events to wait for.
-         */
-        static getInput(_eventTypes: string[]): Promise<Event>;
-        /**
-         * Calls the given scene to be played on the stage. A scene is a sequence of commands defining a small piece of the whole play.
-         * A scene needs to be defined in the following format, where NameOfTheScene is a placeholder and should be chosen arbitrarily.
-         * Calling this function directly will not register the scene as a save-point for saving and loading. Use Progress.play for this!
-         * ```typescript
-         * export async function NameOfTheScene(): SceneReturn {
-         *   ...
-         *   ...
-         * }
-         * ```
-         */
-        static act(_scene: SceneFunction): Promise<void | string>;
-        /**
-         * Creates a serialization-object representing the current state of the [[Character]]s currently shown on the stage
-         */
-        static serialize(): ƒ.Serialization;
-        /**
-         * Reconstructs the [[CharacterNode]]s from a serialization-object and places them on the stage
-         * @param _serialization
-         */
-        static deserialize(_serialization: ƒ.Serialization): Promise<void>;
-        private static calculatePositions;
-        private static resize;
     }
 }
 declare namespace FudgeStory {

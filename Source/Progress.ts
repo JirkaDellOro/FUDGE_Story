@@ -10,7 +10,7 @@ namespace FudgeStory {
   /**
    * Controls the main flow of the story, tracks logical data and provides load/save
    */
-  export class Progress {
+  export class Progress extends Base {
     private static data: Object = {};
     private static serialization: Object;
     private static scenes: SceneDescriptor[];
@@ -21,8 +21,8 @@ namespace FudgeStory {
      * Starts the story with the scenes-object given.  
      * Creates the [[Stage]] and reads the url-searchstring to enter at a point previously saved 
      */
-    public static async play(_scenes: Scenes): Promise<void> {
-      Stage.create();
+    public static async go(_scenes: Scenes): Promise<void> {
+      Base.create();
 
 
       Progress.scenes = <SceneDescriptor[]>_scenes.flat(100);
@@ -34,7 +34,7 @@ namespace FudgeStory {
         await Progress.splash(json.sceneDescriptor.name);
         Progress.restoreData(json.data);
         Speech.deserialize(json.board);
-        await Stage.deserialize(json.stage);
+        await Base.deserialize(json.stage);
         Sound.deserialize(json.sound);
         index = parseInt(json.sceneDescriptor.index);
       }
@@ -44,7 +44,7 @@ namespace FudgeStory {
 
       do {
         let descriptor: SceneDescriptor = Progress.scenes[index];
-        let next: string | number = await Progress.act(index);
+        let next: string | number = await Progress.start(index);
         console.log(descriptor.name + " done");
         if (typeof (next) == "number")
           index = next;
@@ -115,21 +115,21 @@ namespace FudgeStory {
         if (entry instanceof Function)
           promises.push(entry());
         else
-          promises.push(Input.getInput([entry]));
+          promises.push(Input.get([entry]));
       }
 
       return Promise.any(promises);
     }
 
-    private static async act(index: number): Promise<string> {
+    private static async start(index: number): Promise<string> {
       let descriptor: SceneDescriptor = Progress.scenes[index];
-      console.log("Play scene ", descriptor);
+      console.log("Start scene ", descriptor);
 
       Progress.currentSceneDescriptor = descriptor;
       Reflect.set(Progress.currentSceneDescriptor, "index", index);
       Progress.storeData();
 
-      return <string>await Stage.act(descriptor.scene);
+      return <string>await insert(descriptor.scene);
     }
 
     private static restoreData(_restored: Object): void {
@@ -142,7 +142,7 @@ namespace FudgeStory {
         sceneDescriptor: Progress.currentSceneDescriptor,
         data: JSON.parse(JSON.stringify(Progress.data)), //make a copy of the data instead of referring to it
         board: Speech.serialize(),
-        stage: Stage.serialize(),
+        stage: Base.serialize(),
         sound: Sound.serialize()
       };
       console.log("Stored", Progress.serialization);

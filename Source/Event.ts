@@ -12,7 +12,7 @@ namespace FudgeStory {
     /**
      * Wait for the viewers input. See [[EVENT]] for predefined events to wait for.
      */
-    public static async getInput(_eventTypes: string[]): Promise<Event> {
+    public static async get(_eventTypes: string[]): Promise<Event> {
       return new Promise((resolve) => {
         let hndEvent = (_event: Event): void => {
           for (let type of _eventTypes) {

@@ -2,12 +2,83 @@
 var FudgeStory;
 (function (FudgeStory) {
     var ƒ = FudgeCore;
+    FudgeStory.ORIGIN = FudgeCore.ORIGIN2D;
+    // tslint:disable-next-line
+    FudgeStory.Position = ƒ.Vector2;
+    // export class Position extends ƒ.Vector2 {
+    //   public constructor(_x: number, _y: number) {
+    //     super(_x, _y);
+    //   }
+    // }
+})(FudgeStory || (FudgeStory = {}));
+/// <reference path="Position.ts" />
+var FudgeStory;
+/// <reference path="Position.ts" />
+(function (FudgeStory) {
+    var ƒ = FudgeCore;
     /**
-     * Holds some core functionality to load images and build FUDGE-nodes from them for display
+     * The [[Stage]] is where the [[Character]]s and [[Location]] show up. It's the main instance to work with.
      */
     class Base {
-        constructor(_name) {
-            this.name = _name;
+        /**
+         * Will be called once by [[Progress]] before anything else may happen on the [[Stage]].
+         */
+        static create() {
+            if (Base.viewport)
+                return;
+            let theater = document.body.querySelector("scene");
+            Base.aspectRatio = theater.clientWidth / theater.clientHeight;
+            Base.graph = new ƒ.Node("Graph");
+            Base.back = new ƒ.Node("Back");
+            Base.middle = new ƒ.Node("Middle");
+            Base.front = new ƒ.Node("Front");
+            // Stage.board = new ƒ.Node("Board");
+            // Stage.menu = new ƒ.Node("Menu");
+            let canvas = document.querySelector("canvas");
+            Base.size = new ƒ.Vector2(theater.clientWidth, theater.clientHeight);
+            console.log("StageSize", Base.size.toString());
+            Base.graph.appendChild(Base.back);
+            Base.graph.appendChild(Base.middle);
+            Base.graph.appendChild(Base.front);
+            // Stage.graph.appendChild(Stage.board);
+            Base.back.addComponent(new ƒ.ComponentTransform(ƒ.Matrix4x4.TRANSLATION(ƒ.Vector3.Z(-1))));
+            Base.front.addComponent(new ƒ.ComponentTransform(ƒ.Matrix4x4.TRANSLATION(ƒ.Vector3.Z(1))));
+            // Stage.board.addComponent(new ƒ.ComponentTransform(ƒ.Matrix4x4.TRANSLATION(ƒ.Vector3.Z(2))));
+            let cmpCamera = new ƒ.ComponentCamera();
+            Base.viewport = new ƒ.Viewport();
+            Base.viewport.initialize("Viewport", Base.graph, cmpCamera, canvas);
+            let factor = 2 * Math.sqrt(2);
+            cmpCamera.projectCentral(Base.size.x / Base.size.y, 20, ƒ.FIELD_OF_VIEW.HORIZONTAL, 1000, Base.size.x * factor + 100);
+            //TODO: use orthographic camera, no fov-calculation required
+            cmpCamera.pivot.translateZ(Base.size.x * factor);
+            cmpCamera.pivot.lookAt(ƒ.Vector3.ZERO());
+            Base.viewport.draw();
+            Base.calculatePositions();
+            Base.resize();
+            window.addEventListener("resize", Base.resize);
+        }
+        /**
+         * Creates a serialization-object representing the current state of the [[Character]]s currently shown on the stage
+         */
+        static serialize() {
+            let serialization = { characters: [] };
+            for (let pose of Base.middle.getChildren()) {
+                let poseUrl = pose.getComponent(ƒ.ComponentMaterial).material.getCoat().texture.url;
+                let origin = Reflect.get(pose, "origin");
+                serialization.characters.push({ name: pose.name, pose: poseUrl, origin: origin, position: pose.mtxLocal.translation.toVector2().serialize() });
+            }
+            return serialization;
+        }
+        /**
+         * Reconstructs the [[CharacterNode]]s from a serialization-object and places them on the stage
+         * @param _serialization
+         */
+        static async deserialize(_serialization) {
+            for (let characterData of _serialization.characters) {
+                let character = { name: characterData.name, pose: { id: characterData.pose }, origin: characterData.origin };
+                let position = await new ƒ.Vector2().deserialize(characterData.position);
+                FudgeStory.Character.show(character, characterData.pose, position);
+            }
         }
         static async createImageNode(_name, _request, _origin = ƒ.ORIGIN2D.CENTER, _size) {
             let node = new ƒ.Node(_name);
@@ -36,11 +107,45 @@ var FudgeStory;
             _cmpMesh.pivot.translateY(-rect.y - rect.height / 2);
             _cmpMesh.pivot.scale(_size.toVector3(1));
         }
+        static calculatePositions() {
+            let xOffset = Base.size.x / 2;
+            let yOffset = Base.size.y / 2;
+            FudgeStory.positions = {
+                topleft: new FudgeStory.Position(-xOffset, yOffset), topright: new FudgeStory.Position(xOffset, yOffset), topcenter: new FudgeStory.Position(0, yOffset),
+                centerleft: new FudgeStory.Position(-xOffset, 0), centerright: new FudgeStory.Position(xOffset, 0), center: new FudgeStory.Position(0, 0),
+                bottomleft: new FudgeStory.Position(-xOffset, -yOffset), bottomright: new FudgeStory.Position(xOffset, -yOffset), bottomcenter: new FudgeStory.Position(0, -yOffset),
+                left: new FudgeStory.Position(-xOffset * 0.7, -yOffset), right: new FudgeStory.Position(xOffset * 0.7, -yOffset)
+            };
+        }
+        static resize() {
+            let theater = document.body.querySelector("scene");
+            let bodyWidth = document.body.clientWidth;
+            let bodyHeight = document.body.clientHeight;
+            let aspectWindow = bodyWidth / bodyHeight;
+            // console.log(aspectCanvas, aspectWindow);
+            let height;
+            let width;
+            // aspectWindow > aspectCanvas -> scaleToHeight
+            if (Base.aspectRatio / aspectWindow < 1) {
+                height = bodyHeight;
+                width = bodyHeight * Base.aspectRatio;
+            }
+            else {
+                width = bodyWidth;
+                height = bodyWidth / Base.aspectRatio;
+            }
+            theater.style.height = height + "px";
+            theater.style.width = width + "px";
+            theater.style.top = ((bodyHeight - height) / 2) + "px";
+            theater.style.left = ((bodyWidth - width) / 2) + "px";
+        }
     }
     Base.mesh = new ƒ.MeshQuad("Quad");
     FudgeStory.Base = Base;
 })(FudgeStory || (FudgeStory = {}));
+/// <reference path="Base.ts" />
 var FudgeStory;
+/// <reference path="Base.ts" />
 (function (FudgeStory) {
     var ƒ = FudgeCore;
     /**
@@ -48,7 +153,7 @@ var FudgeStory;
      */
     class Character extends FudgeStory.Base {
         constructor(_character) {
-            super(_character.name);
+            super();
             this.poses = new Map();
             this.origin = Reflect.get(_character, "origin") || ƒ.ORIGIN2D.BOTTOMCENTER;
             this.definition = _character;
@@ -66,6 +171,32 @@ var FudgeStory;
          */
         static getByName(_name) {
             return Character.characters.get(_name);
+        }
+        /**
+         * Show the given [[Character]] in the specified pose at the given position on the stage. See [[Character]] for the definition of a character.
+         */
+        static async show(_character, _pose, _position) {
+            let character = Character.get(_character);
+            let pose = await character.getPose(_pose);
+            pose.mtxLocal.translation = _position.toVector3(0);
+            FudgeStory.Base.middle.appendChild(pose);
+        }
+        /**
+         * Hide the given [[Character]], removing it from the [[Stage]]
+         */
+        static async hide(_character) {
+            let found = FudgeStory.Base.middle.getChildrenByName(_character.name);
+            if (found.length == 0)
+                console.warn(`No character with name ${_character.name} to hide on the stage`);
+            if (found.length > 1)
+                console.warn(`Multiple characters with name ${_character.name} on the stage, removing first`);
+            FudgeStory.Base.middle.removeChild(found[0]);
+        }
+        /**
+         * Remove all [[Character]]s and objects from the stage
+         */
+        static hideAll() {
+            FudgeStory.Base.middle.removeAllChildren();
         }
         /**
          * Retrieves a node displaying the pose defined by the given url of an image file. Creates a new one if not yet existent.
@@ -98,7 +229,7 @@ var FudgeStory;
         /**
          * Wait for the viewers input. See [[EVENT]] for predefined events to wait for.
          */
-        static async getInput(_eventTypes) {
+        static async get(_eventTypes) {
             return new Promise((resolve) => {
                 let hndEvent = (_event) => {
                     for (let type of _eventTypes) {
@@ -116,24 +247,113 @@ var FudgeStory;
 })(FudgeStory || (FudgeStory = {}));
 var FudgeStory;
 (function (FudgeStory) {
+    let pos0 = new FudgeStory.Position(0, 0);
+    /**
+     * Inserts the given scene. A scene is a sequence of commands defining a small piece of the whole story.
+     * A scene needs to be defined in the following format, where NameOfTheScene is a placeholder and should be chosen arbitrarily.
+     * ```typescript
+     * export async function NameOfTheScene(): SceneReturn {
+     *   ...
+     *   ...
+     * }
+     * ```
+     * Calling [[insert]] directly will not register the scene as a save-point for saving and loading.
+     */
+    async function insert(_scene) {
+        console.log("SceneFunction", _scene.name);
+        return await _scene();
+    }
+    FudgeStory.insert = insert;
+    /**
+     * Display the recent changes to the [[Stage]]. If a parameters are specified, they are used blend from the previous display to the new
+     * as described in [[Transition]]
+     */
+    async function update(_duration, _url, _edge) {
+        let viewport = Reflect.get(FudgeStory.Base, "viewport");
+        viewport.adjustingFrames = false;
+        if (!_duration) {
+            viewport.draw();
+            return;
+        }
+        let crc2 = viewport.getContext();
+        let imgOld = crc2.getImageData(0, 0, crc2.canvas.width, crc2.canvas.height);
+        viewport.draw();
+        let imgNew = crc2.getImageData(0, 0, crc2.canvas.width, crc2.canvas.height);
+        crc2.putImageData(imgOld, 0, 0);
+        let transition;
+        if (_url)
+            transition = await FudgeStory.Transition.get(_url);
+        await FudgeStory.Transition.blend(imgOld, imgNew, _duration * 1000, transition, _edge);
+    }
+    FudgeStory.update = update;
+    /**
+     * Wait for the viewers input. See [[EVENT]] for predefined events to wait for.
+     */
+    async function getInput(_eventTypes) {
+        return new Promise((resolve) => {
+            let hndEvent = (_event) => {
+                for (let type of _eventTypes) {
+                    document.removeEventListener(type, hndEvent);
+                }
+                resolve(_event);
+            };
+            for (let type of _eventTypes) {
+                document.addEventListener(type, hndEvent);
+            }
+        });
+    }
+    FudgeStory.getInput = getInput;
+    FudgeStory.positions = {
+        topleft: pos0, topright: pos0, topcenter: pos0,
+        centerleft: pos0, centerright: pos0, center: pos0,
+        bottomleft: pos0, bottomright: pos0, bottomcenter: pos0,
+        left: pos0, right: pos0
+    };
+    /**
+     * Calculates and returns a position on the [[Stage]] to be used to place [[Character]]s or objects on the [[Stage]].
+     * Pass values in percent relative to the upper left corner.
+     */
+    function positionPercent(_x, _y) {
+        let size = Reflect.get(FudgeStory.Base, "size").copy;
+        let position = new FudgeStory.Position(-size.x / 2, size.y / 2);
+        size.x *= _x / 100;
+        size.y *= -_y / 100;
+        position.add(size);
+        return position;
+    }
+    FudgeStory.positionPercent = positionPercent;
+})(FudgeStory || (FudgeStory = {}));
+var FudgeStory;
+(function (FudgeStory) {
     var ƒ = FudgeCore;
     /**
      * Holds internal data to effectively load and display the location images
      */
-    class LocationNodes extends FudgeStory.Base {
+    class Location extends FudgeStory.Base {
         constructor(_description) {
-            super(_description.name);
+            super();
         }
         /**
          * Retrieves the [[LocationNode]] associated with the given description
          */
         static async get(_description) {
-            let result = LocationNodes.locations.get(_description);
+            let result = Location.locations.get(_description);
             if (result)
                 return result;
-            result = new LocationNodes(_description);
+            result = new Location(_description);
             await result.load(_description);
             return result;
+        }
+        /**
+         * Show the given location on the [[Stage]]. See [[Location]] for the definition of a location.
+         */
+        static async show(_location) {
+            FudgeStory.Base.back.removeAllChildren();
+            let location = await Location.get(_location);
+            FudgeStory.Base.back.appendChild(location.background);
+            FudgeStory.Base.front.removeAllChildren();
+            if (location.foreground)
+                FudgeStory.Base.front.appendChild(location.foreground);
         }
         async load(_location) {
             this.background = await FudgeStory.Base.createImageNode(_location.name + "|" + "Background", _location.background, ƒ.ORIGIN2D.CENTER); //, Stage.getSize());
@@ -141,8 +361,8 @@ var FudgeStory;
                 this.foreground = await FudgeStory.Base.createImageNode(_location.name + "|" + "Foreground", _location.foreground, ƒ.ORIGIN2D.CENTER); //, Stage.getSize());
         }
     }
-    LocationNodes.locations = new Map();
-    FudgeStory.LocationNodes = LocationNodes;
+    Location.locations = new Map();
+    FudgeStory.Location = Location;
 })(FudgeStory || (FudgeStory = {}));
 var FudgeStory;
 (function (FudgeStory) {
@@ -219,28 +439,16 @@ var FudgeStory;
 var FudgeStory;
 (function (FudgeStory) {
     var ƒ = FudgeCore;
-    FudgeStory.ORIGIN = FudgeCore.ORIGIN2D;
-    // tslint:disable-next-line
-    FudgeStory.Position = ƒ.Vector2;
-    // export class Position extends ƒ.Vector2 {
-    //   public constructor(_x: number, _y: number) {
-    //     super(_x, _y);
-    //   }
-    // }
-})(FudgeStory || (FudgeStory = {}));
-var FudgeStory;
-(function (FudgeStory) {
-    var ƒ = FudgeCore;
     /**
      * Controls the main flow of the story, tracks logical data and provides load/save
      */
-    class Progress {
+    class Progress extends FudgeStory.Base {
         /**
          * Starts the story with the scenes-object given.
          * Creates the [[Stage]] and reads the url-searchstring to enter at a point previously saved
          */
-        static async play(_scenes) {
-            FudgeStory.Stage.create();
+        static async go(_scenes) {
+            FudgeStory.Base.create();
             Progress.scenes = _scenes.flat(100);
             let index = 0;
             let urlSearch = location.search.substr(1);
@@ -249,7 +457,7 @@ var FudgeStory;
                 await Progress.splash(json.sceneDescriptor.name);
                 Progress.restoreData(json.data);
                 FudgeStory.Speech.deserialize(json.board);
-                await FudgeStory.Stage.deserialize(json.stage);
+                await FudgeStory.Base.deserialize(json.stage);
                 FudgeStory.Sound.deserialize(json.sound);
                 index = parseInt(json.sceneDescriptor.index);
             }
@@ -257,7 +465,7 @@ var FudgeStory;
                 await Progress.splash(document.title);
             do {
                 let descriptor = Progress.scenes[index];
-                let next = await Progress.act(index);
+                let next = await Progress.start(index);
                 console.log(descriptor.name + " done");
                 if (typeof (next) == "number")
                     index = next;
@@ -319,17 +527,17 @@ var FudgeStory;
                 if (entry instanceof Function)
                     promises.push(entry());
                 else
-                    promises.push(FudgeStory.Input.getInput([entry]));
+                    promises.push(FudgeStory.Input.get([entry]));
             }
             return Promise.any(promises);
         }
-        static async act(index) {
+        static async start(index) {
             let descriptor = Progress.scenes[index];
-            console.log("Play scene ", descriptor);
+            console.log("Start scene ", descriptor);
             Progress.currentSceneDescriptor = descriptor;
             Reflect.set(Progress.currentSceneDescriptor, "index", index);
             Progress.storeData();
-            return await FudgeStory.Stage.act(descriptor.scene);
+            return await FudgeStory.insert(descriptor.scene);
         }
         static restoreData(_restored) {
             Object.assign(Progress.data, _restored);
@@ -340,7 +548,7 @@ var FudgeStory;
                 sceneDescriptor: Progress.currentSceneDescriptor,
                 data: JSON.parse(JSON.stringify(Progress.data)),
                 board: FudgeStory.Speech.serialize(),
-                stage: FudgeStory.Stage.serialize(),
+                stage: FudgeStory.Base.serialize(),
                 sound: FudgeStory.Sound.serialize()
             };
             console.log("Stored", Progress.serialization);
@@ -458,11 +666,7 @@ var FudgeStory;
     Sound.node = Sound.setup();
     FudgeStory.Sound = Sound;
 })(FudgeStory || (FudgeStory = {}));
-/// <reference path="Progress.ts" />
-/// <reference path="Event.ts" />
 var FudgeStory;
-/// <reference path="Progress.ts" />
-/// <reference path="Event.ts" />
 (function (FudgeStory) {
     var ƒ = FudgeCore;
     /**
@@ -610,215 +814,6 @@ var FudgeStory;
 })(FudgeStory || (FudgeStory = {}));
 var FudgeStory;
 (function (FudgeStory) {
-    var ƒ = FudgeCore;
-    let pos0 = new FudgeStory.Position(0, 0);
-    /**
-     * The [[Stage]] is where the [[Character]]s and [[Location]] show up. It's the main instance to work with.
-     */
-    class Stage {
-        /**
-         * Will be called once by [[Progress]] before anything else may happen on the [[Stage]].
-         */
-        static create() {
-            if (Stage.viewport)
-                return;
-            let theater = document.body.querySelector("scene");
-            Stage.aspectRatio = theater.clientWidth / theater.clientHeight;
-            Stage.graph = new ƒ.Node("Graph");
-            Stage.back = new ƒ.Node("Back");
-            Stage.middle = new ƒ.Node("Middle");
-            Stage.front = new ƒ.Node("Front");
-            Stage.board = new ƒ.Node("Board");
-            // Stage.menu = new ƒ.Node("Menu");
-            let canvas = document.querySelector("canvas");
-            Stage.size = new ƒ.Vector2(theater.clientWidth, theater.clientHeight);
-            console.log("StageSize", Stage.size.toString());
-            Stage.graph.appendChild(Stage.back);
-            Stage.graph.appendChild(Stage.middle);
-            Stage.graph.appendChild(Stage.front);
-            Stage.graph.appendChild(Stage.board);
-            Stage.back.addComponent(new ƒ.ComponentTransform(ƒ.Matrix4x4.TRANSLATION(ƒ.Vector3.Z(-1))));
-            Stage.front.addComponent(new ƒ.ComponentTransform(ƒ.Matrix4x4.TRANSLATION(ƒ.Vector3.Z(1))));
-            Stage.board.addComponent(new ƒ.ComponentTransform(ƒ.Matrix4x4.TRANSLATION(ƒ.Vector3.Z(2))));
-            let cmpCamera = new ƒ.ComponentCamera();
-            Stage.viewport = new ƒ.Viewport();
-            Stage.viewport.initialize("Viewport", Stage.graph, cmpCamera, canvas);
-            let factor = 2 * Math.sqrt(2);
-            cmpCamera.projectCentral(Stage.size.x / Stage.size.y, 20, ƒ.FIELD_OF_VIEW.HORIZONTAL, 1000, Stage.size.x * factor + 100);
-            //TODO: use orthographic camera, no fov-calculation required
-            cmpCamera.pivot.translateZ(Stage.size.x * factor);
-            cmpCamera.pivot.lookAt(ƒ.Vector3.ZERO());
-            Stage.viewport.draw();
-            Stage.calculatePositions();
-            Stage.resize();
-            window.addEventListener("resize", Stage.resize);
-        }
-        /**
-         * Calculates and returns a position on the [[Stage]] to be used to place [[Character]]s or objects on the [[Stage]].
-         * Pass values in percent relative to the upper left corner.
-         */
-        static positionPercent(_x, _y) {
-            let size = Stage.size.copy;
-            let position = new FudgeStory.Position(-size.x / 2, size.y / 2);
-            size.x *= _x / 100;
-            size.y *= -_y / 100;
-            position.add(size);
-            return position;
-        }
-        /**
-         * Show the given location on the [[Stage]]. See [[Location]] for the definition of a location.
-         */
-        static async showLocation(_location) {
-            Stage.back.removeAllChildren();
-            let location = await FudgeStory.LocationNodes.get(_location);
-            Stage.back.appendChild(location.background);
-            Stage.front.removeAllChildren();
-            if (location.foreground)
-                Stage.front.appendChild(location.foreground);
-        }
-        /**
-         * Show the given [[Character]] in the specified pose at the given position on the stage. See [[Character]] for the definition of a character.
-         */
-        static async showCharacter(_character, _pose, _position) {
-            let character = FudgeStory.Character.get(_character);
-            let pose = await character.getPose(_pose);
-            pose.mtxLocal.translation = _position.toVector3(0);
-            Stage.middle.appendChild(pose);
-        }
-        /**
-         * Hide the given [[Character]], removing it from the [[Stage]]
-         */
-        static async hideCharacter(_character) {
-            let found = Stage.middle.getChildrenByName(_character.name);
-            if (found.length == 0)
-                console.warn(`No character with name ${_character.name} to hide on the stage`);
-            if (found.length > 1)
-                console.warn(`Multiple characters with name ${_character.name} on the stage, removing first`);
-            Stage.middle.removeChild(found[0]);
-        }
-        /**
-         * Remove all [[Character]]s and objects from the stage
-         */
-        static free() {
-            Stage.middle.removeAllChildren();
-        }
-        /**
-         * Display the recent changes to the [[Stage]]. If a parameters are specified, they are used blend from the previous display to the new
-         * as described in [[Transition]]
-         */
-        static async update(_duration, _url, _edge) {
-            Stage.viewport.adjustingFrames = false;
-            if (!_duration) {
-                Stage.viewport.draw();
-                return;
-            }
-            let crc2 = Stage.viewport.getContext();
-            let imgOld = crc2.getImageData(0, 0, crc2.canvas.width, crc2.canvas.height);
-            Stage.viewport.draw();
-            let imgNew = crc2.getImageData(0, 0, crc2.canvas.width, crc2.canvas.height);
-            crc2.putImageData(imgOld, 0, 0);
-            let transition;
-            if (_url)
-                transition = await FudgeStory.Transition.get(_url);
-            await FudgeStory.Transition.blend(imgOld, imgNew, _duration * 1000, transition, _edge);
-        }
-        /**
-         * Wait for the viewers input. See [[EVENT]] for predefined events to wait for.
-         */
-        static async getInput(_eventTypes) {
-            return new Promise((resolve) => {
-                let hndEvent = (_event) => {
-                    for (let type of _eventTypes) {
-                        document.removeEventListener(type, hndEvent);
-                    }
-                    resolve(_event);
-                };
-                for (let type of _eventTypes) {
-                    document.addEventListener(type, hndEvent);
-                }
-            });
-        }
-        /**
-         * Calls the given scene to be played on the stage. A scene is a sequence of commands defining a small piece of the whole play.
-         * A scene needs to be defined in the following format, where NameOfTheScene is a placeholder and should be chosen arbitrarily.
-         * Calling this function directly will not register the scene as a save-point for saving and loading. Use Progress.play for this!
-         * ```typescript
-         * export async function NameOfTheScene(): SceneReturn {
-         *   ...
-         *   ...
-         * }
-         * ```
-         */
-        static async act(_scene) {
-            console.log("SceneFunction", _scene.name);
-            return await _scene();
-        }
-        /**
-         * Creates a serialization-object representing the current state of the [[Character]]s currently shown on the stage
-         */
-        static serialize() {
-            let serialization = { characters: [] };
-            for (let pose of Stage.middle.getChildren()) {
-                let poseUrl = pose.getComponent(ƒ.ComponentMaterial).material.getCoat().texture.url;
-                let origin = Reflect.get(pose, "origin");
-                serialization.characters.push({ name: pose.name, pose: poseUrl, origin: origin, position: pose.mtxLocal.translation.toVector2().serialize() });
-            }
-            return serialization;
-        }
-        /**
-         * Reconstructs the [[CharacterNode]]s from a serialization-object and places them on the stage
-         * @param _serialization
-         */
-        static async deserialize(_serialization) {
-            for (let characterData of _serialization.characters) {
-                let character = { name: characterData.name, pose: { id: characterData.pose }, origin: characterData.origin };
-                let position = await new ƒ.Vector2().deserialize(characterData.position);
-                Stage.showCharacter(character, characterData.pose, position);
-            }
-        }
-        static calculatePositions() {
-            let xOffset = Stage.size.x / 2;
-            let yOffset = Stage.size.y / 2;
-            Stage.positions = {
-                topleft: new FudgeStory.Position(-xOffset, yOffset), topright: new FudgeStory.Position(xOffset, yOffset), topcenter: new FudgeStory.Position(0, yOffset),
-                centerleft: new FudgeStory.Position(-xOffset, 0), centerright: new FudgeStory.Position(xOffset, 0), center: new FudgeStory.Position(0, 0),
-                bottomleft: new FudgeStory.Position(-xOffset, -yOffset), bottomright: new FudgeStory.Position(xOffset, -yOffset), bottomcenter: new FudgeStory.Position(0, -yOffset),
-                left: new FudgeStory.Position(-xOffset * 0.7, -yOffset), right: new FudgeStory.Position(xOffset * 0.7, -yOffset)
-            };
-        }
-        static resize() {
-            let theater = document.body.querySelector("scene");
-            let bodyWidth = document.body.clientWidth;
-            let bodyHeight = document.body.clientHeight;
-            let aspectWindow = bodyWidth / bodyHeight;
-            // console.log(aspectCanvas, aspectWindow);
-            let height;
-            let width;
-            // aspectWindow > aspectCanvas -> scaleToHeight
-            if (Stage.aspectRatio / aspectWindow < 1) {
-                height = bodyHeight;
-                width = bodyHeight * Stage.aspectRatio;
-            }
-            else {
-                width = bodyWidth;
-                height = bodyWidth / Stage.aspectRatio;
-            }
-            theater.style.height = height + "px";
-            theater.style.width = width + "px";
-            theater.style.top = ((bodyHeight - height) / 2) + "px";
-            theater.style.left = ((bodyWidth - width) / 2) + "px";
-        }
-    }
-    Stage.positions = {
-        topleft: pos0, topright: pos0, topcenter: pos0,
-        centerleft: pos0, centerright: pos0, center: pos0,
-        bottomleft: pos0, bottomright: pos0, bottomcenter: pos0,
-        left: pos0, right: pos0
-    };
-    FudgeStory.Stage = Stage;
-})(FudgeStory || (FudgeStory = {}));
-var FudgeStory;
-(function (FudgeStory) {
     /**
      * Displays a longer narrative text to convey larger parts of the story not told by a character
      * (Better name required)
@@ -872,7 +867,7 @@ var FudgeStory;
     // export type TransitionFunction = (_imgOld: ImageData, _imgNew: ImageData, _duration: number, _transition: Uint8ClampedArray, _factor: number) => Promise<void>;
     class Transition {
         static async blend(_imgOld, _imgNew, _duration = 1000, _transition, _factor = 0.5) {
-            let crc2 = FudgeStory.Stage.viewport.getContext();
+            let crc2 = FudgeStory.Base.viewport.getContext();
             let bmpNew = await createImageBitmap(_imgNew);
             if (!_transition) {
                 function simpleFade(_progress) {
@@ -905,8 +900,8 @@ var FudgeStory;
             await txtTransition.load(_url);
             // TODO: move to get(...)
             let canvasTransition = document.createElement("canvas");
-            canvasTransition.width = FudgeStory.Stage.viewport.getCanvas().width;
-            canvasTransition.height = FudgeStory.Stage.viewport.getCanvas().height;
+            canvasTransition.width = FudgeStory.Base.viewport.getCanvas().width;
+            canvasTransition.height = FudgeStory.Base.viewport.getCanvas().height;
             let crcTransition = canvasTransition.getContext("2d");
             crcTransition.imageSmoothingEnabled = false;
             crcTransition.drawImage(txtTransition.image, 0, 0, txtTransition.image.width, txtTransition.image.height, 0, 0, 1280, 720);

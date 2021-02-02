@@ -1,9 +1,9 @@
 namespace Tutorial {
-  // export import ƒ = FudgeCore;
   export import ƒS = FudgeStory;
 
   console.log("Start");
 
+  // define transitions
   export let transitions = {
     clock: {
       duration: 3,
@@ -17,49 +17,36 @@ namespace Tutorial {
     }
   };
 
+  // define sounds as key-string-pairs with the url of the soundfile
   export let sound = {
     backgroundTheme: "../Audio/hypnotic.mp3",
     shoot: "../Audio/fire.mp3"
   };
 
-  // data for some locations to decorate the stage with
+  // define locations as key-object-pairs, the objects with the properties name, background and an optional foreground
   export let locations = {
-    window: {
-      name: "Window",
-      background: "../Backgrounds/bg_window.png"
-    },
-    rain: {
-      name: "RainInCity",
-      background: "../Backgrounds/bg_city_rain.png"
+    city: {
+      name: "CloudyCity",
+      background: "Images/bg_city_cloudy.png"
     }
   };
 
-  // data for some characters that will show on the stage
+  // define characters as key-object-pairs, the objects with the properties name, origin and an array if poses, each again with a unique key
   export let characters = {
     Sue: {
       name: "Sue",
       origin: ƒS.ORIGIN.BOTTOMRIGHT,
       pose: {
-        normal: "../Characters/placeholder_girl.png",
-        talk: "../Characters/placeholder_girl_talk.png"
-      }
-    },
-    John: {
-      name: "John",
-      // check origin not being respected
-      origin: ƒS.ORIGIN.BOTTOMCENTER,
-      pose: {
-        normal: "../Characters/placeholder_boy.png",
-        smile: "../Characters/placeholder_boy_smile.png"
+        normal: "Images/placeholder_girl.png"
       }
     }
   };
 
-
+  // define the sequence of scenes, each scene as an object with a reference to the scene-function, a name and optionally an id and an id to continue the story with
   export let scenes: ƒS.Scenes = [
     { scene: Main, name: "Main Menu" }
   ];
 
-  
-  ƒS.Progress.play(scenes);
+  // start the sequence
+  ƒS.Progress.go(scenes);
 }

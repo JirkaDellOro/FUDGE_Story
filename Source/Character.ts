@@ -1,3 +1,5 @@
+/// <reference path="Base.ts" />
+
 namespace FudgeStory {
   import ƒ = FudgeCore;
 
@@ -67,7 +69,7 @@ namespace FudgeStory {
     private definition: CharacterDefinition;
 
     private constructor(_character: CharacterDefinition) {
-      super(_character.name);
+      super();
       this.origin = Reflect.get(_character, "origin") || ƒ.ORIGIN2D.BOTTOMCENTER;
       this.definition = _character;
       Character.characters.set(_character.name, this);
@@ -87,6 +89,35 @@ namespace FudgeStory {
     public static getByName(_name: string): Character {
       return Character.characters.get(_name);
     }
+    
+    /**
+     * Show the given [[Character]] in the specified pose at the given position on the stage. See [[Character]] for the definition of a character.
+     */
+    public static async show(_character: CharacterDefinition, _pose: RequestInfo, _position: Position): Promise<void> {
+      let character: Character = Character.get(_character);
+      let pose: ƒ.Node = await character.getPose(_pose);
+      pose.mtxLocal.translation = _position.toVector3(0);
+      Base.middle.appendChild(pose);
+    }
+
+    /**
+     * Hide the given [[Character]], removing it from the [[Stage]]
+     */
+    public static async hide(_character: CharacterDefinition): Promise<void> {
+      let found: ƒ.Node[] = Base.middle.getChildrenByName(_character.name);
+      if (found.length == 0)
+        console.warn(`No character with name ${_character.name} to hide on the stage`);
+      if (found.length > 1)
+        console.warn(`Multiple characters with name ${_character.name} on the stage, removing first`);
+      Base.middle.removeChild(found[0]);
+    }
+
+    /**
+     * Remove all [[Character]]s and objects from the stage
+     */
+    public static hideAll(): void {
+      Base.middle.removeAllChildren();
+    }
 
     /**
      * Retrieves a node displaying the pose defined by the given url of an image file. Creates a new one if not yet existent.
@@ -95,6 +126,7 @@ namespace FudgeStory {
       let result: ƒ.Node = this.poses.get(_pose);
       return result || await this.createPose(_pose);
     }
+    
 
     private async createPose(_pose: RequestInfo): Promise<ƒ.Node> {
       let pose: ƒ.Node = await Base.createImageNode(this.definition.name, _pose, this.origin);

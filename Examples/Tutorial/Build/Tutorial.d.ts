@@ -20,11 +20,7 @@ declare namespace Tutorial {
         shoot: string;
     };
     let locations: {
-        window: {
-            name: string;
-            background: string;
-        };
-        rain: {
+        city: {
             name: string;
             background: string;
         };
@@ -35,15 +31,6 @@ declare namespace Tutorial {
             origin: ƒS.ORIGIN;
             pose: {
                 normal: string;
-                talk: string;
-            };
-        };
-        John: {
-            name: string;
-            origin: ƒS.ORIGIN;
-            pose: {
-                normal: string;
-                smile: string;
             };
         };
     };

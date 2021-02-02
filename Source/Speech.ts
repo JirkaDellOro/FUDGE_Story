@@ -1,6 +1,3 @@
-/// <reference path="Progress.ts" />
-/// <reference path="Event.ts" />
-
 namespace FudgeStory {
   import ƒ = FudgeCore;
 

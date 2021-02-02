@@ -3,14 +3,19 @@ var Tutorial;
 (function (Tutorial) {
     async function Main() {
         console.log("Main Menu");
+        await Tutorial.ƒS.Location.show(Tutorial.locations.city);
+        await Tutorial.ƒS.Character.show(Tutorial.characters.Sue, Tutorial.characters.Sue.pose.normal, Tutorial.ƒS.positions.bottomcenter);
+        // await ƒT.Stage.showCharacter(characters.John, characters.John.pose.smile, ƒT.Stage.positions.right);
+        /** Now lift the curtain */
+        await Tutorial.ƒS.update( /* Transition */);
     }
     Tutorial.Main = Main;
 })(Tutorial || (Tutorial = {}));
 var Tutorial;
 (function (Tutorial) {
-    // export import ƒ = FudgeCore;
     Tutorial.ƒS = FudgeStory;
     console.log("Start");
+    // define transitions
     Tutorial.transitions = {
         clock: {
             duration: 3,
@@ -23,44 +28,33 @@ var Tutorial;
             edge: 0.4
         }
     };
+    // define sounds as key-string-pairs with the url of the soundfile
     Tutorial.sound = {
         backgroundTheme: "../Audio/hypnotic.mp3",
         shoot: "../Audio/fire.mp3"
     };
-    // data for some locations to decorate the stage with
+    // define locations as key-object-pairs, the objects with the properties name, background and an optional foreground
     Tutorial.locations = {
-        window: {
-            name: "Window",
-            background: "../Backgrounds/bg_window.png"
-        },
-        rain: {
-            name: "RainInCity",
-            background: "../Backgrounds/bg_city_rain.png"
+        city: {
+            name: "CloudyCity",
+            background: "Images/bg_city_cloudy.png"
         }
     };
-    // data for some characters that will show on the stage
+    // define characters as key-object-pairs, the objects with the properties name, origin and an array if poses, each again with a unique key
     Tutorial.characters = {
         Sue: {
             name: "Sue",
             origin: Tutorial.ƒS.ORIGIN.BOTTOMRIGHT,
             pose: {
-                normal: "../Characters/placeholder_girl.png",
-                talk: "../Characters/placeholder_girl_talk.png"
-            }
-        },
-        John: {
-            name: "John",
-            // check origin not being respected
-            origin: Tutorial.ƒS.ORIGIN.BOTTOMCENTER,
-            pose: {
-                normal: "../Characters/placeholder_boy.png",
-                smile: "../Characters/placeholder_boy_smile.png"
+                normal: "Images/placeholder_girl.png"
             }
         }
     };
+    // define the sequence of scenes, each scene as an object with a reference to the scene-function, a name and optionally an id and an id to continue the story with
     Tutorial.scenes = [
         { scene: Tutorial.Main, name: "Main Menu" }
     ];
-    Tutorial.ƒS.Progress.play(Tutorial.scenes);
+    // start the sequence
+    Tutorial.ƒS.Progress.go(Tutorial.scenes);
 })(Tutorial || (Tutorial = {}));
 //# sourceMappingURL=Tutorial.js.map
