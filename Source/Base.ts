@@ -71,7 +71,8 @@ namespace FudgeStory {
       let serialization: ƒ.Serialization = { characters: [] };
 
       for (let pose of Base.middle.getChildren()) {
-        let poseUrl: RequestInfo = (<ƒ.CoatTextured>pose.getComponent(ƒ.ComponentMaterial).material.getCoat()).texture.url;
+        let poseUrl: RequestInfo = 
+        (<ƒ.TextureImage>(<ƒ.CoatTextured>pose.getComponent(ƒ.ComponentMaterial).material.getCoat()).texture).url;
         let origin: ƒ.Vector2 = Reflect.get(pose, "origin");
 
         serialization.characters.push(

@@ -16,7 +16,7 @@
       "../Source/Engine/Recycler.ts",
       "../Source/Math/Vector2.ts",
       "../Source/Math/Rectangle.ts",
-      "../Source/Render/RenderOperator.ts",
+      "../Source/Render/RenderWebGL.ts",
       "../Source/Render/RenderInjectorTexture.ts",
       "../Source/Graph/Node.ts",
       "../Source/References.ts",
@@ -59,6 +59,8 @@
       "../Source/Graph/Graph.ts",
       "../Source/Graph/GraphInstance.ts",
       "../Source/Math/Framing.ts",
+      "../Source/Math/Geo2.ts",
+      "../Source/Math/Geo3.ts",
       "../Source/Math/Matrix3x3.ts",
       "../Source/Math/Matrix4x4.ts",
       "../Source/Math/Random.ts",
@@ -85,7 +87,7 @@
       "../Source/Physics/Quaternion.ts",
       "../Source/Ray/Ray.ts",
       "../Source/Ray/RayHit.ts",
-      "../Source/Render/RenderManager.ts",
+      "../Source/Render/Render.ts",
       "../Source/Render/RenderParticles.ts",
       "../Source/Shader/Shader.ts",
       "../Source/Shader/ShaderFlat.ts",
@@ -94,6 +96,7 @@
       "../Source/Shader/ShaderTexture.ts",
       "../Source/Shader/ShaderUniColor.ts",
       "../Source/Texture/Texture.ts",
+      "../Source/Texture/TextureDefault.ts",
       "../Source/Time/Loop.ts",
       "../Source/Time/Time.ts",
       "../Source/Time/Timer.ts",
@@ -115,7 +118,7 @@
         },
         {
           "pos": 593,
-          "end": 590379,
+          "end": 615929,
           "kind": "text"
         }
       ],
@@ -152,7 +155,7 @@
         },
         {
           "pos": 57,
-          "end": 236178,
+          "end": 239666,
           "kind": "text"
         }
       ]
