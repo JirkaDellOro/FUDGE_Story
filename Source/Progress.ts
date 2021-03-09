@@ -114,7 +114,7 @@ namespace FudgeStory {
         if (entry instanceof Function)
           promises.push(entry());
         else
-          promises.push(Input.get([entry]));
+          promises.push(getInput([entry]));
       }
 
       return Promise.any(promises);

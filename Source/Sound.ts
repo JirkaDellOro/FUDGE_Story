@@ -63,6 +63,9 @@ namespace FudgeStory {
       });
     }
 
+    /**
+     * Used internally for save/load, don't call directly
+     */
     public static serialize(): ƒ.Serialization[] {
       let serialization: ƒ.Serialization[] = [];
       for (let sound of Sound.sounds) {
@@ -80,6 +83,9 @@ namespace FudgeStory {
       return serialization;
     }
 
+    /**
+     * Used internally for save/load, don't call directly
+     */
     public static deserialize(_serialization: ƒ.Serialization[]): void {
       for (let sound of _serialization) {
         Sound.play(sound.url, sound.volume, sound.loop);

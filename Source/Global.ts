@@ -1,6 +1,18 @@
 namespace FudgeStory {
   import ƒ = FudgeCore;
-
+  export import ORIGIN = FudgeCore.ORIGIN2D;
+  export type Position =  ƒ.Vector2;
+  export type Signal = () => Promise<Event>;
+  
+  export enum EVENT {
+    KEYDOWN = "keydown",
+    KEYUP = "keyup",
+    POINTERDOWN = "pointerdown",
+    POINTERUP = "pointerup"
+  }
+  
+  // tslint:disable-next-line
+  export let Position =  ƒ.Vector2;
   let pos0: Position = new Position(0, 0);
 
   /**
@@ -20,8 +32,8 @@ namespace FudgeStory {
   }
 
   /**
-   * Display the recent changes. If parameters are specified, they are used blend from the previous display to the new
-   * as described in [[Transition]]
+   * Display the recent changes. If parameters are specified, they are used blend from the previous display to the new.
+   * The parameters define the duration of the blend, the grayscale image for special effects and the edges (smooth 0 - 2 sharp)
    */
   export async function update(_duration?: number, _url?: RequestInfo, _edge?: number): Promise<void> {
     let viewport: ƒ.Viewport = Reflect.get(Base, "viewport");
@@ -60,6 +72,9 @@ namespace FudgeStory {
     });
   }
 
+  /**
+   * Standard positions
+   */
   export let positions = {
     topleft: pos0, topright: pos0, topcenter: pos0,
     centerleft: pos0, centerright: pos0, center: pos0,

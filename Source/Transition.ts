@@ -1,11 +1,15 @@
 namespace FudgeStory {
   import ƒ = FudgeCore;
 
-  // export type TransitionFunction = (_imgOld: ImageData, _imgNew: ImageData, _duration: number, _transition: Uint8ClampedArray, _factor: number) => Promise<void>;
-
+  /**
+   * 
+   */
   export class Transition extends Base {
     private static transitions: Map<RequestInfo, Uint8ClampedArray> = new Map();
 
+    /**
+     * Called by [[update]] to blend from the old display of a scene to the new. Don't call directly.
+     */
     public static async blend(_imgOld: ImageData, _imgNew: ImageData, _duration: number = 1000, _transition: Uint8ClampedArray, _factor: number = 0.5): Promise<void> {
       let crc2: CanvasRenderingContext2D = Base.viewport.getContext();
       let bmpNew: ImageBitmap = await createImageBitmap(_imgNew);
@@ -37,6 +41,9 @@ namespace FudgeStory {
       return Transition.getPromise(transit, _duration);
     }
 
+    /**
+     * Loads an image to use for special transition effects and returns the buffer. Don't call directly.
+     */
     public static async get(_url: RequestInfo): Promise<Uint8ClampedArray> {
       let transition: Uint8ClampedArray = Transition.transitions.get(_url);
       if (transition)

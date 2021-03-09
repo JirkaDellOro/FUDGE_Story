@@ -2,7 +2,6 @@ namespace FudgeStory {
 
   /**
    * Displays a longer narrative text to convey larger parts of the story not told by a character
-   * (Better name required)
    */
   export class Text extends HTMLDialogElement {
     private static get dialog(): HTMLDialogElement {
@@ -48,6 +47,9 @@ namespace FudgeStory {
       Text.dialog.classList.add(_class);
     }
 
+    /**
+     * closes the text-dialog
+     */
     public static close(): void {
       Text.dialog.close();
     }

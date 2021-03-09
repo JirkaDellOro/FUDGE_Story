@@ -1,10 +1,8 @@
-/// <reference path="Position.ts" />
-
 namespace FudgeStory {
   import ƒ = FudgeCore;
 
   /**
-   * Holds core functionality for the inner workings
+   * Holds core functionality for the inner workings. Do not instantiate or call methods directly!
    */
   export abstract class Base {
 
@@ -137,7 +135,7 @@ namespace FudgeStory {
     }
 
     private static resize(): void {
-      let theater: HTMLDivElement = document.body.querySelector("scene");
+      let scene: HTMLDivElement = document.body.querySelector("scene");
       let bodyWidth: number = document.body.clientWidth;
       let bodyHeight: number = document.body.clientHeight;
       let aspectWindow: number = bodyWidth / bodyHeight;
@@ -152,10 +150,10 @@ namespace FudgeStory {
         width = bodyWidth;
         height = bodyWidth / Base.aspectRatio;
       }
-      theater.style.height = height + "px";
-      theater.style.width = width + "px";
-      theater.style.top = ((bodyHeight - height) / 2) + "px";
-      theater.style.left = ((bodyWidth - width) / 2) + "px";
+      scene.style.height = height + "px";
+      scene.style.width = width + "px";
+      scene.style.top = ((bodyHeight - height) / 2) + "px";
+      scene.style.left = ((bodyWidth - width) / 2) + "px";
     }
   }
 }

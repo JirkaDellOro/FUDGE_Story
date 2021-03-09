@@ -2,22 +2,8 @@
 var FudgeStory;
 (function (FudgeStory) {
     var ƒ = FudgeCore;
-    FudgeStory.ORIGIN = FudgeCore.ORIGIN2D;
-    // tslint:disable-next-line
-    FudgeStory.Position = ƒ.Vector2;
-    // export class Position extends ƒ.Vector2 {
-    //   public constructor(_x: number, _y: number) {
-    //     super(_x, _y);
-    //   }
-    // }
-})(FudgeStory || (FudgeStory = {}));
-/// <reference path="Position.ts" />
-var FudgeStory;
-/// <reference path="Position.ts" />
-(function (FudgeStory) {
-    var ƒ = FudgeCore;
     /**
-     * Holds core functionality for the inner workings
+     * Holds core functionality for the inner workings. Do not instantiate or call methods directly!
      */
     class Base {
         /**
@@ -109,7 +95,7 @@ var FudgeStory;
             };
         }
         static resize() {
-            let theater = document.body.querySelector("scene");
+            let scene = document.body.querySelector("scene");
             let bodyWidth = document.body.clientWidth;
             let bodyHeight = document.body.clientHeight;
             let aspectWindow = bodyWidth / bodyHeight;
@@ -123,10 +109,10 @@ var FudgeStory;
                 width = bodyWidth;
                 height = bodyWidth / Base.aspectRatio;
             }
-            theater.style.height = height + "px";
-            theater.style.width = width + "px";
-            theater.style.top = ((bodyHeight - height) / 2) + "px";
-            theater.style.left = ((bodyWidth - width) / 2) + "px";
+            scene.style.height = height + "px";
+            scene.style.width = width + "px";
+            scene.style.top = ((bodyHeight - height) / 2) + "px";
+            scene.style.left = ((bodyWidth - width) / 2) + "px";
         }
     }
     Base.mesh = new ƒ.MeshQuad("Quad");
@@ -207,6 +193,8 @@ var FudgeStory;
 })(FudgeStory || (FudgeStory = {}));
 var FudgeStory;
 (function (FudgeStory) {
+    var ƒ = FudgeCore;
+    FudgeStory.ORIGIN = FudgeCore.ORIGIN2D;
     let EVENT;
     (function (EVENT) {
         EVENT["KEYDOWN"] = "keydown";
@@ -214,28 +202,8 @@ var FudgeStory;
         EVENT["POINTERDOWN"] = "pointerdown";
         EVENT["POINTERUP"] = "pointerup";
     })(EVENT = FudgeStory.EVENT || (FudgeStory.EVENT = {}));
-    class Input {
-        /**
-         * Wait for the viewers input. See [[EVENT]] for predefined events to wait for.
-         */
-        static async get(_eventTypes) {
-            return new Promise((resolve) => {
-                let hndEvent = (_event) => {
-                    for (let type of _eventTypes) {
-                        document.removeEventListener(type, hndEvent);
-                    }
-                    resolve(_event);
-                };
-                for (let type of _eventTypes) {
-                    document.addEventListener(type, hndEvent);
-                }
-            });
-        }
-    }
-    FudgeStory.Input = Input;
-})(FudgeStory || (FudgeStory = {}));
-var FudgeStory;
-(function (FudgeStory) {
+    // tslint:disable-next-line
+    FudgeStory.Position = ƒ.Vector2;
     let pos0 = new FudgeStory.Position(0, 0);
     /**
      * Inserts the given scene. A scene is a sequence of commands defining a small piece of the whole story.
@@ -254,8 +222,8 @@ var FudgeStory;
     }
     FudgeStory.insert = insert;
     /**
-     * Display the recent changes. If parameters are specified, they are used blend from the previous display to the new
-     * as described in [[Transition]]
+     * Display the recent changes. If parameters are specified, they are used blend from the previous display to the new.
+     * The parameters define the duration of the blend, the grayscale image for special effects and the edges (smooth 0 - 2 sharp)
      */
     async function update(_duration, _url, _edge) {
         let viewport = Reflect.get(FudgeStory.Base, "viewport");
@@ -292,6 +260,9 @@ var FudgeStory;
         });
     }
     FudgeStory.getInput = getInput;
+    /**
+     * Standard positions
+     */
     FudgeStory.positions = {
         topleft: pos0, topright: pos0, topcenter: pos0,
         centerleft: pos0, centerright: pos0, center: pos0,
@@ -515,7 +486,7 @@ var FudgeStory;
                 if (entry instanceof Function)
                     promises.push(entry());
                 else
-                    promises.push(FudgeStory.Input.get([entry]));
+                    promises.push(FudgeStory.getInput([entry]));
             }
             return Promise.any(promises);
         }
@@ -623,6 +594,9 @@ var FudgeStory;
                 ƒ.Loop.start(ƒ.LOOP_MODE.FRAME_REQUEST, 30);
             });
         }
+        /**
+         * Used internally for save/load, don't call directly
+         */
         static serialize() {
             let serialization = [];
             for (let sound of Sound.sounds) {
@@ -639,6 +613,9 @@ var FudgeStory;
             }
             return serialization;
         }
+        /**
+         * Used internally for save/load, don't call directly
+         */
         static deserialize(_serialization) {
             for (let sound of _serialization) {
                 Sound.play(sound.url, sound.volume, sound.loop);
@@ -806,7 +783,6 @@ var FudgeStory;
 (function (FudgeStory) {
     /**
      * Displays a longer narrative text to convey larger parts of the story not told by a character
-     * (Better name required)
      */
     class Text extends HTMLDialogElement {
         static get dialog() {
@@ -845,6 +821,9 @@ var FudgeStory;
         static addClass(_class) {
             Text.dialog.classList.add(_class);
         }
+        /**
+         * closes the text-dialog
+         */
         static close() {
             Text.dialog.close();
         }
@@ -854,8 +833,13 @@ var FudgeStory;
 var FudgeStory;
 (function (FudgeStory) {
     var ƒ = FudgeCore;
-    // export type TransitionFunction = (_imgOld: ImageData, _imgNew: ImageData, _duration: number, _transition: Uint8ClampedArray, _factor: number) => Promise<void>;
+    /**
+     *
+     */
     class Transition extends FudgeStory.Base {
+        /**
+         * Called by [[update]] to blend from the old display of a scene to the new. Don't call directly.
+         */
         static async blend(_imgOld, _imgNew, _duration = 1000, _transition, _factor = 0.5) {
             let crc2 = FudgeStory.Base.viewport.getContext();
             let bmpNew = await createImageBitmap(_imgNew);
@@ -882,6 +866,9 @@ var FudgeStory;
             }
             return Transition.getPromise(transit, _duration);
         }
+        /**
+         * Loads an image to use for special transition effects and returns the buffer. Don't call directly.
+         */
         static async get(_url) {
             let transition = Transition.transitions.get(_url);
             if (transition)

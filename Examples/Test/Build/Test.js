@@ -5,8 +5,8 @@ var Tutorial;
         console.log("Main Menu");
         await Tutorial.ƒS.Location.show(Tutorial.locations.city);
         await Tutorial.ƒS.Character.show(Tutorial.characters.Sue, Tutorial.characters.Sue.pose.normal, Tutorial.ƒS.positions.bottomcenter);
-        await Tutorial.ƒS.update( /* Transition */);
-        await Tutorial.ƒS.Speech.tell(Tutorial.characters.Sue, "Willkommen zum Tutorial für FUDGE-Story", false);
+        await Tutorial.ƒS.update(2);
+        await Tutorial.ƒS.Speech.tell(Tutorial.characters.Sue, "Willkommen zum Test von FUDGE-Story", false);
     }
     Tutorial.Main = Main;
 })(Tutorial || (Tutorial = {}));
@@ -70,4 +70,4 @@ var Tutorial;
         }
     }
 })(Tutorial || (Tutorial = {}));
-//# sourceMappingURL=Tutorial.js.map
+//# sourceMappingURL=Test.js.map

@@ -1,13 +1,7 @@
 declare namespace FudgeStory {
     import ƒ = FudgeCore;
-    export import ORIGIN = FudgeCore.ORIGIN2D;
-    type Position = ƒ.Vector2;
-    let Position: typeof ƒ.Vector2;
-}
-declare namespace FudgeStory {
-    import ƒ = FudgeCore;
     /**
-     * Holds core functionality for the inner workings
+     * Holds core functionality for the inner workings. Do not instantiate or call methods directly!
      */
     abstract class Base {
         protected static viewport: ƒ.Viewport;
@@ -132,22 +126,17 @@ declare namespace FudgeStory {
     }
 }
 declare namespace FudgeStory {
+    import ƒ = FudgeCore;
+    export import ORIGIN = FudgeCore.ORIGIN2D;
+    type Position = ƒ.Vector2;
+    type Signal = () => Promise<Event>;
     enum EVENT {
         KEYDOWN = "keydown",
         KEYUP = "keyup",
         POINTERDOWN = "pointerdown",
         POINTERUP = "pointerup"
     }
-    type Signal = () => Promise<Event>;
-    class Input {
-        /**
-         * Wait for the viewers input. See [[EVENT]] for predefined events to wait for.
-         */
-        static get(_eventTypes: string[]): Promise<Event>;
-    }
-}
-declare namespace FudgeStory {
-    import ƒ = FudgeCore;
+    let Position: typeof ƒ.Vector2;
     /**
      * Inserts the given scene. A scene is a sequence of commands defining a small piece of the whole story.
      * A scene needs to be defined in the following format, where NameOfTheScene is a placeholder and should be chosen arbitrarily.
@@ -161,14 +150,17 @@ declare namespace FudgeStory {
      */
     function insert(_scene: SceneFunction): Promise<void | string>;
     /**
-     * Display the recent changes. If parameters are specified, they are used blend from the previous display to the new
-     * as described in [[Transition]]
+     * Display the recent changes. If parameters are specified, they are used blend from the previous display to the new.
+     * The parameters define the duration of the blend, the grayscale image for special effects and the edges (smooth 0 - 2 sharp)
      */
     function update(_duration?: number, _url?: RequestInfo, _edge?: number): Promise<void>;
     /**
      * Wait for the viewers input. See [[EVENT]] for predefined events to wait for.
      */
     function getInput(_eventTypes: string[]): Promise<Event>;
+    /**
+     * Standard positions
+     */
     let positions: {
         topleft: ƒ.Vector2;
         topright: ƒ.Vector2;
@@ -335,7 +327,13 @@ declare namespace FudgeStory {
          * If the sound is not currently playing, it starts it respecting the loop-flag.
          */
         static fade(_url: RequestInfo, _toVolume: number, _duration: number, _loop?: boolean): Promise<void>;
+        /**
+         * Used internally for save/load, don't call directly
+         */
         static serialize(): ƒ.Serialization[];
+        /**
+         * Used internally for save/load, don't call directly
+         */
         static deserialize(_serialization: ƒ.Serialization[]): void;
         private static setup;
     }
@@ -395,7 +393,6 @@ declare namespace FudgeStory {
 declare namespace FudgeStory {
     /**
      * Displays a longer narrative text to convey larger parts of the story not told by a character
-     * (Better name required)
      */
     class Text extends HTMLDialogElement {
         private static get dialog();
@@ -411,13 +408,25 @@ declare namespace FudgeStory {
          * adds a classname to the classlist of the dialog to enable cascading styles
          */
         static addClass(_class: string): void;
+        /**
+         * closes the text-dialog
+         */
         static close(): void;
     }
 }
 declare namespace FudgeStory {
+    /**
+     *
+     */
     class Transition extends Base {
         private static transitions;
+        /**
+         * Called by [[update]] to blend from the old display of a scene to the new. Don't call directly.
+         */
         static blend(_imgOld: ImageData, _imgNew: ImageData, _duration: number, _transition: Uint8ClampedArray, _factor?: number): Promise<void>;
+        /**
+         * Loads an image to use for special transition effects and returns the buffer. Don't call directly.
+         */
         static get(_url: RequestInfo): Promise<Uint8ClampedArray>;
         private static getPromise;
     }
