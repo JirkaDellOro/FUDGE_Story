@@ -1,6 +1,15 @@
 namespace FudgeStory {
   import ƒ = FudgeCore;
-
+  /**
+   * Define a location using this pattern:
+   * ```text
+   *   id of the location: {
+   *     name: "Name of the location" (optional),
+   *     background: "path to the image to be used as the background",
+   *     foreground: "path to the image to be used as the foreground" (optional),
+   *   }
+   * ```
+   */
   export interface LocationDefinition {
     name?: string;
     background: string;
@@ -9,7 +18,7 @@ namespace FudgeStory {
 
   /**
    * Define locations using this pattern:
-   * ```plaintext
+   * ```text
    * {
    *   id of the location: {
    *     name: "Name of the location" (optional),
@@ -28,19 +37,19 @@ namespace FudgeStory {
   }
 
   /**
-   * Holds internal data to effectively load and display the location images
+   * Represents a location with foreground, background and the middle, where [[Character]]s show.
    */
   export class Location extends Base {
     private static locations: Map<Object, Location> = new Map();
-    public background: ƒ.Node;
-    public foreground: ƒ.Node;
+    private background: ƒ.Node;
+    private foreground: ƒ.Node;
 
     private constructor(_description: LocationDefinition) {
       super();
     }
 
     /**
-     * Retrieves the [[LocationNode]] associated with the given description
+     * Retrieves the [[Location]] associated with the given [[LocationDefinition]]
      */
     public static async get(_description: LocationDefinition): Promise<Location> {
       let result: Location = Location.locations.get(_description);
@@ -52,9 +61,9 @@ namespace FudgeStory {
       return result;
     }
 
-    
+
     /**
-     * Show the location given as [[LocationDefinition]].
+     * Show the location given by [[LocationDefinition]].
      */
     public static async show(_location: LocationDefinition): Promise<void> {
       Base.back.removeAllChildren();

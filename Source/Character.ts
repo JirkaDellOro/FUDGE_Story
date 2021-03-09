@@ -6,7 +6,7 @@ namespace FudgeStory {
   /**
    * ## Pattern for the definition of characters
    * Define characters to appear in various poses using this pattern 
-   * ```plaintext
+   * ```text
    * {
    *   id of the character: {
    *     name: "Name of the character to appear when speaking",
@@ -59,7 +59,7 @@ namespace FudgeStory {
   }
 
   /**
-   *  Holds the internal data needed to display a character
+   *  Represents a character in various poses and with a unique name
    */ 
   export class Character extends Base {
     private static characters: Map<string, Character> = new Map();
@@ -76,7 +76,7 @@ namespace FudgeStory {
     }
 
     /**
-     * Retrieve the [[CharacterNode]] from the name defined in the [[Character]]-object given or creates a new [[CharacterNode]] using that object
+     * Retrieves or creates the [[Character]] from the [[CharacterDefinition]] given
      */
     public static get(_character: CharacterDefinition): Character {
       let result: Character = Character.characters.get(_character.name);
@@ -84,7 +84,7 @@ namespace FudgeStory {
     }
     
     /**
-     * Retrieve the [[CharacterNode]] from the name given or null if not defined yet
+     * Retrieve the [[Character]] from the name given or null if not defined yet
      */
     public static getByName(_name: string): Character {
       return Character.characters.get(_name);

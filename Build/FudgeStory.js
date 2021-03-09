@@ -124,7 +124,7 @@ var FudgeStory;
 (function (FudgeStory) {
     var ƒ = FudgeCore;
     /**
-     *  Holds the internal data needed to display a character
+     *  Represents a character in various poses and with a unique name
      */
     class Character extends FudgeStory.Base {
         constructor(_character) {
@@ -135,14 +135,14 @@ var FudgeStory;
             Character.characters.set(_character.name, this);
         }
         /**
-         * Retrieve the [[CharacterNode]] from the name defined in the [[Character]]-object given or creates a new [[CharacterNode]] using that object
+         * Retrieves or creates the [[Character]] from the [[CharacterDefinition]] given
          */
         static get(_character) {
             let result = Character.characters.get(_character.name);
             return result || new Character(_character);
         }
         /**
-         * Retrieve the [[CharacterNode]] from the name given or null if not defined yet
+         * Retrieve the [[Character]] from the name given or null if not defined yet
          */
         static getByName(_name) {
             return Character.characters.get(_name);
@@ -287,14 +287,14 @@ var FudgeStory;
 (function (FudgeStory) {
     var ƒ = FudgeCore;
     /**
-     * Holds internal data to effectively load and display the location images
+     * Represents a location with foreground, background and the middle, where [[Character]]s show.
      */
     class Location extends FudgeStory.Base {
         constructor(_description) {
             super();
         }
         /**
-         * Retrieves the [[LocationNode]] associated with the given description
+         * Retrieves the [[Location]] associated with the given [[LocationDefinition]]
          */
         static async get(_description) {
             let result = Location.locations.get(_description);
@@ -305,7 +305,7 @@ var FudgeStory;
             return result;
         }
         /**
-         * Show the location given as [[LocationDefinition]].
+         * Show the location given by [[LocationDefinition]].
          */
         static async show(_location) {
             FudgeStory.Base.back.removeAllChildren();

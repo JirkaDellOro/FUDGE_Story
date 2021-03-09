@@ -36,7 +36,7 @@ declare namespace FudgeStory {
     /**
      * ## Pattern for the definition of characters
      * Define characters to appear in various poses using this pattern
-     * ```plaintext
+     * ```text
      * {
      *   id of the character: {
      *     name: "Name of the character to appear when speaking",
@@ -90,7 +90,7 @@ declare namespace FudgeStory {
         };
     }
     /**
-     *  Holds the internal data needed to display a character
+     *  Represents a character in various poses and with a unique name
      */
     class Character extends Base {
         private static characters;
@@ -99,11 +99,11 @@ declare namespace FudgeStory {
         private definition;
         private constructor();
         /**
-         * Retrieve the [[CharacterNode]] from the name defined in the [[Character]]-object given or creates a new [[CharacterNode]] using that object
+         * Retrieves or creates the [[Character]] from the [[CharacterDefinition]] given
          */
         static get(_character: CharacterDefinition): Character;
         /**
-         * Retrieve the [[CharacterNode]] from the name given or null if not defined yet
+         * Retrieve the [[Character]] from the name given or null if not defined yet
          */
         static getByName(_name: string): Character;
         /**
@@ -181,7 +181,16 @@ declare namespace FudgeStory {
     function positionPercent(_x: number, _y: number): Position;
 }
 declare namespace FudgeStory {
-    import ƒ = FudgeCore;
+    /**
+     * Define a location using this pattern:
+     * ```text
+     *   id of the location: {
+     *     name: "Name of the location" (optional),
+     *     background: "path to the image to be used as the background",
+     *     foreground: "path to the image to be used as the foreground" (optional),
+     *   }
+     * ```
+     */
     interface LocationDefinition {
         name?: string;
         background: string;
@@ -189,7 +198,7 @@ declare namespace FudgeStory {
     }
     /**
      * Define locations using this pattern:
-     * ```plaintext
+     * ```text
      * {
      *   id of the location: {
      *     name: "Name of the location" (optional),
@@ -207,19 +216,19 @@ declare namespace FudgeStory {
         [id: string]: LocationDefinition;
     }
     /**
-     * Holds internal data to effectively load and display the location images
+     * Represents a location with foreground, background and the middle, where [[Character]]s show.
      */
     class Location extends Base {
         private static locations;
-        background: ƒ.Node;
-        foreground: ƒ.Node;
+        private background;
+        private foreground;
         private constructor();
         /**
-         * Retrieves the [[LocationNode]] associated with the given description
+         * Retrieves the [[Location]] associated with the given [[LocationDefinition]]
          */
         static get(_description: LocationDefinition): Promise<Location>;
         /**
-         * Show the location given as [[LocationDefinition]].
+         * Show the location given by [[LocationDefinition]].
          */
         static show(_location: LocationDefinition): Promise<void>;
         private load;
