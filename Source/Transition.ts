@@ -81,7 +81,7 @@ namespace FudgeStory {
         };
 
         ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, hndLoop);
-        ƒ.Loop.start(ƒ.LOOP_MODE.FRAME_REQUEST, 30);
+        // ƒ.Loop.start(ƒ.LOOP_MODE.FRAME_REQUEST, 30);
       });
     }
   }

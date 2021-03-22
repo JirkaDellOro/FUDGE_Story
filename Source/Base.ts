@@ -51,14 +51,15 @@ namespace FudgeStory {
       let factor: number = 2 * Math.sqrt(2);
       cmpCamera.projectCentral(Base.size.x / Base.size.y, 20, ƒ.FIELD_OF_VIEW.HORIZONTAL, 1000, Base.size.x * factor + 100);
       //TODO: use orthographic camera, no fov-calculation required
-      cmpCamera.pivot.translateZ(Base.size.x * factor);
-      cmpCamera.pivot.lookAt(ƒ.Vector3.ZERO());
+      cmpCamera.mtxPivot.translateZ(Base.size.x * factor);
+      cmpCamera.mtxPivot.lookAt(ƒ.Vector3.ZERO());
       Base.viewport.draw();
 
       Base.calculatePositions();
       Base.resize();
 
       window.addEventListener("resize", Base.resize);
+      ƒ.Loop.start();
     }
 
 
@@ -118,9 +119,9 @@ namespace FudgeStory {
 
     private static adjustMesh(_cmpMesh: ƒ.ComponentMesh, _origin: ƒ.ORIGIN2D, _size: ƒ.Vector2): void {
       let rect: ƒ.Rectangle = new ƒ.Rectangle(0, 0, _size.x, _size.y, _origin);
-      _cmpMesh.pivot.translateX(rect.x + rect.width / 2);
-      _cmpMesh.pivot.translateY(-rect.y - rect.height / 2);
-      _cmpMesh.pivot.scale(_size.toVector3(1));
+      _cmpMesh.mtxPivot.translateX(rect.x + rect.width / 2);
+      _cmpMesh.mtxPivot.translateY(-rect.y - rect.height / 2);
+      _cmpMesh.mtxPivot.scale(_size.toVector3(1));
     }
 
     private static calculatePositions(): void {

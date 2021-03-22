@@ -60,7 +60,7 @@ namespace FudgeStory {
 
   /**
    *  Represents a character in various poses and with a unique name
-   */ 
+   */
   export class Character extends Base {
     private static characters: Map<string, Character> = new Map();
 
@@ -82,21 +82,21 @@ namespace FudgeStory {
       let result: Character = Character.characters.get(_character.name);
       return result || new Character(_character);
     }
-    
+
     /**
      * Retrieve the [[Character]] from the name given or null if not defined yet
      */
     public static getByName(_name: string): Character {
       return Character.characters.get(_name);
     }
-    
+
     /**
      * Show the given [[Character]] in the specified pose at the given position. See [[CharacterDefinition]] for the definition of a character.
      */
     public static async show(_character: CharacterDefinition, _pose: RequestInfo, _position: Position): Promise<void> {
       let character: Character = Character.get(_character);
       let pose: ƒ.Node = await character.getPose(_pose);
-      pose.mtxLocal.translation = _position.toVector3(0);
+      pose.mtxLocal.set(ƒ.Matrix4x4.TRANSLATION(_position.toVector3(0)));
       Base.middle.appendChild(pose);
     }
 
@@ -113,6 +113,24 @@ namespace FudgeStory {
     }
 
     /**
+     * Animate the given [[Character]] in the specified pose using the animation given.
+     */
+    public static async animate(_character: CharacterDefinition, _pose: RequestInfo, _animation: AnimationDefinition): Promise<void> {
+      let character: Character = Character.get(_character);
+      let pose: ƒ.Node = await character.getPose(_pose);
+      let animation: ƒ.Animation = Animation.create(_animation);
+      // console.log(animation);
+      // let mutator: ƒ.Mutator = animation.getMutated(500, 1, ƒ.ANIMATION_PLAYBACK.TIMEBASED_CONTINOUS);
+      // console.log(mutator);
+      // pose.mtxLocal.mutate(mutator);
+      pose.cmpTransform.addEventListener(ƒ.EVENT.MUTATE, () => this.viewport.draw());
+      let cmpAnimator: ƒ.ComponentAnimator = new ƒ.ComponentAnimator(animation);
+      pose.addComponent(cmpAnimator);
+      cmpAnimator.activate(true);
+      Base.middle.appendChild(pose);
+    }
+
+    /**
      * Remove all [[Character]]s and objects
      */
     public static hideAll(): void {
@@ -126,7 +144,7 @@ namespace FudgeStory {
       let result: ƒ.Node = this.poses.get(_pose);
       return result || await this.createPose(_pose);
     }
-    
+
 
     private async createPose(_pose: RequestInfo): Promise<ƒ.Node> {
       let pose: ƒ.Node = await Base.createImageNode(this.definition.name, _pose, this.origin);

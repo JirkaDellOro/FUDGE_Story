@@ -3,10 +3,20 @@ var Tutorial;
 (function (Tutorial) {
     async function Main() {
         console.log("Main Menu");
+        let animation = {
+            start: { rotation: 0 },
+            end: { rotation: 90 },
+            duration: 1,
+            playmode: Tutorial.ƒ.ANIMATION_PLAYMODE.LOOP
+        };
         await Tutorial.ƒS.Location.show(Tutorial.locations.city);
-        await Tutorial.ƒS.Character.show(Tutorial.characters.Sue, Tutorial.characters.Sue.pose.normal, Tutorial.ƒS.positions.bottomcenter);
+        // await ƒS.Character.show(characters.Sue, characters.Sue.pose.normal, ƒS.positions.bottomcenter);
+        await Tutorial.ƒS.Character.animate(Tutorial.characters.Sue, Tutorial.characters.Sue.pose.normal, animation);
         await Tutorial.ƒS.update(2);
         await Tutorial.ƒS.Speech.tell(Tutorial.characters.Sue, "Willkommen zum Test von FUDGE-Story", false);
+        // await ƒS.Character.hide(characters.Sue);
+        // await ƒS.Character.show(characters.Sue, characters.Sue.pose.normal, ƒS.positions.bottomcenter);
+        // await ƒS.update(2);
     }
     Tutorial.Main = Main;
 })(Tutorial || (Tutorial = {}));

@@ -69,9 +69,9 @@
       "../Source/Mesh/MeshPolygon.ts",
       "../Source/Mesh/MeshExtrusion.ts",
       "../Source/Mesh/MeshHeightMap.ts",
-      "../Source/Mesh/MeshPrism.ts",
       "../Source/Mesh/MeshPyramid.ts",
       "../Source/Mesh/MeshQuad.ts",
+      "../Source/Mesh/MeshRotation.ts",
       "../Source/Mesh/MeshSphere.ts",
       "../Source/Mesh/MeshSprite.ts",
       "../Source/Mesh/MeshTorus.ts",
@@ -126,7 +126,7 @@
         },
         {
           "pos": 593,
-          "end": 648844,
+          "end": 658678,
           "kind": "text"
         }
       ],
@@ -163,7 +163,7 @@
         },
         {
           "pos": 57,
-          "end": 248443,
+          "end": 251599,
           "kind": "text"
         }
       ]
