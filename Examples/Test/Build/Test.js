@@ -4,8 +4,8 @@ var Tutorial;
     async function Main() {
         console.log("Main Menu");
         let animation = {
-            start: { rotation: 0 },
-            end: { rotation: 90 },
+            start: { rotation: 0, color: Tutorial.ƒ.Color.CSS("white") },
+            end: { rotation: 90, color: Tutorial.ƒ.Color.CSS("red") },
             duration: 1,
             playmode: Tutorial.ƒ.ANIMATION_PLAYMODE.LOOP
         };
@@ -14,7 +14,7 @@ var Tutorial;
         await Tutorial.ƒS.Character.animate(Tutorial.characters.Sue, Tutorial.characters.Sue.pose.normal, animation);
         await Tutorial.ƒS.update(2);
         await Tutorial.ƒS.Speech.tell(Tutorial.characters.Sue, "Willkommen zum Test von FUDGE-Story", false);
-        // await ƒS.Character.hide(characters.Sue);
+        await Tutorial.ƒS.Character.hide(Tutorial.characters.Sue);
         // await ƒS.Character.show(characters.Sue, characters.Sue.pose.normal, ƒS.positions.bottomcenter);
         // await ƒS.update(2);
     }

@@ -12,13 +12,7 @@ var FudgeStory;
                 let end = Reflect.get(_animation.end, key);
                 if (!end)
                     throw (new Error(`Property mismatch in animation: ${key} is missing at the end`));
-                if (key == "rotation") {
-                    let seq = new ƒ.AnimationSequence();
-                    seq.addKey(new ƒ.AnimationKey(0, start));
-                    seq.addKey(new ƒ.AnimationKey(duration, end));
-                    mutator[key]["z"] = seq;
-                }
-                else {
+                if (start instanceof ƒ.Vector2 || start instanceof ƒ.Color) {
                     for (let dimension in start) {
                         let seq = new ƒ.AnimationSequence();
                         seq.addKey(new ƒ.AnimationKey(0, Reflect.get(start, dimension)));
@@ -26,17 +20,22 @@ var FudgeStory;
                         mutator[key][dimension] = seq;
                     }
                 }
-            }
-            mutator = {
-                components: {
-                    ComponentTransform: [{
-                            "ƒ.ComponentTransform": {
-                                mtxLocal: mutator
-                            }
-                        }]
+                else if (key == "rotation") {
+                    let seq = new ƒ.AnimationSequence();
+                    seq.addKey(new ƒ.AnimationKey(0, start));
+                    seq.addKey(new ƒ.AnimationKey(duration, end));
+                    mutator[key]["z"] = seq;
                 }
-            };
-            let animation = new ƒ.Animation("Animation", mutator);
+            }
+            let result = { components: {} };
+            if (mutator.color) {
+                result.components["ComponentMaterial"] = [{ "ƒ.ComponentMaterial": { clrPrimary: mutator.color } }];
+                delete mutator.color;
+            }
+            if (mutator.tranlation || mutator.rotation || mutator.scaling)
+                result.components["ComponentTransform"] = [{ "ƒ.ComponentTransform": { mtxLocal: mutator } }];
+            console.log(result);
+            let animation = new ƒ.Animation("Animation", result);
             return animation;
         }
     }

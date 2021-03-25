@@ -6,11 +6,13 @@ declare namespace FudgeStory {
             translation?: Position;
             rotation?: number;
             scaling?: Scaling;
+            color?: ƒ.Color;
         };
         end: {
             translation?: Position;
             rotation?: number;
             scaling?: Scaling;
+            color?: ƒ.Color;
         };
         duration: number;
         playmode: ƒ.ANIMATION_PLAYMODE;
