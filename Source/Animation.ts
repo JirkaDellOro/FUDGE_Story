@@ -1,10 +1,12 @@
 namespace FudgeStory {
   import ƒ = FudgeCore;
   export type Scaling = ƒ.Vector2;
+  export type Color = ƒ.Color;
+  export let Color =  ƒ.Color;
 
   export interface AnimationDefinition {
-    start: { translation?: Position, rotation?: number, scaling?: Scaling, color?: ƒ.Color };
-    end: { translation?: Position, rotation?: number, scaling?: Scaling, color?: ƒ.Color };
+    start: { translation?: Position, rotation?: number, scaling?: Scaling, color?: Color };
+    end: { translation?: Position, rotation?: number, scaling?: Scaling, color?: Color };
     duration: number;
     playmode: ƒ.ANIMATION_PLAYMODE;
     // curvature: ƒ.Vector2;
@@ -16,17 +18,19 @@ namespace FudgeStory {
       let duration: number = _animation.duration * 1000;
       for (let key in _animation.start) {
         mutator[key] = {};
-        let start: Position | Scaling | ƒ.Color | number = Reflect.get(_animation.start, key);
-        let end: Position | Scaling | ƒ.Color | number = Reflect.get(_animation.end, key);
+        let start: Position | Scaling | Color | number = Reflect.get(_animation.start, key);
+        let end: Position | Scaling | Color | number = Reflect.get(_animation.end, key);
         if (!end)
           throw (new Error(`Property mismatch in animation: ${key} is missing at the end`));
 
-        if (start instanceof ƒ.Vector2 || start instanceof ƒ.Color) {
-          for (let dimension in <ƒ.Vector2>start) {
+        if (start instanceof ƒ.Mutable) {
+          let mutatorStart: ƒ.Mutator = start.getMutator();
+          let mutatorEnd: ƒ.Mutator = (<ƒ.Mutable>end).getMutator();
+          for (let subKey in mutatorStart) {
             let seq: ƒ.AnimationSequence = new ƒ.AnimationSequence();
-            seq.addKey(new ƒ.AnimationKey(0, Reflect.get(<ƒ.Vector2>start, dimension)));
-            seq.addKey(new ƒ.AnimationKey(duration, Reflect.get(<ƒ.Vector2>end, dimension)));
-            mutator[key][dimension] = seq;
+            seq.addKey(new ƒ.AnimationKey(0, mutatorStart[subKey]));
+            seq.addKey(new ƒ.AnimationKey(duration, mutatorEnd[subKey]));
+            mutator[key][subKey] = seq;
           }
         } else if (key == "rotation") {
           let seq: ƒ.AnimationSequence = new ƒ.AnimationSequence();
@@ -41,7 +45,7 @@ namespace FudgeStory {
         result.components["ComponentMaterial"] = [{ "ƒ.ComponentMaterial": { clrPrimary: mutator.color } }];
         delete mutator.color;
       }
-      if (mutator.tranlation || mutator.rotation || mutator.scaling)
+      if (mutator.translation || mutator.rotation || mutator.scaling)
         result.components["ComponentTransform"] = [{ "ƒ.ComponentTransform": { mtxLocal: mutator } }];
 
       console.log(result);

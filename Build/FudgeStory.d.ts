@@ -1,18 +1,20 @@
 declare namespace FudgeStory {
     import ƒ = FudgeCore;
     type Scaling = ƒ.Vector2;
+    type Color = ƒ.Color;
+    let Color: typeof ƒ.Color;
     interface AnimationDefinition {
         start: {
             translation?: Position;
             rotation?: number;
             scaling?: Scaling;
-            color?: ƒ.Color;
+            color?: Color;
         };
         end: {
             translation?: Position;
             rotation?: number;
             scaling?: Scaling;
-            color?: ƒ.Color;
+            color?: Color;
         };
         duration: number;
         playmode: ƒ.ANIMATION_PLAYMODE;

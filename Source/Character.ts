@@ -124,7 +124,7 @@ namespace FudgeStory {
       // console.log(mutator);
       // pose.mtxLocal.mutate(mutator);
       pose.cmpTransform.addEventListener(ƒ.EVENT.MUTATE, () => this.viewport.draw());
-      let cmpAnimator: ƒ.ComponentAnimator = new ƒ.ComponentAnimator(animation);
+      let cmpAnimator: ƒ.ComponentAnimator = new ƒ.ComponentAnimator(animation, _animation.playmode);
       pose.addComponent(cmpAnimator);
       cmpAnimator.activate(true);
       Base.middle.appendChild(pose);

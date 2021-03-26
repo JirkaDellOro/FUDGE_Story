@@ -4,10 +4,10 @@ var Tutorial;
     async function Main() {
         console.log("Main Menu");
         let animation = {
-            start: { rotation: 0, color: Tutorial.ƒ.Color.CSS("white") },
-            end: { rotation: 90, color: Tutorial.ƒ.Color.CSS("red") },
+            start: { translation: Tutorial.ƒS.positions.bottomleft, rotation: -20, scaling: new Tutorial.ƒS.Position(0.5, 1.5), color: Tutorial.ƒS.Color.CSS("white", 0) },
+            end: { translation: Tutorial.ƒS.positions.bottomright, rotation: 20, scaling: new Tutorial.ƒS.Position(1.5, 0.5), color: Tutorial.ƒS.Color.CSS("red") },
             duration: 1,
-            playmode: Tutorial.ƒ.ANIMATION_PLAYMODE.LOOP
+            playmode: Tutorial.ƒ.ANIMATION_PLAYMODE.REVERSELOOP
         };
         await Tutorial.ƒS.Location.show(Tutorial.locations.city);
         // await ƒS.Character.show(characters.Sue, characters.Sue.pose.normal, ƒS.positions.bottomcenter);

@@ -2,6 +2,7 @@
 var FudgeStory;
 (function (FudgeStory) {
     var ƒ = FudgeCore;
+    FudgeStory.Color = ƒ.Color;
     class Animation {
         static create(_animation) {
             let mutator = {};
@@ -12,12 +13,14 @@ var FudgeStory;
                 let end = Reflect.get(_animation.end, key);
                 if (!end)
                     throw (new Error(`Property mismatch in animation: ${key} is missing at the end`));
-                if (start instanceof ƒ.Vector2 || start instanceof ƒ.Color) {
-                    for (let dimension in start) {
+                if (start instanceof ƒ.Mutable) {
+                    let mutatorStart = start.getMutator();
+                    let mutatorEnd = end.getMutator();
+                    for (let subKey in mutatorStart) {
                         let seq = new ƒ.AnimationSequence();
-                        seq.addKey(new ƒ.AnimationKey(0, Reflect.get(start, dimension)));
-                        seq.addKey(new ƒ.AnimationKey(duration, Reflect.get(end, dimension)));
-                        mutator[key][dimension] = seq;
+                        seq.addKey(new ƒ.AnimationKey(0, mutatorStart[subKey]));
+                        seq.addKey(new ƒ.AnimationKey(duration, mutatorEnd[subKey]));
+                        mutator[key][subKey] = seq;
                     }
                 }
                 else if (key == "rotation") {
@@ -32,7 +35,7 @@ var FudgeStory;
                 result.components["ComponentMaterial"] = [{ "ƒ.ComponentMaterial": { clrPrimary: mutator.color } }];
                 delete mutator.color;
             }
-            if (mutator.tranlation || mutator.rotation || mutator.scaling)
+            if (mutator.translation || mutator.rotation || mutator.scaling)
                 result.components["ComponentTransform"] = [{ "ƒ.ComponentTransform": { mtxLocal: mutator } }];
             console.log(result);
             let animation = new ƒ.Animation("Animation", result);
@@ -222,7 +225,7 @@ var FudgeStory;
             // console.log(mutator);
             // pose.mtxLocal.mutate(mutator);
             pose.cmpTransform.addEventListener("mutate" /* MUTATE */, () => this.viewport.draw());
-            let cmpAnimator = new ƒ.ComponentAnimator(animation);
+            let cmpAnimator = new ƒ.ComponentAnimator(animation, _animation.playmode);
             pose.addComponent(cmpAnimator);
             cmpAnimator.activate(true);
             FudgeStory.Base.middle.appendChild(pose);
