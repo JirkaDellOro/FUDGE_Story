@@ -3,6 +3,7 @@ namespace FudgeStory {
   export type Scaling = ƒ.Vector2;
   export type Color = ƒ.Color;
   export let Color =  ƒ.Color;
+  export let ANIMATION_PLAYMODE = ƒ.ANIMATION_PLAYMODE;
 
   export interface AnimationDefinition {
     start: { translation?: Position, rotation?: number, scaling?: Scaling, color?: Color };

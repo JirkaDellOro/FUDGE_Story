@@ -3,6 +3,7 @@ declare namespace FudgeStory {
     type Scaling = ƒ.Vector2;
     type Color = ƒ.Color;
     let Color: typeof ƒ.Color;
+    let ANIMATION_PLAYMODE: typeof ƒ.ANIMATION_PLAYMODE;
     interface AnimationDefinition {
         start: {
             translation?: Position;

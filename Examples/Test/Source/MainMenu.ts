@@ -6,7 +6,7 @@ namespace Tutorial {
       start: {translation: ƒS.positions.bottomleft, rotation: -20, scaling: new ƒS.Position(0.5, 1.5), color: ƒS.Color.CSS("white", 0)},
       end: {translation: ƒS.positions.bottomright, rotation: 20, scaling: new ƒS.Position(1.5, 0.5), color: ƒS.Color.CSS("red")},
       duration: 1,
-      playmode: ƒ.ANIMATION_PLAYMODE.REVERSELOOP
+      playmode: ƒS.ANIMATION_PLAYMODE.REVERSELOOP
     };
 
     await ƒS.Location.show(locations.city);

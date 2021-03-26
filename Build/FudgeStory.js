@@ -3,6 +3,7 @@ var FudgeStory;
 (function (FudgeStory) {
     var ƒ = FudgeCore;
     FudgeStory.Color = ƒ.Color;
+    FudgeStory.ANIMATION_PLAYMODE = ƒ.ANIMATION_PLAYMODE;
     class Animation {
         static create(_animation) {
             let mutator = {};
