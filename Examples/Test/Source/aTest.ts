@@ -57,14 +57,14 @@ namespace Test {
     }
   }
 
-  // window.addEventListener("load", start);
-  // function start(_event: Event): void {
-  // define the sequence of scenes, each scene as an object with a reference to the scene-function, a name and optionally an id and an id to continue the story with
-  let scenes: ƒS.Scenes = [
-    { scene: Test, name: "Main Menu" }
-  ];
+  window.addEventListener("load", start);
+  function start(_event: Event): void {
+    // define the sequence of scenes, each scene as an object with a reference to the scene-function, a name and optionally an id and an id to continue the story with
+    let scenes: ƒS.Scenes = [
+      { scene: Main, name: "Main Menu" }
+    ];
 
-  // start the sequence
-  ƒS.Progress.go(scenes);
-  // }
+    // start the sequence
+    ƒS.Progress.go(scenes);
+  }
 }
