@@ -2,6 +2,52 @@
 var FudgeStory;
 (function (FudgeStory) {
     var ƒ = FudgeCore;
+    FudgeStory.Color = ƒ.Color;
+    FudgeStory.ANIMATION_PLAYMODE = ƒ.ANIMATION_PLAYMODE;
+    class Animation {
+        static create(_animation) {
+            let mutator = {};
+            let duration = _animation.duration * 1000;
+            for (let key in _animation.start) {
+                mutator[key] = {};
+                let start = Reflect.get(_animation.start, key);
+                let end = Reflect.get(_animation.end, key);
+                if (!end)
+                    throw (new Error(`Property mismatch in animation: ${key} is missing at the end`));
+                if (start instanceof ƒ.Mutable) {
+                    let mutatorStart = start.getMutator();
+                    let mutatorEnd = end.getMutator();
+                    for (let subKey in mutatorStart) {
+                        let seq = new ƒ.AnimationSequence();
+                        seq.addKey(new ƒ.AnimationKey(0, mutatorStart[subKey]));
+                        seq.addKey(new ƒ.AnimationKey(duration, mutatorEnd[subKey]));
+                        mutator[key][subKey] = seq;
+                    }
+                }
+                else if (key == "rotation") {
+                    let seq = new ƒ.AnimationSequence();
+                    seq.addKey(new ƒ.AnimationKey(0, start));
+                    seq.addKey(new ƒ.AnimationKey(duration, end));
+                    mutator[key]["z"] = seq;
+                }
+            }
+            let result = { components: {} };
+            if (mutator.color) {
+                result.components["ComponentMaterial"] = [{ "ƒ.ComponentMaterial": { clrPrimary: mutator.color } }];
+                delete mutator.color;
+            }
+            if (mutator.translation || mutator.rotation || mutator.scaling)
+                result.components["ComponentTransform"] = [{ "ƒ.ComponentTransform": { mtxLocal: mutator } }];
+            console.log(result);
+            let animation = new ƒ.Animation("Animation", result);
+            return animation;
+        }
+    }
+    FudgeStory.Animation = Animation;
+})(FudgeStory || (FudgeStory = {}));
+var FudgeStory;
+(function (FudgeStory) {
+    var ƒ = FudgeCore;
     /**
      * Holds core functionality for the inner workings. Do not instantiate or call methods directly!
      */
@@ -32,12 +78,13 @@ var FudgeStory;
             let factor = 2 * Math.sqrt(2);
             cmpCamera.projectCentral(Base.size.x / Base.size.y, 20, ƒ.FIELD_OF_VIEW.HORIZONTAL, 1000, Base.size.x * factor + 100);
             //TODO: use orthographic camera, no fov-calculation required
-            cmpCamera.pivot.translateZ(Base.size.x * factor);
-            cmpCamera.pivot.lookAt(ƒ.Vector3.ZERO());
+            cmpCamera.mtxPivot.translateZ(Base.size.x * factor);
+            cmpCamera.mtxPivot.lookAt(ƒ.Vector3.ZERO());
             Base.viewport.draw();
             Base.calculatePositions();
             Base.resize();
             window.addEventListener("resize", Base.resize);
+            ƒ.Loop.start();
         }
         /**
          * Creates a serialization-object representing the current state of the [[Character]]s currently shown
@@ -80,9 +127,9 @@ var FudgeStory;
         }
         static adjustMesh(_cmpMesh, _origin, _size) {
             let rect = new ƒ.Rectangle(0, 0, _size.x, _size.y, _origin);
-            _cmpMesh.pivot.translateX(rect.x + rect.width / 2);
-            _cmpMesh.pivot.translateY(-rect.y - rect.height / 2);
-            _cmpMesh.pivot.scale(_size.toVector3(1));
+            _cmpMesh.mtxPivot.translateX(rect.x + rect.width / 2);
+            _cmpMesh.mtxPivot.translateY(-rect.y - rect.height / 2);
+            _cmpMesh.mtxPivot.scale(_size.toVector3(1));
         }
         static calculatePositions() {
             let xOffset = Base.size.x / 2;
@@ -153,7 +200,7 @@ var FudgeStory;
         static async show(_character, _pose, _position) {
             let character = Character.get(_character);
             let pose = await character.getPose(_pose);
-            pose.mtxLocal.translation = _position.toVector3(0);
+            pose.mtxLocal.set(ƒ.Matrix4x4.TRANSLATION(_position.toVector3(0)));
             FudgeStory.Base.middle.appendChild(pose);
         }
         /**
@@ -166,6 +213,23 @@ var FudgeStory;
             if (found.length > 1)
                 console.warn(`Multiple characters with name ${_character.name} exist, removing first`);
             FudgeStory.Base.middle.removeChild(found[0]);
+        }
+        /**
+         * Animate the given [[Character]] in the specified pose using the animation given.
+         */
+        static async animate(_character, _pose, _animation) {
+            let character = Character.get(_character);
+            let pose = await character.getPose(_pose);
+            let animation = FudgeStory.Animation.create(_animation);
+            // console.log(animation);
+            // let mutator: ƒ.Mutator = animation.getMutated(500, 1, ƒ.ANIMATION_PLAYBACK.TIMEBASED_CONTINOUS);
+            // console.log(mutator);
+            // pose.mtxLocal.mutate(mutator);
+            pose.cmpTransform.addEventListener("mutate" /* MUTATE */, () => this.viewport.draw());
+            let cmpAnimator = new ƒ.ComponentAnimator(animation, _animation.playmode);
+            pose.addComponent(cmpAnimator);
+            cmpAnimator.activate(true);
+            FudgeStory.Base.middle.appendChild(pose);
         }
         /**
          * Remove all [[Character]]s and objects
@@ -899,7 +963,7 @@ var FudgeStory;
                     resolve();
                 };
                 ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, hndLoop);
-                ƒ.Loop.start(ƒ.LOOP_MODE.FRAME_REQUEST, 30);
+                // ƒ.Loop.start(ƒ.LOOP_MODE.FRAME_REQUEST, 30);
             });
         }
     }

@@ -1,5 +1,31 @@
 declare namespace FudgeStory {
     import ƒ = FudgeCore;
+    type Scaling = ƒ.Vector2;
+    type Color = ƒ.Color;
+    let Color: typeof ƒ.Color;
+    let ANIMATION_PLAYMODE: typeof ƒ.ANIMATION_PLAYMODE;
+    interface AnimationDefinition {
+        start: {
+            translation?: Position;
+            rotation?: number;
+            scaling?: Scaling;
+            color?: Color;
+        };
+        end: {
+            translation?: Position;
+            rotation?: number;
+            scaling?: Scaling;
+            color?: Color;
+        };
+        duration: number;
+        playmode: ƒ.ANIMATION_PLAYMODE;
+    }
+    class Animation {
+        static create(_animation: AnimationDefinition): ƒ.Animation;
+    }
+}
+declare namespace FudgeStory {
+    import ƒ = FudgeCore;
     /**
      * Holds core functionality for the inner workings. Do not instantiate or call methods directly!
      */
@@ -114,6 +140,10 @@ declare namespace FudgeStory {
          * Hide the given [[Character]]
          */
         static hide(_character: CharacterDefinition): Promise<void>;
+        /**
+         * Animate the given [[Character]] in the specified pose using the animation given.
+         */
+        static animate(_character: CharacterDefinition, _pose: RequestInfo, _animation: AnimationDefinition): Promise<void>;
         /**
          * Remove all [[Character]]s and objects
          */
