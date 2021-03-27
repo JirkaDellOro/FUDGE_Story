@@ -1,5 +1,5 @@
 namespace Test {
-  export async function Main(): ƒS.SceneReturn {
+  export async function Test(): ƒS.SceneReturn {
     console.log("Main Menu");
 
     let animation: ƒS.AnimationDefinition = {
