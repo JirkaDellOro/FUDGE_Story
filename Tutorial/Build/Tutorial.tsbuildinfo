@@ -2,8 +2,9 @@
   "bundle": {
     "commonSourceDirectory": "..",
     "sourceFiles": [
-      "../Source/Main.ts",
-      "../Source/Tutorial.ts"
+      "../Source/Animation.ts",
+      "../Source/Tutorial.ts",
+      "../Source/XMain.ts"
     ],
     "js": {
       "sections": [
@@ -15,7 +16,7 @@
         },
         {
           "pos": 15,
-          "end": 2942,
+          "end": 5197,
           "kind": "text"
         }
       ],
@@ -43,11 +44,11 @@
       "sections": [
         {
           "pos": 0,
-          "end": 923,
+          "end": 999,
           "kind": "text"
         }
       ]
     }
   },
-  "version": "4.0.3"
+  "version": "4.2.3"
 }
