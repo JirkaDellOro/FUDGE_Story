@@ -1,4 +1,4 @@
-namespace Tutorial {
+namespace Test {
   export import ƒ = FudgeCore;
   export import ƒS = FudgeStory;
 

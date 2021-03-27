@@ -1,4 +1,4 @@
-namespace Tutorial {
+namespace Test {
   export async function Main(): ƒS.SceneReturn {
     console.log("Main Menu");
 
