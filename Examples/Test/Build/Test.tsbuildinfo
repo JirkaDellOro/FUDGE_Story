@@ -2,8 +2,8 @@
   "bundle": {
     "commonSourceDirectory": "..",
     "sourceFiles": [
-      "../Source/MainMenu.ts",
-      "../Source/Test.ts"
+      "../Source/aTest.ts",
+      "../Source/xMainMenu.ts"
     ],
     "js": {
       "sections": [
@@ -15,7 +15,7 @@
         },
         {
           "pos": 15,
-          "end": 3446,
+          "end": 3382,
           "kind": "text"
         }
       ],
@@ -43,7 +43,7 @@
       "sections": [
         {
           "pos": 0,
-          "end": 859,
+          "end": 823,
           "kind": "text"
         }
       ]

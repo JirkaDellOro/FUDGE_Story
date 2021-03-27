@@ -1,7 +1,4 @@
-declare namespace Tutorial {
-    function Main(): ƒS.SceneReturn;
-}
-declare namespace Tutorial {
+declare namespace Test {
     export import ƒ = FudgeCore;
     export import ƒS = FudgeStory;
     let transitions: {
@@ -35,5 +32,7 @@ declare namespace Tutorial {
             };
         };
     };
-    let scenes: ƒS.Scenes;
+}
+declare namespace Test {
+    function Main(): ƒS.SceneReturn;
 }
