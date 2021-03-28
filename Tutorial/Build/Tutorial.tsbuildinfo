@@ -2,8 +2,8 @@
   "bundle": {
     "commonSourceDirectory": "..",
     "sourceFiles": [
-      "../Source/Animation.ts",
-      "../Source/Tutorial.ts",
+      "../Source/01_Tutorial.ts",
+      "../Source/02_Testy.ts",
       "../Source/XMain.ts"
     ],
     "js": {
@@ -16,7 +16,7 @@
         },
         {
           "pos": 15,
-          "end": 5197,
+          "end": 6359,
           "kind": "text"
         }
       ],
@@ -44,7 +44,7 @@
       "sections": [
         {
           "pos": 0,
-          "end": 999,
+          "end": 1125,
           "kind": "text"
         }
       ]

@@ -1,8 +1,8 @@
 declare namespace Tutorial {
-    function Animation(): ƒS.SceneReturn;
+    function Tutorial(): ƒS.SceneReturn;
 }
 declare namespace Tutorial {
-    function Tutorial(): ƒS.SceneReturn;
+    function Testy(): ƒS.SceneReturn;
 }
 declare namespace Tutorial {
     export import ƒ = FudgeCore;
@@ -40,6 +40,12 @@ declare namespace Tutorial {
                 normal: string;
             };
         };
+        Ryu: {
+            name: string;
+            origin: ƒ.ORIGIN2D;
+            pose: {
+                normal: string;
+            };
+        };
     };
-    let scenes: ƒS.Scenes;
 }

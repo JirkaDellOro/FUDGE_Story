@@ -28,7 +28,7 @@ namespace Tutorial {
   export let locations = {
     city: {
       name: "CloudyCity",
-      background: "Images/bg_city_cloudy.png"
+      background: "Images/Backgrounds/bg_city_cloudy.png"
     }
   };
 
@@ -41,20 +41,17 @@ namespace Tutorial {
       name: "Sue",
       origin: ƒS.ORIGIN.BOTTOMRIGHT,
       pose: {
-        normal: "Images/placeholder_girl.png"
+        normal: "Images/Characters/placeholder_girl.png"
+      }
+    },
+    Ryu: {
+      name: "Ryu",
+      origin: ƒS.ORIGIN.BOTTOMRIGHT,
+      pose: {
+        normal: "Images/Characters/Ryu_normal.png"
       }
     }
   };
-
-  
-  // define the sequence of scenes, each scene as an object with a reference to the scene-function, a name and optionally an id and an id to continue the story with
-  export let scenes: ƒS.Scenes = [
-    { scene: Animation, name: "Animation" },
-    { scene: Tutorial, name: "Tutorial" }
-  ];
-
-  // start the sequence
-  ƒS.Progress.go(scenes);
 
 
   document.addEventListener("keydown", hndKeypress);
@@ -69,5 +66,17 @@ namespace Tutorial {
         await ƒS.Progress.load();
         break;
     }
+  }
+
+  window.addEventListener("load", start);
+  function start(_event: Event): void {
+    // define the sequence of scenes, each scene as an object with a reference to the scene-function, a name and optionally an id and an id to continue the story with
+    let scenes: ƒS.Scenes = [
+      { scene: Tutorial, name: "Tutorial" },
+      { scene: Testy, name: "Testy" }
+    ];
+
+    // start the sequence
+    ƒS.Progress.go(scenes);
   }
 }
