@@ -118,15 +118,9 @@ namespace FudgeStory {
     public static async animate(_character: CharacterDefinition, _pose: RequestInfo, _animation: AnimationDefinition): Promise<void> {
       let character: Character = Character.get(_character);
       let pose: ƒ.Node = await character.getPose(_pose);
+
       let animation: ƒ.Animation = Animation.create(_animation);
-      // console.log(animation);
-      // let mutator: ƒ.Mutator = animation.getMutated(500, 1, ƒ.ANIMATION_PLAYBACK.TIMEBASED_CONTINOUS);
-      // console.log(mutator);
-      // pose.mtxLocal.mutate(mutator);
-      pose.cmpTransform.addEventListener(ƒ.EVENT.MUTATE, () => this.viewport.draw());
-      let cmpAnimator: ƒ.ComponentAnimator = new ƒ.ComponentAnimator(animation, _animation.playmode);
-      pose.addComponent(cmpAnimator);
-      cmpAnimator.activate(true);
+      Animation.attach(pose, animation, _animation.playmode);
       Base.middle.appendChild(pose);
     }
 

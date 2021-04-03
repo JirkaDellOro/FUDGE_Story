@@ -21,7 +21,7 @@ namespace FudgeStory {
      * Starts the story with the scenes-object given and reads the url-searchstring to enter at a point previously saved 
      */
     public static async go(_scenes: Scenes): Promise<void> {
-      Base.create();
+      Base.setup();
 
 
       Progress.scenes = <SceneDescriptor[]>_scenes.flat(100);

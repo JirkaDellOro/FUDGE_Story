@@ -19,7 +19,7 @@ namespace FudgeStory {
     /**
      * Will be called once by [[Progress]] before anything else may happen.
      */
-    protected static create(): void {
+    protected static setup(): void {
       if (Base.viewport)
         return;
 
@@ -60,6 +60,7 @@ namespace FudgeStory {
 
       window.addEventListener("resize", Base.resize);
       ƒ.Loop.start();
+      ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, Animation.update);
     }
 
 
@@ -70,8 +71,8 @@ namespace FudgeStory {
       let serialization: ƒ.Serialization = { characters: [] };
 
       for (let pose of Base.middle.getChildren()) {
-        let poseUrl: RequestInfo = 
-        (<ƒ.TextureImage>(<ƒ.CoatTextured>pose.getComponent(ƒ.ComponentMaterial).material.getCoat()).texture).url;
+        let poseUrl: RequestInfo =
+          (<ƒ.TextureImage>(<ƒ.CoatTextured>pose.getComponent(ƒ.ComponentMaterial).material.getCoat()).texture).url;
         let origin: ƒ.Vector2 = Reflect.get(pose, "origin");
 
         serialization.characters.push(
@@ -115,6 +116,12 @@ namespace FudgeStory {
 
 
       return node;
+    }
+
+    private static update(_event: Event): void {
+      if (!Animation.isPending)
+        return;
+      Base.viewport.draw();
     }
 
     private static adjustMesh(_cmpMesh: ƒ.ComponentMesh, _origin: ƒ.ORIGIN2D, _size: ƒ.Vector2): void {

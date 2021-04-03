@@ -2,52 +2,6 @@
 var FudgeStory;
 (function (FudgeStory) {
     var ƒ = FudgeCore;
-    FudgeStory.Color = ƒ.Color;
-    FudgeStory.ANIMATION_PLAYMODE = ƒ.ANIMATION_PLAYMODE;
-    class Animation {
-        static create(_animation) {
-            let mutator = {};
-            let duration = _animation.duration * 1000;
-            for (let key in _animation.start) {
-                mutator[key] = {};
-                let start = Reflect.get(_animation.start, key);
-                let end = Reflect.get(_animation.end, key);
-                if (!end)
-                    throw (new Error(`Property mismatch in animation: ${key} is missing at the end`));
-                if (start instanceof ƒ.Mutable) {
-                    let mutatorStart = start.getMutator();
-                    let mutatorEnd = end.getMutator();
-                    for (let subKey in mutatorStart) {
-                        let seq = new ƒ.AnimationSequence();
-                        seq.addKey(new ƒ.AnimationKey(0, mutatorStart[subKey]));
-                        seq.addKey(new ƒ.AnimationKey(duration, mutatorEnd[subKey]));
-                        mutator[key][subKey] = seq;
-                    }
-                }
-                else if (key == "rotation") {
-                    let seq = new ƒ.AnimationSequence();
-                    seq.addKey(new ƒ.AnimationKey(0, start));
-                    seq.addKey(new ƒ.AnimationKey(duration, end));
-                    mutator[key]["z"] = seq;
-                }
-            }
-            let result = { components: {} };
-            if (mutator.color) {
-                result.components["ComponentMaterial"] = [{ "ƒ.ComponentMaterial": { clrPrimary: mutator.color } }];
-                delete mutator.color;
-            }
-            if (mutator.translation || mutator.rotation || mutator.scaling)
-                result.components["ComponentTransform"] = [{ "ƒ.ComponentTransform": { mtxLocal: mutator } }];
-            console.log(result);
-            let animation = new ƒ.Animation("Animation", result);
-            return animation;
-        }
-    }
-    FudgeStory.Animation = Animation;
-})(FudgeStory || (FudgeStory = {}));
-var FudgeStory;
-(function (FudgeStory) {
-    var ƒ = FudgeCore;
     /**
      * Holds core functionality for the inner workings. Do not instantiate or call methods directly!
      */
@@ -55,7 +9,7 @@ var FudgeStory;
         /**
          * Will be called once by [[Progress]] before anything else may happen.
          */
-        static create() {
+        static setup() {
             if (Base.viewport)
                 return;
             let client = document.body.querySelector("scene");
@@ -85,6 +39,7 @@ var FudgeStory;
             Base.resize();
             window.addEventListener("resize", Base.resize);
             ƒ.Loop.start();
+            ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, FudgeStory.Animation.update);
         }
         /**
          * Creates a serialization-object representing the current state of the [[Character]]s currently shown
@@ -125,6 +80,11 @@ var FudgeStory;
             node.addComponent(cmpMaterial);
             return node;
         }
+        static update(_event) {
+            if (!FudgeStory.Animation.isPending)
+                return;
+            Base.viewport.draw();
+        }
         static adjustMesh(_cmpMesh, _origin, _size) {
             let rect = new ƒ.Rectangle(0, 0, _size.x, _size.y, _origin);
             _cmpMesh.mtxPivot.translateX(rect.x + rect.width / 2);
@@ -164,6 +124,79 @@ var FudgeStory;
     }
     Base.mesh = new ƒ.MeshQuad("Quad");
     FudgeStory.Base = Base;
+})(FudgeStory || (FudgeStory = {}));
+///<reference path="Base.ts"/>
+var FudgeStory;
+///<reference path="Base.ts"/>
+(function (FudgeStory) {
+    var ƒ = FudgeCore;
+    FudgeStory.Color = ƒ.Color;
+    FudgeStory.ANIMATION_PLAYMODE = ƒ.ANIMATION_PLAYMODE;
+    class Animation extends FudgeStory.Base {
+        static get isPending() {
+            return (Animation.activeComponents?.length > 0);
+        }
+        static create(_animation) {
+            let mutator = {};
+            let duration = _animation.duration * 1000;
+            for (let key in _animation.start) {
+                mutator[key] = {};
+                let start = Reflect.get(_animation.start, key);
+                let end = Reflect.get(_animation.end, key);
+                if (!end)
+                    throw (new Error(`Property mismatch in animation: ${key} is missing at the end`));
+                if (start instanceof ƒ.Mutable) {
+                    let mutatorStart = start.getMutator();
+                    let mutatorEnd = end.getMutator();
+                    for (let subKey in mutatorStart) {
+                        let seq = new ƒ.AnimationSequence();
+                        seq.addKey(new ƒ.AnimationKey(0, mutatorStart[subKey]));
+                        seq.addKey(new ƒ.AnimationKey(duration, mutatorEnd[subKey]));
+                        mutator[key][subKey] = seq;
+                    }
+                }
+                else if (key == "rotation") {
+                    let seq = new ƒ.AnimationSequence();
+                    seq.addKey(new ƒ.AnimationKey(0, start));
+                    seq.addKey(new ƒ.AnimationKey(duration, end));
+                    mutator[key]["z"] = seq;
+                }
+            }
+            let result = { components: {} };
+            if (mutator.color) {
+                result.components["ComponentMaterial"] = [{ "ƒ.ComponentMaterial": { clrPrimary: mutator.color } }];
+                delete mutator.color;
+            }
+            if (mutator.translation || mutator.rotation || mutator.scaling)
+                result.components["ComponentTransform"] = [{ "ƒ.ComponentTransform": { mtxLocal: mutator } }];
+            // console.log(result);
+            let animation = new ƒ.Animation("Animation", result);
+            return animation;
+        }
+        static attach(_pose, _animation, _playmode) {
+            // TODO: Mutate must not initiate drawing, implement render event at component to animate  
+            // _pose.cmpTransform.addEventListener(ƒ.EVENT.MUTATE, () => Base.viewport.draw());
+            // ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, () => Base.viewport.draw());
+            let cmpAnimator = new ƒ.ComponentAnimator(_animation, _playmode);
+            _pose.addComponent(cmpAnimator);
+            cmpAnimator.addEventListener("componentActivate" /* COMPONENT_ACTIVATE */, Animation.trackComponents);
+            cmpAnimator.addEventListener("componentDeactivate" /* COMPONENT_DEACTIVATE */, Animation.trackComponents);
+            cmpAnimator.activate(true);
+        }
+    }
+    Animation.activeComponents = [];
+    Animation.trackComponents = (_event) => {
+        let index = Animation.activeComponents.indexOf(_event.target);
+        if (_event.type == "componentDeactivate" /* COMPONENT_DEACTIVATE */ && index > -1) {
+            Animation.activeComponents.splice(index, 1);
+            return;
+        }
+        if (index > -1)
+            return;
+        Animation.activeComponents.push(_event.target);
+        // console.log(Animation.activeComponents);
+    };
+    FudgeStory.Animation = Animation;
 })(FudgeStory || (FudgeStory = {}));
 /// <reference path="Base.ts" />
 var FudgeStory;
@@ -221,14 +254,7 @@ var FudgeStory;
             let character = Character.get(_character);
             let pose = await character.getPose(_pose);
             let animation = FudgeStory.Animation.create(_animation);
-            // console.log(animation);
-            // let mutator: ƒ.Mutator = animation.getMutated(500, 1, ƒ.ANIMATION_PLAYBACK.TIMEBASED_CONTINOUS);
-            // console.log(mutator);
-            // pose.mtxLocal.mutate(mutator);
-            pose.cmpTransform.addEventListener("mutate" /* MUTATE */, () => this.viewport.draw());
-            let cmpAnimator = new ƒ.ComponentAnimator(animation, _animation.playmode);
-            pose.addComponent(cmpAnimator);
-            cmpAnimator.activate(true);
+            FudgeStory.Animation.attach(pose, animation, _animation.playmode);
             FudgeStory.Base.middle.appendChild(pose);
         }
         /**
@@ -471,7 +497,7 @@ var FudgeStory;
          * Starts the story with the scenes-object given and reads the url-searchstring to enter at a point previously saved
          */
         static async go(_scenes) {
-            FudgeStory.Base.create();
+            FudgeStory.Base.setup();
             Progress.scenes = _scenes.flat(100);
             let index = 0;
             let urlSearch = location.search.substr(1);

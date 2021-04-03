@@ -1,5 +1,39 @@
 declare namespace FudgeStory {
     import ƒ = FudgeCore;
+    /**
+     * Holds core functionality for the inner workings. Do not instantiate or call methods directly!
+     */
+    abstract class Base {
+        protected static viewport: ƒ.Viewport;
+        protected static back: ƒ.Node;
+        protected static middle: ƒ.Node;
+        protected static front: ƒ.Node;
+        private static mesh;
+        private static aspectRatio;
+        private static graph;
+        private static size;
+        /**
+         * Will be called once by [[Progress]] before anything else may happen.
+         */
+        protected static setup(): void;
+        /**
+         * Creates a serialization-object representing the current state of the [[Character]]s currently shown
+         */
+        protected static serialize(): ƒ.Serialization;
+        /**
+         * Reconstructs the [[Character]]s from a serialization-object and shows them
+         * @param _serialization
+         */
+        protected static deserialize(_serialization: ƒ.Serialization): Promise<void>;
+        protected static createImageNode(_name: string, _request: RequestInfo, _origin?: ƒ.ORIGIN2D, _size?: ƒ.Vector2): Promise<ƒ.Node>;
+        private static update;
+        private static adjustMesh;
+        private static calculatePositions;
+        private static resize;
+    }
+}
+declare namespace FudgeStory {
+    import ƒ = FudgeCore;
     type Scaling = ƒ.Vector2;
     type Color = ƒ.Color;
     let Color: typeof ƒ.Color;
@@ -20,41 +54,12 @@ declare namespace FudgeStory {
         duration: number;
         playmode: ƒ.ANIMATION_PLAYMODE;
     }
-    class Animation {
+    class Animation extends Base {
+        private static activeComponents;
+        static get isPending(): boolean;
         static create(_animation: AnimationDefinition): ƒ.Animation;
-    }
-}
-declare namespace FudgeStory {
-    import ƒ = FudgeCore;
-    /**
-     * Holds core functionality for the inner workings. Do not instantiate or call methods directly!
-     */
-    abstract class Base {
-        protected static viewport: ƒ.Viewport;
-        protected static back: ƒ.Node;
-        protected static middle: ƒ.Node;
-        protected static front: ƒ.Node;
-        private static mesh;
-        private static aspectRatio;
-        private static graph;
-        private static size;
-        /**
-         * Will be called once by [[Progress]] before anything else may happen.
-         */
-        protected static create(): void;
-        /**
-         * Creates a serialization-object representing the current state of the [[Character]]s currently shown
-         */
-        protected static serialize(): ƒ.Serialization;
-        /**
-         * Reconstructs the [[Character]]s from a serialization-object and shows them
-         * @param _serialization
-         */
-        protected static deserialize(_serialization: ƒ.Serialization): Promise<void>;
-        protected static createImageNode(_name: string, _request: RequestInfo, _origin?: ƒ.ORIGIN2D, _size?: ƒ.Vector2): Promise<ƒ.Node>;
-        private static adjustMesh;
-        private static calculatePositions;
-        private static resize;
+        static attach(_pose: ƒ.Node, _animation: ƒ.Animation, _playmode: ƒ.ANIMATION_PLAYMODE): void;
+        private static trackComponents;
     }
 }
 declare namespace FudgeStory {

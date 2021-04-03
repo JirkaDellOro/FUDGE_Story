@@ -73,13 +73,13 @@ var Test;
             playmode: Test.ƒS.ANIMATION_PLAYMODE.REVERSELOOP
         };
         await Test.ƒS.Location.show(Test.locations.city);
+        await Test.ƒS.update(3);
         // await ƒS.Character.show(characters.Sue, characters.Sue.pose.normal, ƒS.positions.bottomcenter);
         await Test.ƒS.Character.animate(Test.characters.Sue, Test.characters.Sue.pose.normal, animation);
-        await Test.ƒS.update(2);
         await Test.ƒS.Speech.tell(Test.characters.Sue, "Willkommen zum Test von FUDGE-Story", false);
         await Test.ƒS.Character.hide(Test.characters.Sue);
         // await ƒS.Character.show(characters.Sue, characters.Sue.pose.normal, ƒS.positions.bottomcenter);
-        // await ƒS.update(2);
+        await Test.ƒS.update(2);
     }
     Test.Main = Main;
 })(Test || (Test = {}));

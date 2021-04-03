@@ -10,12 +10,12 @@ namespace Test {
     };
 
     await ƒS.Location.show(locations.city);
+    await ƒS.update(3);
     // await ƒS.Character.show(characters.Sue, characters.Sue.pose.normal, ƒS.positions.bottomcenter);
     await ƒS.Character.animate(characters.Sue, characters.Sue.pose.normal, animation);
-    await ƒS.update(2);
     await ƒS.Speech.tell(characters.Sue, "Willkommen zum Test von FUDGE-Story", false);
     await ƒS.Character.hide(characters.Sue);
     // await ƒS.Character.show(characters.Sue, characters.Sue.pose.normal, ƒS.positions.bottomcenter);
-    // await ƒS.update(2);
+    await ƒS.update(2);
   }
 }
