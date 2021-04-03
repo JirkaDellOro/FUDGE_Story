@@ -61,3 +61,15 @@
     "Source"
   ]
 }
+
+// {
+//   "compilerOptions": {
+//     "outFile": "./Build/Tutorial.js", /*        Concatenate and emit output to single file. */
+//   },
+//   "include": [
+//     "./../Build",
+//     "./../Fudge",
+//     "Source"
+//   ],
+//   "extends": "../tsconfig",
+// }
