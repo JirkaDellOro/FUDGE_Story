@@ -73,7 +73,11 @@ var Test;
             playmode: Test.ƒS.ANIMATION_PLAYMODE.REVERSELOOP
         };
         await Test.ƒS.Location.show(Test.locations.city);
+        console.log("Startupdate");
         await Test.ƒS.update(3);
+        // ƒS.Text.setClass("blue");
+        // await ƒS.Text.print("Achtung, gleich geht's los!");
+        console.log(await Test.ƒS.Inventory.open());
         // await ƒS.Character.show(characters.Sue, characters.Sue.pose.normal, ƒS.positions.bottomcenter);
         await Test.ƒS.Character.animate(Test.characters.Sue, Test.characters.Sue.pose.normal, animation);
         await Test.ƒS.Speech.tell(Test.characters.Sue, "Willkommen zum Test von FUDGE-Story", false);

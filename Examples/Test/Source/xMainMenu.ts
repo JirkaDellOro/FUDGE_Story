@@ -10,7 +10,11 @@ namespace Test {
     };
 
     await ƒS.Location.show(locations.city);
+    console.log("Startupdate");
     await ƒS.update(3);
+    // ƒS.Text.setClass("blue");
+    // await ƒS.Text.print("Achtung, gleich geht's los!");
+    console.log(await ƒS.Inventory.open());
     // await ƒS.Character.show(characters.Sue, characters.Sue.pose.normal, ƒS.positions.bottomcenter);
     await ƒS.Character.animate(characters.Sue, characters.Sue.pose.normal, animation);
     await ƒS.Speech.tell(characters.Sue, "Willkommen zum Test von FUDGE-Story", false);

@@ -66,9 +66,10 @@ namespace FudgeStory {
     }
 
     private static getPromise(_transition: (_progress: number) => void, _duration: number): Promise<void> {
+      let timeStart: number = ƒ.Time.game.get();
       return new Promise((resolve) => {
         let hndLoop: EventListener = function (_event: Event): void {
-          let progress: number = (ƒ.Time.game.get() - ƒ.Loop.timeStartGame) / _duration;
+          let progress: number = (ƒ.Time.game.get() - timeStart) / _duration;
 
           if (progress < 1) {
             _transition(progress);

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inventar</title>
+  <style>
+    dialog.inventory {
+      width: 400px;
+    }
+    dialog.inventory > ul {
+      background-color: antiquewhite;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    dialog.inventory > ul > li {
+      width:100px;
+      height:100px;
+      border: solid black;
+    }
+
+  </style>
+</head>
+
+<body>
+  <dialog open class="inventory">
+    <ul>
+      <li>a</li>
+      <li>b</li>
+      <li>c</li>
+      <li>d</li>
+      <li>e</li>
+    </ul>
+  </dialog>
+</body>
+
+</html>

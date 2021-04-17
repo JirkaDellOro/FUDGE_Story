@@ -42,9 +42,10 @@ namespace FudgeStory {
       let fromVolume: number = sound.cmpAudio.volume;
       sound.fadingToVolume = _toVolume;  //need to be remembered for serialization
 
+      let timeStart: number = ƒ.Time.game.get();
       return new Promise((resolve) => {
         let hndLoop: EventListener = function (_event: Event): void {
-          let progress: number = (ƒ.Time.game.get() - ƒ.Loop.timeStartGame) / (_duration * 1000);
+          let progress: number = (ƒ.Time.game.get() - timeStart) / (_duration * 1000);
 
           if (progress < 1) {
             sound.cmpAudio.volume = fromVolume + progress * (_toVolume - fromVolume);
@@ -59,7 +60,7 @@ namespace FudgeStory {
         };
 
         ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, hndLoop);
-        ƒ.Loop.start(ƒ.LOOP_MODE.FRAME_REQUEST, 30);
+        // ƒ.Loop.start(ƒ.LOOP_MODE.FRAME_REQUEST, 30);
       });
     }
 

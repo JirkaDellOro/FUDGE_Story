@@ -217,6 +217,23 @@ declare namespace FudgeStory {
 }
 declare namespace FudgeStory {
     /**
+     * Manages the inventory
+     */
+    class Inventory extends HTMLDialogElement {
+        private static get dialog();
+        static print(_text: string): Promise<void>;
+        /**
+         * opens the inventory
+         */
+        static open(): Promise<string[]>;
+        /**
+         * closes the inventory
+         */
+        static close(): void;
+    }
+}
+declare namespace FudgeStory {
+    /**
      * Define a location using this pattern:
      * ```text
      *   id of the location: {

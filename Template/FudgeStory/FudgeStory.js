@@ -375,6 +375,55 @@ var FudgeStory;
 })(FudgeStory || (FudgeStory = {}));
 var FudgeStory;
 (function (FudgeStory) {
+    /**
+     * Manages the inventory
+     */
+    class Inventory extends HTMLDialogElement {
+        static get dialog() {
+            return document.querySelector("dialog[type=inventory]");
+        }
+        static async print(_text) {
+            let dialog = Inventory.dialog;
+            dialog.close();
+            dialog.innerHTML = _text;
+            dialog.showModal();
+            return new Promise((_resolve) => {
+                let hndSelect = (_event) => {
+                    if (_event.target != dialog)
+                        return;
+                    dialog.removeEventListener(FudgeStory.EVENT.POINTERDOWN, hndSelect);
+                    dialog.close();
+                    _resolve();
+                };
+                dialog.addEventListener(FudgeStory.EVENT.POINTERDOWN, hndSelect);
+            });
+        }
+        /**
+         * opens the inventory
+         */
+        static async open() {
+            let dialog = Inventory.dialog;
+            dialog.showModal();
+            return new Promise((_resolve) => {
+                let hndClose = (_event) => {
+                    dialog.querySelector("button").removeEventListener(FudgeStory.EVENT.POINTERDOWN, hndClose);
+                    dialog.close();
+                    _resolve(["Hallo"]);
+                };
+                dialog.querySelector("button").addEventListener(FudgeStory.EVENT.POINTERDOWN, hndClose);
+            });
+        }
+        /**
+         * closes the inventory
+         */
+        static close() {
+            Inventory.dialog.close();
+        }
+    }
+    FudgeStory.Inventory = Inventory;
+})(FudgeStory || (FudgeStory = {}));
+var FudgeStory;
+(function (FudgeStory) {
     var ƒ = FudgeCore;
     /**
      * Represents a location with foreground, background and the middle, where [[Character]]s show.
@@ -667,9 +716,10 @@ var FudgeStory;
                 sound = Sound.play(_url, _toVolume ? 0 : 1, _loop);
             let fromVolume = sound.cmpAudio.volume;
             sound.fadingToVolume = _toVolume; //need to be remembered for serialization
+            let timeStart = ƒ.Time.game.get();
             return new Promise((resolve) => {
                 let hndLoop = function (_event) {
-                    let progress = (ƒ.Time.game.get() - ƒ.Loop.timeStartGame) / (_duration * 1000);
+                    let progress = (ƒ.Time.game.get() - timeStart) / (_duration * 1000);
                     if (progress < 1) {
                         sound.cmpAudio.volume = fromVolume + progress * (_toVolume - fromVolume);
                         return;
@@ -681,7 +731,7 @@ var FudgeStory;
                     resolve();
                 };
                 ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, hndLoop);
-                ƒ.Loop.start(ƒ.LOOP_MODE.FRAME_REQUEST, 30);
+                // ƒ.Loop.start(ƒ.LOOP_MODE.FRAME_REQUEST, 30);
             });
         }
         /**
@@ -876,14 +926,12 @@ var FudgeStory;
      */
     class Text extends HTMLDialogElement {
         static get dialog() {
-            return document.querySelector("dialog[is=text-page]");
+            return document.querySelector("dialog[type=text]");
         }
         /**
          * Prints the text in a modal dialog stylable with css
          */
         static async print(_text) {
-            if (!customElements.get("text-page"))
-                customElements.define("text-page", FudgeStory.Text, { extends: "dialog" });
             let dialog = Text.dialog;
             dialog.close();
             dialog.innerHTML = _text;
@@ -977,9 +1025,10 @@ var FudgeStory;
             return transition;
         }
         static getPromise(_transition, _duration) {
+            let timeStart = ƒ.Time.game.get();
             return new Promise((resolve) => {
                 let hndLoop = function (_event) {
-                    let progress = (ƒ.Time.game.get() - ƒ.Loop.timeStartGame) / _duration;
+                    let progress = (ƒ.Time.game.get() - timeStart) / _duration;
                     if (progress < 1) {
                         _transition(progress);
                         return;

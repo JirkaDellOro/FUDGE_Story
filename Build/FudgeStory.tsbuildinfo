@@ -6,6 +6,7 @@
       "../Source/Animation.ts",
       "../Source/Character.ts",
       "../Source/Global.ts",
+      "../Source/Inventory.ts",
       "../Source/Location.ts",
       "../Source/Menu.ts",
       "../Source/Progress.ts",
@@ -24,7 +25,7 @@
         },
         {
           "pos": 15,
-          "end": 128466,
+          "end": 130124,
           "kind": "text"
         }
       ],
@@ -52,7 +53,7 @@
       "sections": [
         {
           "pos": 0,
-          "end": 17702,
+          "end": 18123,
           "kind": "text"
         }
       ]
