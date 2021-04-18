@@ -68,12 +68,12 @@
       "../Source/Mesh/MeshCube.ts",
       "../Source/Mesh/MeshPolygon.ts",
       "../Source/Mesh/MeshExtrusion.ts",
-      "../Source/Mesh/MeshHeightMap.ts",
       "../Source/Mesh/MeshPyramid.ts",
       "../Source/Mesh/MeshQuad.ts",
       "../Source/Mesh/MeshRotation.ts",
       "../Source/Mesh/MeshSphere.ts",
       "../Source/Mesh/MeshSprite.ts",
+      "../Source/Mesh/MeshTerrain.ts",
       "../Source/Mesh/MeshTorus.ts",
       "../Source/Physics/ComponentJoint.ts",
       "../Source/Physics/ComponentJointCylindrical.ts",
@@ -126,7 +126,7 @@
         },
         {
           "pos": 593,
-          "end": 660571,
+          "end": 669065,
           "kind": "text"
         }
       ],
@@ -163,7 +163,7 @@
         },
         {
           "pos": 57,
-          "end": 252765,
+          "end": 254288,
           "kind": "text"
         }
       ]
