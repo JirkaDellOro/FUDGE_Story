@@ -43,6 +43,15 @@ namespace Test {
     }
   };
 
+  // define items as key-object-pairs, the objects with the properties name, description and an address to an image
+  export let items = {
+    Fudge: {
+      name: "Fudge",
+      description: "A delicious cube of fudge, adds 10 to your health",
+      image: "Images/Fudge_48.png"
+    }
+  };
+
   document.addEventListener("keydown", hndKeypress);
   async function hndKeypress(_event: KeyboardEvent): Promise<void> {
     switch (_event.code) {

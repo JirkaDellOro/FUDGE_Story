@@ -216,12 +216,19 @@ declare namespace FudgeStory {
     function positionPercent(_x: number, _y: number): Position;
 }
 declare namespace FudgeStory {
+    interface ItemDefinition {
+        name: string;
+        description: string;
+        image: RequestInfo;
+    }
     /**
      * Manages the inventory
      */
     class Inventory extends HTMLDialogElement {
+        private static ƒDialog;
+        private static ƒused;
         private static get dialog();
-        static print(_text: string): Promise<void>;
+        static add(_item: ItemDefinition): void;
         /**
          * opens the inventory
          */
@@ -230,6 +237,7 @@ declare namespace FudgeStory {
          * closes the inventory
          */
         static close(): void;
+        private static hndUseItem;
     }
 }
 declare namespace FudgeStory {

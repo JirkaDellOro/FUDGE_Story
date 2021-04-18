@@ -1,44 +1,54 @@
 namespace FudgeStory {
+  // import ƒ = FudgeCore;
+
+  export interface ItemDefinition {
+    name: string;
+    description: string;
+    image: RequestInfo;
+  }
 
   /**
    * Manages the inventory
    */
   export class Inventory extends HTMLDialogElement {
+    private static ƒDialog: HTMLDialogElement;
+    private static ƒused: string[];
+
     private static get dialog(): HTMLDialogElement {
-      return <HTMLDialogElement>document.querySelector("dialog[type=inventory]");
+      if (Inventory.ƒDialog)
+        return Inventory.ƒDialog;
+
+      Inventory.ƒDialog = <HTMLDialogElement>document.querySelector("dialog[type=inventory]");
+      return Inventory.ƒDialog;
     }
 
-    public static async print(_text: string): Promise<void> {
-      let dialog: HTMLDialogElement = Inventory.dialog;
-      dialog.close();
-      dialog.innerHTML = _text;
-      dialog.showModal();
-
-      return new Promise((_resolve) => {
-        let hndSelect = (_event: Event) => {
-          if (_event.target != dialog)
-            return;
-
-          dialog.removeEventListener(EVENT.POINTERDOWN, hndSelect);
-          dialog.close();
-          _resolve();
-        };
-        dialog.addEventListener(EVENT.POINTERDOWN, hndSelect);
-      });
+    static add(_item: ItemDefinition): void {
+      let item: HTMLLIElement = Inventory.dialog.querySelector(`[id=${_item.name}]`);
+      if (item) {
+        let amount: HTMLElement = item.querySelector("amount");
+        amount.innerText = (parseInt(amount.innerText) + 1).toString();
+        return;
+      }
+      item = document.createElement("li");
+      item.id = _item.name;
+      item.innerHTML = `<name>${_item.name}</name><amount>1</amount><description>${_item.description}</description><img src="${_item.image}"/>`;
+      item.addEventListener("pointerdown", Inventory.hndUseItem);
+      Inventory.dialog.querySelector("ul").appendChild(item);
     }
 
     /**
      * opens the inventory
      */
-     public static async open(): Promise<string[]> {
+    public static async open(): Promise<string[]> {
       let dialog: HTMLDialogElement = Inventory.dialog;
       dialog.showModal();
+      Inventory.ƒused = [];
 
       return new Promise((_resolve) => {
         let hndClose = (_event: Event) => {
           dialog.querySelector("button").removeEventListener(EVENT.POINTERDOWN, hndClose);
           dialog.close();
-          _resolve(["Hallo"]);
+          _resolve(Inventory.ƒused);
         };
         dialog.querySelector("button").addEventListener(EVENT.POINTERDOWN, hndClose);
       });
@@ -48,6 +58,16 @@ namespace FudgeStory {
      */
     public static close(): void {
       Inventory.dialog.close();
-    } 
+    }
+
+    private static hndUseItem = (_event: PointerEvent): void => {
+      let item: HTMLLIElement = <HTMLLIElement>_event.currentTarget;
+      Inventory.ƒused.push(item.querySelector("name").textContent);
+
+      let amount: HTMLElement = item.querySelector("amount");
+      amount.innerText = (parseInt(amount.innerText) - 1).toString();
+      if (amount.innerText == "0")
+        Inventory.dialog.querySelector("ul").removeChild(item);
+    }
   }
 }

@@ -14,6 +14,9 @@ namespace Test {
     await ƒS.update(3);
     // ƒS.Text.setClass("blue");
     // await ƒS.Text.print("Achtung, gleich geht's los!");
+    ƒS.Inventory.add(items.Fudge);
+    ƒS.Inventory.add(items.Fudge);
+    ƒS.Inventory.add(items.Fudge);
     console.log(await ƒS.Inventory.open());
     // await ƒS.Character.show(characters.Sue, characters.Sue.pose.normal, ƒS.positions.bottomcenter);
     await ƒS.Character.animate(characters.Sue, characters.Sue.pose.normal, animation);

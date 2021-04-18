@@ -375,28 +375,29 @@ var FudgeStory;
 })(FudgeStory || (FudgeStory = {}));
 var FudgeStory;
 (function (FudgeStory) {
+    // import ƒ = FudgeCore;
     /**
      * Manages the inventory
      */
     class Inventory extends HTMLDialogElement {
         static get dialog() {
-            return document.querySelector("dialog[type=inventory]");
+            if (Inventory.ƒDialog)
+                return Inventory.ƒDialog;
+            Inventory.ƒDialog = document.querySelector("dialog[type=inventory]");
+            return Inventory.ƒDialog;
         }
-        static async print(_text) {
-            let dialog = Inventory.dialog;
-            dialog.close();
-            dialog.innerHTML = _text;
-            dialog.showModal();
-            return new Promise((_resolve) => {
-                let hndSelect = (_event) => {
-                    if (_event.target != dialog)
-                        return;
-                    dialog.removeEventListener(FudgeStory.EVENT.POINTERDOWN, hndSelect);
-                    dialog.close();
-                    _resolve();
-                };
-                dialog.addEventListener(FudgeStory.EVENT.POINTERDOWN, hndSelect);
-            });
+        static add(_item) {
+            let item = Inventory.dialog.querySelector(`[id=${_item.name}]`);
+            if (item) {
+                let amount = item.querySelector("amount");
+                amount.innerText = (parseInt(amount.innerText) + 1).toString();
+                return;
+            }
+            item = document.createElement("li");
+            item.id = _item.name;
+            item.innerHTML = `<name>${_item.name}</name><amount>1</amount><description>${_item.description}</description><img src="${_item.image}"/>`;
+            item.addEventListener("pointerdown", Inventory.hndUseItem);
+            Inventory.dialog.querySelector("ul").appendChild(item);
         }
         /**
          * opens the inventory
@@ -404,11 +405,12 @@ var FudgeStory;
         static async open() {
             let dialog = Inventory.dialog;
             dialog.showModal();
+            Inventory.ƒused = [];
             return new Promise((_resolve) => {
                 let hndClose = (_event) => {
                     dialog.querySelector("button").removeEventListener(FudgeStory.EVENT.POINTERDOWN, hndClose);
                     dialog.close();
-                    _resolve(["Hallo"]);
+                    _resolve(Inventory.ƒused);
                 };
                 dialog.querySelector("button").addEventListener(FudgeStory.EVENT.POINTERDOWN, hndClose);
             });
@@ -420,6 +422,14 @@ var FudgeStory;
             Inventory.dialog.close();
         }
     }
+    Inventory.hndUseItem = (_event) => {
+        let item = _event.currentTarget;
+        Inventory.ƒused.push(item.querySelector("name").textContent);
+        let amount = item.querySelector("amount");
+        amount.innerText = (parseInt(amount.innerText) - 1).toString();
+        if (amount.innerText == "0")
+            Inventory.dialog.querySelector("ul").removeChild(item);
+    };
     FudgeStory.Inventory = Inventory;
 })(FudgeStory || (FudgeStory = {}));
 var FudgeStory;

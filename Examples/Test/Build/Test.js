@@ -39,6 +39,14 @@ var Test;
             }
         }
     };
+    // define items as key-object-pairs, the objects with the properties name, description and an address to an image
+    Test.items = {
+        Fudge: {
+            name: "Fudge",
+            description: "A delicious cube of fudge, adds 10 to your health",
+            image: "Images/Fudge_48.png"
+        }
+    };
     document.addEventListener("keydown", hndKeypress);
     async function hndKeypress(_event) {
         switch (_event.code) {
@@ -77,6 +85,9 @@ var Test;
         await Test.ƒS.update(3);
         // ƒS.Text.setClass("blue");
         // await ƒS.Text.print("Achtung, gleich geht's los!");
+        Test.ƒS.Inventory.add(Test.items.Fudge);
+        Test.ƒS.Inventory.add(Test.items.Fudge);
+        Test.ƒS.Inventory.add(Test.items.Fudge);
         console.log(await Test.ƒS.Inventory.open());
         // await ƒS.Character.show(characters.Sue, characters.Sue.pose.normal, ƒS.positions.bottomcenter);
         await Test.ƒS.Character.animate(Test.characters.Sue, Test.characters.Sue.pose.normal, animation);

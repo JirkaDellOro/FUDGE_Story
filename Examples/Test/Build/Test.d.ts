@@ -32,6 +32,13 @@ declare namespace Test {
             };
         };
     };
+    let items: {
+        Fudge: {
+            name: string;
+            description: string;
+            image: string;
+        };
+    };
 }
 declare namespace Test {
     function Main(): ƒS.SceneReturn;
