@@ -1,30 +1,28 @@
 namespace Tutorial {
+
   export import ƒ = FudgeCore;
   export import ƒS = FudgeStory;
 
   console.log("Start");
 
   // define transitions
-  export let transitions = {
+  export let transition = {
     clock: {
       duration: 3,
-      alpha: "../Free Transitions/circlewipe-ccw.jpg",
+      alpha: "",
       edge: 1
-    },
-    jigsaw: {
-      duration: 2,
-      alpha: "../Free Transitions/jigsaw 08.png",
-      edge: 0.4
     }
   };
 
-  // define sounds as key-string-pairs with the url of the soundfile
+  // define sound
   export let sound = {
-    backgroundTheme: "../Audio/hypnotic.mp3",
-    shoot: "../Audio/fire.mp3"
+    // Musik
+    backgroundTheme: "",
+
+    // Sound
+    click: ""
   };
 
-  // define locations as key-object-pairs, the objects with the properties name, background and an optional foreground
   export let locations = {
     city: {
       name: "CloudyCity",
@@ -32,23 +30,21 @@ namespace Tutorial {
     }
   };
 
-  // define characters as key-object-pairs, the objects with the properties name, origin and an array if poses, each again with a unique key
+
+  // define
   export let characters = {
     Narrator: {
       name: ""
     },
-    Sue: {
-      name: "Sue",
-      origin: ƒS.ORIGIN.BOTTOMRIGHT,
-      pose: {
-        normal: "Images/Characters/placeholder_girl.png"
-      }
+    Protagonist: {
+      name: "Protagonist"
     },
     Ryu: {
       name: "Ryu",
-      origin: ƒS.ORIGIN.BOTTOMRIGHT,
+      origin: ƒ.ORIGIN2D.BOTTOMRIGHT,
       pose: {
-        normal: "Images/Characters/Ryu_normal.png"
+        normal: "",
+        smile: ""
       }
     }
   };
@@ -68,12 +64,12 @@ namespace Tutorial {
     }
   }
 
+
   window.addEventListener("load", start);
   function start(_event: Event): void {
     // define the sequence of scenes, each scene as an object with a reference to the scene-function, a name and optionally an id and an id to continue the story with
     let scenes: ƒS.Scenes = [
-      { scene: Tutorial, name: "Tutorial" },
-      { scene: Testy, name: "Testy" }
+      { scene: Text, name: "HowToText" }
     ];
 
     // start the sequence

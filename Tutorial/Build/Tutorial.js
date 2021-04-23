@@ -1,8 +1,33 @@
 "use strict";
 var Tutorial;
-(function (Tutorial_1) {
-    async function Tutorial() {
+(function (Tutorial) {
+    async function Text() {
         console.log("Tutorial");
+        let text = {
+            Narrator: {
+                T0000: "",
+                T0001: ""
+            },
+            Protagonist: {
+                T0000: "",
+                T0001: ""
+            },
+            Ryu: {
+                T0000: "Willkommen.",
+                T0001: ""
+            }
+        };
+        await Tutorial.ƒS.Location.show(Tutorial.locations.city);
+        await Tutorial.ƒS.update(1);
+        await Tutorial.ƒS.Speech.tell(Tutorial.characters.Ryu, text.Ryu.T0000);
+        await Tutorial.ƒS.Speech.tell(Tutorial.characters.Ryu, "Fremder.");
+    }
+    Tutorial.Text = Text;
+})(Tutorial || (Tutorial = {}));
+var Tutorial;
+(function (Tutorial) {
+    async function Animation() {
+        console.log("Animation");
         // let text: {
         //   Narrator: {
         //     T0000: "<i></i>",
@@ -14,52 +39,31 @@ var Tutorial;
         //   }
         // };
         let animation = {
-            start: { translation: Tutorial_1.ƒS.positions.bottomleft, rotation: -20, scaling: new Tutorial_1.ƒS.Position(0.5, 1.5), color: Tutorial_1.ƒS.Color.CSS("blue", 0) },
-            end: { translation: Tutorial_1.ƒS.positions.bottomright, rotation: 20, scaling: new Tutorial_1.ƒS.Position(1.5, 0.5), color: Tutorial_1.ƒS.Color.CSS("red") },
-            duration: 1,
-            playmode: Tutorial_1.ƒS.ANIMATION_PLAYMODE.PLAYONCESTOPAFTER
-        };
-        let animation1 = {
-            start: { translation: Tutorial_1.ƒS.positions.bottomleft, rotation: 20, scaling: new Tutorial_1.ƒS.Position(0.5, 1.5), color: Tutorial_1.ƒS.Color.CSS("blue", 0) },
-            end: { translation: Tutorial_1.ƒS.positions.bottomright, rotation: 40, scaling: new Tutorial_1.ƒS.Position(1.5, 0.5), color: Tutorial_1.ƒS.Color.CSS("red") },
-            duration: 1,
-            playmode: Tutorial_1.ƒS.ANIMATION_PLAYMODE.PLAYONCESTOPAFTER
-        };
-        await Tutorial_1.ƒS.Location.show(Tutorial_1.locations.city);
-        // await ƒS.Character.show(characters.Sue, characters.Sue.pose.normal, ƒS.positions.bottomcenter);
-        await Tutorial_1.ƒS.Character.animate(Tutorial_1.characters.Sue, Tutorial_1.characters.Sue.pose.normal, animation);
-        await Tutorial_1.ƒS.update(2);
-        await Tutorial_1.ƒS.Speech.tell(Tutorial_1.characters.Sue, "Willkommen zum Fuiyooh von FUDGE-Story");
-        await Tutorial_1.ƒS.Character.hide(Tutorial_1.characters.Sue);
-        let pose = await Tutorial_1.ƒS.Character.get(Tutorial_1.characters.Sue).getPose("Images/Characters/placeholder_girl.png");
-        pose.removeComponent(pose.getComponent(Tutorial_1.ƒ.ComponentAnimator));
-        await Tutorial_1.ƒS.Character.animate(Tutorial_1.characters.Sue, Tutorial_1.characters.Sue.pose.normal, animation1);
-        await Tutorial_1.ƒS.update(2);
-        // await ƒS.Character.show(characters.Sue, characters.Sue.pose.normal, ƒS.positions.bottomcenter);
-        // await ƒS.update(2);
-    }
-    Tutorial_1.Tutorial = Tutorial;
-})(Tutorial || (Tutorial = {}));
-var Tutorial;
-(function (Tutorial) {
-    async function Testy() {
-        console.log("Testy");
-        let animation = {
-            start: { translation: Tutorial.ƒS.positions.bottomcenter, rotation: -20, scaling: new Tutorial.ƒS.Position(0.5, 1.5), color: Tutorial.ƒS.Color.CSS("white", 0) },
+            start: { translation: Tutorial.ƒS.positions.bottomleft, rotation: -20, scaling: new Tutorial.ƒS.Position(0.5, 1.5), color: Tutorial.ƒS.Color.CSS("blue", 0) },
             end: { translation: Tutorial.ƒS.positions.bottomright, rotation: 20, scaling: new Tutorial.ƒS.Position(1.5, 0.5), color: Tutorial.ƒS.Color.CSS("red") },
             duration: 1,
-            playmode: Tutorial.ƒS.ANIMATION_PLAYMODE.LOOP
+            playmode: Tutorial.ƒS.ANIMATION_PLAYMODE.PLAYONCESTOPAFTER
+        };
+        let animation1 = {
+            start: { translation: Tutorial.ƒS.positions.bottomleft, rotation: 20, scaling: new Tutorial.ƒS.Position(0.5, 1.5), color: Tutorial.ƒS.Color.CSS("blue", 0) },
+            end: { translation: Tutorial.ƒS.positions.bottomright, rotation: 40, scaling: new Tutorial.ƒS.Position(1.5, 0.5), color: Tutorial.ƒS.Color.CSS("red") },
+            duration: 1,
+            playmode: Tutorial.ƒS.ANIMATION_PLAYMODE.PLAYONCESTOPAFTER
         };
         await Tutorial.ƒS.Location.show(Tutorial.locations.city);
-        await Tutorial.ƒS.Character.show(Tutorial.characters.Ryu, Tutorial.characters.Ryu.pose.normal, Tutorial.ƒS.positions.bottomcenter);
-        await Tutorial.ƒS.Character.animate(Tutorial.characters.Ryu, Tutorial.characters.Ryu.pose.normal, animation);
+        // await ƒS.Character.show(characters.Sue, characters.Sue.pose.normal, ƒS.positions.bottomcenter);
+        await Tutorial.ƒS.Character.animate(Tutorial.characters.Sue, Tutorial.characters.Sue.pose.normal, animation);
         await Tutorial.ƒS.update(2);
-        await Tutorial.ƒS.Speech.tell(Tutorial.characters.Ryu, "Hm.", false);
-        await Tutorial.ƒS.Character.hide(Tutorial.characters.Ryu);
+        await Tutorial.ƒS.Speech.tell(Tutorial.characters.Sue, "Welcome, welcome to FUDGE-Story~~");
+        await Tutorial.ƒS.Character.hide(Tutorial.characters.Sue);
+        let pose = await Tutorial.ƒS.Character.get(Tutorial.characters.Sue).getPose("Images/Characters/placeholder_girl.png");
+        pose.removeComponent(pose.getComponent(Tutorial.ƒ.ComponentAnimator));
+        await Tutorial.ƒS.Character.animate(Tutorial.characters.Sue, Tutorial.characters.Sue.pose.normal, animation1);
+        await Tutorial.ƒS.update(2);
         // await ƒS.Character.show(characters.Sue, characters.Sue.pose.normal, ƒS.positions.bottomcenter);
         // await ƒS.update(2);
     }
-    Tutorial.Testy = Testy;
+    Tutorial.Animation = Animation;
 })(Tutorial || (Tutorial = {}));
 var Tutorial;
 (function (Tutorial) {
@@ -67,47 +71,40 @@ var Tutorial;
     Tutorial.ƒS = FudgeStory;
     console.log("Start");
     // define transitions
-    Tutorial.transitions = {
+    Tutorial.transition = {
         clock: {
             duration: 3,
-            alpha: "../Free Transitions/circlewipe-ccw.jpg",
+            alpha: "",
             edge: 1
-        },
-        jigsaw: {
-            duration: 2,
-            alpha: "../Free Transitions/jigsaw 08.png",
-            edge: 0.4
         }
     };
-    // define sounds as key-string-pairs with the url of the soundfile
+    // define sound
     Tutorial.sound = {
-        backgroundTheme: "../Audio/hypnotic.mp3",
-        shoot: "../Audio/fire.mp3"
+        // Musik
+        backgroundTheme: "",
+        // Sound
+        click: ""
     };
-    // define locations as key-object-pairs, the objects with the properties name, background and an optional foreground
     Tutorial.locations = {
         city: {
             name: "CloudyCity",
             background: "Images/Backgrounds/bg_city_cloudy.png"
         }
     };
-    // define characters as key-object-pairs, the objects with the properties name, origin and an array if poses, each again with a unique key
+    // define
     Tutorial.characters = {
         Narrator: {
             name: ""
         },
-        Sue: {
-            name: "Sue",
-            origin: Tutorial.ƒS.ORIGIN.BOTTOMRIGHT,
-            pose: {
-                normal: "Images/Characters/placeholder_girl.png"
-            }
+        Protagonist: {
+            name: "Protagonist"
         },
         Ryu: {
             name: "Ryu",
-            origin: Tutorial.ƒS.ORIGIN.BOTTOMRIGHT,
+            origin: Tutorial.ƒ.ORIGIN2D.BOTTOMRIGHT,
             pose: {
-                normal: "Images/Characters/Ryu_normal.png"
+                normal: "",
+                smile: ""
             }
         }
     };
@@ -128,8 +125,7 @@ var Tutorial;
     function start(_event) {
         // define the sequence of scenes, each scene as an object with a reference to the scene-function, a name and optionally an id and an id to continue the story with
         let scenes = [
-            { scene: Tutorial.Tutorial, name: "Tutorial" },
-            { scene: Tutorial.Testy, name: "Testy" }
+            { scene: Tutorial.Text, name: "HowToText" }
         ];
         // start the sequence
         Tutorial.ƒS.Progress.go(scenes);
