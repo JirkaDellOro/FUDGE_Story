@@ -2,8 +2,8 @@
   "bundle": {
     "commonSourceDirectory": "..",
     "sourceFiles": [
-      "../Source/aTest.ts",
-      "../Source/xMainMenu.ts"
+      "../Source/MainMenu.ts",
+      "../Source/Test.ts"
     ],
     "js": {
       "sections": [

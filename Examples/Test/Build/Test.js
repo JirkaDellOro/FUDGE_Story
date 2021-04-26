@@ -1,6 +1,34 @@
 "use strict";
 var Test;
 (function (Test) {
+    async function Main() {
+        console.log("Main Menu");
+        let animation = {
+            start: { translation: Test.ƒS.positions.bottomleft, rotation: -20, scaling: new Test.ƒS.Position(0.5, 1.5), color: Test.ƒS.Color.CSS("white", 0) },
+            end: { translation: Test.ƒS.positions.bottomright, rotation: 20, scaling: new Test.ƒS.Position(1.5, 0.5), color: Test.ƒS.Color.CSS("red") },
+            duration: 1,
+            playmode: Test.ƒS.ANIMATION_PLAYMODE.REVERSELOOP
+        };
+        await Test.ƒS.Location.show(Test.locations.city);
+        console.log("Startupdate");
+        await Test.ƒS.update(3);
+        // ƒS.Text.setClass("blue");
+        // await ƒS.Text.print("Achtung, gleich geht's los!");
+        Test.ƒS.Inventory.add(Test.items.Fudge);
+        Test.ƒS.Inventory.add(Test.items.Fudge);
+        Test.ƒS.Inventory.add(Test.items.Fudge);
+        console.log(await Test.ƒS.Inventory.open());
+        // await ƒS.Character.show(characters.Sue, characters.Sue.pose.normal, ƒS.positions.bottomcenter);
+        await Test.ƒS.Character.animate(Test.characters.Sue, Test.characters.Sue.pose.normal, animation);
+        await Test.ƒS.Speech.tell(Test.characters.Sue, "Willkommen zum Test von FUDGE-Story", false);
+        await Test.ƒS.Character.hide(Test.characters.Sue);
+        // await ƒS.Character.show(characters.Sue, characters.Sue.pose.normal, ƒS.positions.bottomcenter);
+        await Test.ƒS.update(2);
+    }
+    Test.Main = Main;
+})(Test || (Test = {}));
+var Test;
+(function (Test) {
     Test.ƒ = FudgeCore;
     Test.ƒS = FudgeStory;
     console.log("Start");
@@ -69,33 +97,5 @@ var Test;
         // start the sequence
         Test.ƒS.Progress.go(scenes);
     }
-})(Test || (Test = {}));
-var Test;
-(function (Test) {
-    async function Main() {
-        console.log("Main Menu");
-        let animation = {
-            start: { translation: Test.ƒS.positions.bottomleft, rotation: -20, scaling: new Test.ƒS.Position(0.5, 1.5), color: Test.ƒS.Color.CSS("white", 0) },
-            end: { translation: Test.ƒS.positions.bottomright, rotation: 20, scaling: new Test.ƒS.Position(1.5, 0.5), color: Test.ƒS.Color.CSS("red") },
-            duration: 1,
-            playmode: Test.ƒS.ANIMATION_PLAYMODE.REVERSELOOP
-        };
-        await Test.ƒS.Location.show(Test.locations.city);
-        console.log("Startupdate");
-        await Test.ƒS.update(3);
-        // ƒS.Text.setClass("blue");
-        // await ƒS.Text.print("Achtung, gleich geht's los!");
-        Test.ƒS.Inventory.add(Test.items.Fudge);
-        Test.ƒS.Inventory.add(Test.items.Fudge);
-        Test.ƒS.Inventory.add(Test.items.Fudge);
-        console.log(await Test.ƒS.Inventory.open());
-        // await ƒS.Character.show(characters.Sue, characters.Sue.pose.normal, ƒS.positions.bottomcenter);
-        await Test.ƒS.Character.animate(Test.characters.Sue, Test.characters.Sue.pose.normal, animation);
-        await Test.ƒS.Speech.tell(Test.characters.Sue, "Willkommen zum Test von FUDGE-Story", false);
-        await Test.ƒS.Character.hide(Test.characters.Sue);
-        // await ƒS.Character.show(characters.Sue, characters.Sue.pose.normal, ƒS.positions.bottomcenter);
-        await Test.ƒS.update(2);
-    }
-    Test.Main = Main;
 })(Test || (Test = {}));
 //# sourceMappingURL=Test.js.map
