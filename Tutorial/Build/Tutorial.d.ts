@@ -1,19 +1,14 @@
 declare namespace Tutorial {
-    function Tutorial(): ƒS.SceneReturn;
+    function Text(): ƒS.SceneReturn;
 }
 declare namespace Tutorial {
-    function Testy(): ƒS.SceneReturn;
+    function Animation(): ƒS.SceneReturn;
 }
 declare namespace Tutorial {
     export import ƒ = FudgeCore;
     export import ƒS = FudgeStory;
-    let transitions: {
+    let transition: {
         clock: {
-            duration: number;
-            alpha: string;
-            edge: number;
-        };
-        jigsaw: {
             duration: number;
             alpha: string;
             edge: number;
@@ -21,7 +16,7 @@ declare namespace Tutorial {
     };
     let sound: {
         backgroundTheme: string;
-        shoot: string;
+        click: string;
     };
     let locations: {
         city: {
@@ -33,18 +28,15 @@ declare namespace Tutorial {
         Narrator: {
             name: string;
         };
-        Sue: {
+        Protagonist: {
             name: string;
-            origin: ƒ.ORIGIN2D;
-            pose: {
-                normal: string;
-            };
         };
         Ryu: {
             name: string;
             origin: ƒ.ORIGIN2D;
             pose: {
                 normal: string;
+                smile: string;
             };
         };
     };
