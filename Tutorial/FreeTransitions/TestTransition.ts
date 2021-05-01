@@ -6,7 +6,7 @@ namespace TestTransition {
   let crcDestination: CanvasRenderingContext2D;
   let crcSource: CanvasRenderingContext2D;
   let crcResult: CanvasRenderingContext2D;
-  let images: NodeListOf<HTMLImageElement>
+  let images: NodeListOf<HTMLImageElement>;
   window.addEventListener("load", init);
 
   function init(_event: Event): void {
