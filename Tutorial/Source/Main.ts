@@ -8,8 +8,8 @@ namespace Tutorial {
   // define transitions
   export let transition = {
     clock: {
-      duration: 3,
-      alpha: "",
+      duration: 1.5,
+      alpha: "FreeTransitions/WipesAndOther/circlewipe-ccw.jpg",
       edge: 1
     }
   };
@@ -27,6 +27,10 @@ namespace Tutorial {
     city: {
       name: "CloudyCity",
       background: "Images/Backgrounds/bg_city_cloudy.png"
+    },
+    bench: {
+      name: "Bench",
+      background: "Images/Backgrounds/bg_bench.png"
     }
   };
 
@@ -39,11 +43,18 @@ namespace Tutorial {
     Protagonist: {
       name: "Protagonist"
     },
+    Aoi: {
+      name: "Aoi",
+      origin: ƒS.ORIGIN.BOTTOMCENTER,
+      pose: {
+        normal: "Images/Characters/Aoi_normal.png"
+      }
+    },
     Ryu: {
       name: "Ryu",
-      origin: ƒ.ORIGIN2D.BOTTOMRIGHT,
+      origin: ƒS.ORIGIN.BOTTOMCENTER,
       pose: {
-        normal: "",
+        normal: "Images/Characters/Ryu_normal.png",
         smile: ""
       }
     }
@@ -70,6 +81,9 @@ namespace Tutorial {
     // define the sequence of scenes, each scene as an object with a reference to the scene-function, a name and optionally an id and an id to continue the story with
     let scenes: ƒS.Scenes = [
       { scene: Text, name: "HowToText" }
+      // { scene: Case, name: "HowToDecide" }
+      // { scene: Animation, name: "HowToAnimate" }
+
     ];
 
     // start the sequence
