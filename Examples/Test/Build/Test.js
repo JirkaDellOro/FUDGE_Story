@@ -75,6 +75,10 @@ var Test;
             image: "Images/Fudge_48.png"
         }
     };
+    Test.state = {
+        a: 1,
+        b: 2
+    };
     document.addEventListener("keydown", hndKeypress);
     async function hndKeypress(_event) {
         switch (_event.code) {
@@ -94,6 +98,9 @@ var Test;
         let scenes = [
             { scene: Test.Main, name: "Main Menu" }
         ];
+        let uiElement = document.querySelector("[type=interface");
+        Test.state = Test.ƒS.Progress.setDataInterface(Test.state, uiElement);
+        window.setInterval(() => Test.state.a++, 1000);
         // start the sequence
         Test.ƒS.Progress.go(scenes);
     }

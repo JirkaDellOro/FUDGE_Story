@@ -57,6 +57,7 @@
   },
   "include": [
     "./../../Fudge",
+    "./FudgeUserInterface",
     "./../../Build",
     "Source"
   ]

@@ -52,6 +52,12 @@ namespace Test {
     }
   };
 
+  export let state = {
+    a: 1,
+    b: 2
+  };
+
+
   document.addEventListener("keydown", hndKeypress);
   async function hndKeypress(_event: KeyboardEvent): Promise<void> {
     switch (_event.code) {
@@ -66,12 +72,22 @@ namespace Test {
     }
   }
 
+
+
+
   window.addEventListener("load", start);
   function start(_event: Event): void {
+
     // define the sequence of scenes, each scene as an object with a reference to the scene-function, a name and optionally an id and an id to continue the story with
     let scenes: ƒS.Scenes = [
       { scene: Main, name: "Main Menu" }
     ];
+
+
+    let uiElement: HTMLElement = document.querySelector("[type=interface");
+    state = ƒS.Progress.setDataInterface(state, uiElement);
+
+    window.setInterval(() => state.a++, 1000);
 
     // start the sequence
     ƒS.Progress.go(scenes);

@@ -42,4 +42,8 @@ declare namespace Test {
             image: string;
         };
     };
+    let state: {
+        a: number;
+        b: number;
+    };
 }
