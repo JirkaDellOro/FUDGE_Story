@@ -603,7 +603,10 @@ var FudgeStory;
                     Reflect.set(_target, _prop, _value);
                     Progress.updateInterface(_dom);
                     return true;
-                },
+                }
+                // get: function (_target: Object, _prop: PropertyKey): Object {
+                //   return "Hallo";
+                // }
             };
             let proxy = new Proxy(Progress.data, hndProxy);
             return proxy;

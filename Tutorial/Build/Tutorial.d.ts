@@ -1,8 +1,8 @@
 declare namespace Tutorial {
-    function Text(): ƒS.SceneReturn;
+    function Animation(): ƒS.SceneReturn;
 }
 declare namespace Tutorial {
-    function Animation(): ƒS.SceneReturn;
+    function Case(): ƒS.SceneReturn;
 }
 declare namespace Tutorial {
     export import ƒ = FudgeCore;
@@ -23,6 +23,10 @@ declare namespace Tutorial {
             name: string;
             background: string;
         };
+        bench: {
+            name: string;
+            background: string;
+        };
     };
     let characters: {
         Narrator: {
@@ -30,6 +34,13 @@ declare namespace Tutorial {
         };
         Protagonist: {
             name: string;
+        };
+        Aoi: {
+            name: string;
+            origin: ƒ.ORIGIN2D;
+            pose: {
+                normal: string;
+            };
         };
         Ryu: {
             name: string;
@@ -40,4 +51,7 @@ declare namespace Tutorial {
             };
         };
     };
+}
+declare namespace Tutorial {
+    function Text(): ƒS.SceneReturn;
 }
