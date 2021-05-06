@@ -44,6 +44,6 @@ declare namespace Test {
     };
     let state: {
         a: number;
-        b: number;
+        b: string;
     };
 }

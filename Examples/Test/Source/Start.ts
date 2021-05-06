@@ -54,7 +54,7 @@ namespace Test {
 
   export let state = {
     a: 1,
-    b: 2
+    b: ""
   };
 
 
@@ -84,10 +84,10 @@ namespace Test {
     ];
 
 
-    let uiElement: HTMLElement = document.querySelector("[type=interface");
+    let uiElement: HTMLElement = document.querySelector("[type=interface]");
     state = ƒS.Progress.setDataInterface(state, uiElement);
 
-    window.setInterval(() => state.a++, 1000);
+    // window.setInterval(() => state.a++, 1000);
 
     // start the sequence
     ƒS.Progress.go(scenes);

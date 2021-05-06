@@ -18,6 +18,9 @@ namespace Test {
     ƒS.Inventory.add(items.Fudge);
     ƒS.Inventory.add(items.Fudge);
     console.log(await ƒS.Inventory.open());
+    state.a = 10;
+    state.b = "Hi";
+    // max. Wert für Bar definieren if-Abfrage
     // await ƒS.Character.show(characters.Sue, characters.Sue.pose.normal, ƒS.positions.bottomcenter);
     await ƒS.Character.animate(characters.Sue, characters.Sue.pose.normal, animation);
     await ƒS.Speech.tell(characters.Sue, "Willkommen zum Test von FUDGE-Story", false);

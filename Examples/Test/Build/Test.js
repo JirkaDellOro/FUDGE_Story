@@ -18,6 +18,9 @@ var Test;
         Test.ƒS.Inventory.add(Test.items.Fudge);
         Test.ƒS.Inventory.add(Test.items.Fudge);
         console.log(await Test.ƒS.Inventory.open());
+        Test.state.a = 10;
+        Test.state.b = "Hi";
+        // max. Wert für Bar definieren if-Abfrage
         // await ƒS.Character.show(characters.Sue, characters.Sue.pose.normal, ƒS.positions.bottomcenter);
         await Test.ƒS.Character.animate(Test.characters.Sue, Test.characters.Sue.pose.normal, animation);
         await Test.ƒS.Speech.tell(Test.characters.Sue, "Willkommen zum Test von FUDGE-Story", false);
@@ -77,7 +80,7 @@ var Test;
     };
     Test.state = {
         a: 1,
-        b: 2
+        b: ""
     };
     document.addEventListener("keydown", hndKeypress);
     async function hndKeypress(_event) {
@@ -98,9 +101,9 @@ var Test;
         let scenes = [
             { scene: Test.Main, name: "Main Menu" }
         ];
-        let uiElement = document.querySelector("[type=interface");
+        let uiElement = document.querySelector("[type=interface]");
         Test.state = Test.ƒS.Progress.setDataInterface(Test.state, uiElement);
-        window.setInterval(() => Test.state.a++, 1000);
+        // window.setInterval(() => state.a++, 1000);
         // start the sequence
         Test.ƒS.Progress.go(scenes);
     }
