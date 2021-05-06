@@ -682,7 +682,7 @@ var FudgeStory;
         }
         static updateInterface(_dom) {
             for (let prop in Progress.data) {
-                let elements = _dom.querySelectorAll("#" + prop);
+                let elements = _dom.querySelectorAll("[name=" + prop + "]");
                 for (let element of elements)
                     element.value = Reflect.get(Progress.data, prop).toString();
             }
