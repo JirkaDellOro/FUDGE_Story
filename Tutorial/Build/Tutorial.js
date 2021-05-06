@@ -211,11 +211,13 @@ var Tutorial;
                 T0001: ""
             }
         };
+        await Tutorial.ƒS.Speech.hide();
         await Tutorial.ƒS.Location.show(Tutorial.locations.city);
         await Tutorial.ƒS.update(Tutorial.transition.clock.duration, Tutorial.transition.clock.alpha, Tutorial.transition.clock.edge);
         // await ƒS.Character.show(characters.Ryu, characters.Ryu.pose.normal, ƒS.positions.bottomcenter);
         await Tutorial.ƒS.Character.show(Tutorial.characters.Ryu, Tutorial.characters.Ryu.pose.normal, Tutorial.ƒS.positionPercent(30, 100));
         await Tutorial.ƒS.update(1);
+        await Tutorial.ƒS.Speech.show();
         await Tutorial.ƒS.Speech.tell(Tutorial.characters.Ryu, text.Ryu.T0000);
         await Tutorial.ƒS.Speech.tell(Tutorial.characters.Ryu, "Fremder.");
     }
