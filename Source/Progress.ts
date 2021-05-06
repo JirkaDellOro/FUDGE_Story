@@ -70,7 +70,7 @@ namespace FudgeStory {
      */
     public static setDataInterface<T>(_data: T, _dom: HTMLElement): T {
       Progress.setData(_data); // test if this is sufficient to support previous save/load functionality
-      
+
       let hndProxy = {
         set: function (_target: Object, _prop: PropertyKey, _value: Object): boolean {
           console.log("ProgressData: " + _prop.toString() + " = " + _value);
@@ -171,7 +171,7 @@ namespace FudgeStory {
 
     private static updateInterface(_dom: HTMLElement): void {
       for (let prop in Progress.data) {
-        let elements: NodeListOf<HTMLInputElement> = _dom.querySelectorAll("#" + prop);
+        let elements: NodeListOf<HTMLInputElement> = _dom.querySelectorAll("[name=" + prop + "]");
         for (let element of elements)
           element.value = Reflect.get(Progress.data, prop).toString();
       }
