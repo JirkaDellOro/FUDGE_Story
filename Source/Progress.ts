@@ -69,6 +69,8 @@ namespace FudgeStory {
      * Returns an object to use to track logical data like score, states, textual inputs given by the play etc.
      */
     public static setDataInterface<T>(_data: T, _dom: HTMLElement): T {
+      Progress.setData(_data); // test if this is sufficient to support previous save/load functionality
+      
       let hndProxy = {
         set: function (_target: Object, _prop: PropertyKey, _value: Object): boolean {
           console.log("ProgressData: " + _prop.toString() + " = " + _value);
@@ -82,7 +84,6 @@ namespace FudgeStory {
       };
 
       let proxy: T = <T>new Proxy(Progress.data, hndProxy);
-      Progress.setData(proxy); // test if this is sufficient to support previous save/load functionality
       return proxy;
     }
 
