@@ -22,14 +22,14 @@ namespace FudgeStory {
     /**
      * Displays the [[Character]]s name and the given text at once
      */
-    public static set(_character: Object, _text: string): void {
+    public static set(_character: Object, _text: string, _class?: string): void {
       Speech.show();
       let name: string = _character ? Reflect.get(_character, "name") : "";
       let nameTag: HTMLSpanElement = Speech.div.querySelector("name");
       let textTag: HTMLElement = Speech.div.querySelector("content");
       nameTag.innerHTML = "";
 
-      Speech.div.className = name;
+      Speech.div.className = _class || name;
 
       if (name) {
         nameTag.innerHTML = name;
@@ -41,10 +41,10 @@ namespace FudgeStory {
     /**
      * Displays the [[Character]]s name and slowly writes the text letter by letter
      */
-    public static async tell(_character: Object, _text: string, _waitForSignalNext: boolean = true): Promise<void> {
+    public static async tell(_character: Object, _text: string, _waitForSignalNext: boolean = true, _class?: string): Promise<void> {
       Speech.show();
       let done: boolean = false;
-      Speech.set(_character, "");
+      Speech.set(_character, "", _class);
       let buffer: HTMLDivElement = document.createElement("div");
       let textTag: HTMLElement = Speech.div.querySelector("content");
       buffer.innerHTML = _text;

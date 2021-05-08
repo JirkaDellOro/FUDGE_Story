@@ -821,13 +821,13 @@ var FudgeStory;
         /**
          * Displays the [[Character]]s name and the given text at once
          */
-        static set(_character, _text) {
+        static set(_character, _text, _class) {
             Speech.show();
             let name = _character ? Reflect.get(_character, "name") : "";
             let nameTag = Speech.div.querySelector("name");
             let textTag = Speech.div.querySelector("content");
             nameTag.innerHTML = "";
-            Speech.div.className = name;
+            Speech.div.className = _class || name;
             if (name) {
                 nameTag.innerHTML = name;
             }
@@ -836,10 +836,10 @@ var FudgeStory;
         /**
          * Displays the [[Character]]s name and slowly writes the text letter by letter
          */
-        static async tell(_character, _text, _waitForSignalNext = true) {
+        static async tell(_character, _text, _waitForSignalNext = true, _class) {
             Speech.show();
             let done = false;
-            Speech.set(_character, "");
+            Speech.set(_character, "", _class);
             let buffer = document.createElement("div");
             let textTag = Speech.div.querySelector("content");
             buffer.innerHTML = _text;

@@ -428,11 +428,11 @@ declare namespace FudgeStory {
         /**
          * Displays the [[Character]]s name and the given text at once
          */
-        static set(_character: Object, _text: string): void;
+        static set(_character: Object, _text: string, _class?: string): void;
         /**
          * Displays the [[Character]]s name and slowly writes the text letter by letter
          */
-        static tell(_character: Object, _text: string, _waitForSignalNext?: boolean): Promise<void>;
+        static tell(_character: Object, _text: string, _waitForSignalNext?: boolean, _class?: string): Promise<void>;
         /**
          * Defines the pauses used by ticker between letters and before a paragraph in milliseconds
          */
