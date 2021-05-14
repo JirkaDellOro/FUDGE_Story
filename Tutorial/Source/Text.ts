@@ -18,19 +18,27 @@ namespace Tutorial {
     };
 
 
-    await ƒS.Speech.hide();
+
+    ƒS.Speech.hide();
     await ƒS.Location.show(locations.city);
     await ƒS.update(transition.clock.duration, transition.clock.alpha, transition.clock.edge);
     // await ƒS.Character.show(characters.Ryu, characters.Ryu.pose.normal, ƒS.positions.bottomcenter);
     await ƒS.Character.show(characters.Ryu, characters.Ryu.pose.normal, ƒS.positionPercent(30, 100));
     await ƒS.update(1);
-    await ƒS.Speech.show();
+    ƒS.Speech.show();
     await ƒS.Speech.tell(characters.Ryu, text.Ryu.T0000);
     await ƒS.Speech.tell(characters.Ryu, "Fremder.");
+    await ƒS.Character.hide(characters.Ryu);
+    await ƒS.update(1);
+
+
+
 
 
 
 
 
   }
+
 }
+

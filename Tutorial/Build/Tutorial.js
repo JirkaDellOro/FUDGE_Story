@@ -17,23 +17,23 @@ var Tutorial;
             start: { translation: Tutorial.ƒS.positions.bottomleft, rotation: -20, scaling: new Tutorial.ƒS.Position(0.5, 1.5), color: Tutorial.ƒS.Color.CSS("blue", 0) },
             end: { translation: Tutorial.ƒS.positions.bottomright, rotation: 20, scaling: new Tutorial.ƒS.Position(1.5, 0.5), color: Tutorial.ƒS.Color.CSS("red") },
             duration: 1,
-            playmode: Tutorial.ƒS.ANIMATION_PLAYMODE.PLAYONCESTOPAFTER
+            playmode: Tutorial.ƒS.ANIMATION_PLAYMODE.STOP
         };
         let animation1 = {
             start: { translation: Tutorial.ƒS.positions.bottomleft, rotation: 20, scaling: new Tutorial.ƒS.Position(0.5, 1.5), color: Tutorial.ƒS.Color.CSS("blue", 0) },
             end: { translation: Tutorial.ƒS.positions.bottomright, rotation: 40, scaling: new Tutorial.ƒS.Position(1.5, 0.5), color: Tutorial.ƒS.Color.CSS("red") },
             duration: 1,
-            playmode: Tutorial.ƒS.ANIMATION_PLAYMODE.PLAYONCESTOPAFTER
+            playmode: Tutorial.ƒS.ANIMATION_PLAYMODE.REVERSELOOP
         };
         await Tutorial.ƒS.Location.show(Tutorial.locations.city);
         // await ƒS.Character.show(characters.Sue, characters.Sue.pose.normal, ƒS.positions.bottomcenter);
-        await Tutorial.ƒS.Character.animate(Tutorial.characters.Ryu, Tutorial.characters.Ryu.pose.normal, animation);
+        await Tutorial.ƒS.Character.animate(Tutorial.characters.Aoi, Tutorial.characters.Aoi.pose.normal, animation);
         await Tutorial.ƒS.update(2);
-        await Tutorial.ƒS.Speech.tell(Tutorial.characters.Ryu, "Welcome, welcome to FUDGE-Story~~");
-        await Tutorial.ƒS.Character.hide(Tutorial.characters.Ryu);
-        let pose = await Tutorial.ƒS.Character.get(Tutorial.characters.Ryu).getPose("Images/Characters/Ryu_normal.png");
+        await Tutorial.ƒS.Speech.tell(Tutorial.characters.Aoi, "Welcome, welcome to FUDGE-Story~~");
+        await Tutorial.ƒS.Character.hide(Tutorial.characters.Aoi);
+        let pose = await Tutorial.ƒS.Character.get(Tutorial.characters.Aoi).getPose("Images/Characters/Aoi_normal.png");
         pose.removeComponent(pose.getComponent(Tutorial.ƒ.ComponentAnimator));
-        await Tutorial.ƒS.Character.animate(Tutorial.characters.Ryu, Tutorial.characters.Ryu.pose.normal, animation1);
+        await Tutorial.ƒS.Character.animate(Tutorial.characters.Aoi, Tutorial.characters.Aoi.pose.normal, animation1);
         await Tutorial.ƒS.update(2);
         // await ƒS.Character.show(characters.Sue, characters.Sue.pose.normal, ƒS.positions.bottomcenter);
         // await ƒS.update(2);
@@ -43,7 +43,7 @@ var Tutorial;
 var Tutorial;
 (function (Tutorial) {
     async function Case() {
-        console.log("Tutorial");
+        console.log("Case");
         let text = {
             Narrator: {
                 T0000: "",
@@ -67,6 +67,7 @@ var Tutorial;
         await Tutorial.ƒS.update(1);
         await Tutorial.ƒS.Speech.tell(Tutorial.characters.Ryu, text.Ryu.T0000);
         await Tutorial.ƒS.Speech.tell(Tutorial.characters.Ryu, text.Ryu.T0001);
+        // await signalDelay1();
         /** Wait for some user input (here key- or mousedown) then say next phrase */
         Tutorial.ƒS.Sound.play(Tutorial.sound.click, 1);
         /** Define text for a user-dialog. Choose the keys (here "left" and "right" arbitrarily) */
@@ -116,6 +117,70 @@ var Tutorial;
 })(Tutorial || (Tutorial = {}));
 var Tutorial;
 (function (Tutorial) {
+    async function Decision() {
+        console.log("Decision");
+        let text = {
+            Aoi: {
+                T0000: "Hi.",
+                T0001: "<p>Das war's auch schon.</p>"
+            }
+        };
+        Tutorial.ƒS.Speech.setTickerDelays(50, 2);
+        Tutorial.ƒS.Sound.fade(Tutorial.sound.backgroundTheme, 0.2, 0.1, true);
+        Tutorial.ƒS.Speech.hide();
+        await Tutorial.ƒS.Location.show(Tutorial.locations.city);
+        await Tutorial.ƒS.update(Tutorial.transition.clock.duration, Tutorial.transition.clock.alpha, Tutorial.transition.clock.edge);
+        await Tutorial.ƒS.Character.show(Tutorial.characters.Aoi, Tutorial.characters.Aoi.pose.normal, Tutorial.ƒS.positions.bottomcenter);
+        await Tutorial.ƒS.update();
+        await Tutorial.ƒS.Speech.tell(Tutorial.characters.Aoi, text.Aoi.T0000);
+        Tutorial.ƒS.Sound.play(Tutorial.sound.click, 1);
+        let firstDialogueElementAnswers = {
+            iSayOk: "Okay.",
+            iSayYes: "Ja.",
+            iSayNo: "Nein."
+        };
+        let firstDialogueElement = await Tutorial.ƒS.Menu.getInput(firstDialogueElementAnswers, "class");
+        switch (firstDialogueElement) {
+            case firstDialogueElementAnswers.iSayOk:
+                Tutorial.ƒS.Sound.play(Tutorial.sound.click, 1);
+                //continue writing on this path here
+                await Tutorial.ƒS.Speech.tell(Tutorial.characters.Aoi, "okay");
+                Tutorial.ƒS.Speech.clear();
+                await Tutorial.ƒS.update(1);
+                break;
+            case firstDialogueElementAnswers.iSayYes:
+                Tutorial.ƒS.Sound.play(Tutorial.sound.click, 1);
+                //continue writing on this path here
+                await Tutorial.ƒS.Speech.tell(Tutorial.characters.Aoi, "Ja.");
+                Tutorial.ƒS.Speech.clear();
+                await Tutorial.ƒS.update(1);
+                break;
+            case firstDialogueElementAnswers.iSayNo:
+                Tutorial.ƒS.Sound.play(Tutorial.sound.click, 1);
+                //continue writing on this path here
+                Tutorial.ƒS.Character.hide(Tutorial.characters.Aoi);
+                await Tutorial.ƒS.update(1);
+                await Tutorial.ƒS.Character.show(Tutorial.characters.Ryu, Tutorial.characters.Ryu.pose.normal, Tutorial.ƒS.positionPercent(70, 100));
+                await Tutorial.ƒS.update(1);
+                await Tutorial.ƒS.Speech.tell(Tutorial.characters.Ryu, "No.");
+                await Tutorial.ƒS.Character.hide(Tutorial.characters.Ryu);
+                Tutorial.ƒS.Speech.clear();
+                await Tutorial.ƒS.update(1);
+                break;
+        }
+        await Tutorial.ƒS.Character.show(Tutorial.characters.Aoi, Tutorial.characters.Aoi.pose.normal, Tutorial.ƒS.positions.bottomcenter);
+        await Tutorial.ƒS.update();
+        await Tutorial.ƒS.Speech.tell(Tutorial.characters.Aoi, text.Aoi.T0001);
+        await Tutorial.ƒS.Character.hide(Tutorial.characters.Aoi);
+        Tutorial.ƒS.Speech.hide();
+        await Tutorial.ƒS.update(1);
+        // Musik ausblenden
+        Tutorial.ƒS.Sound.fade(Tutorial.sound.backgroundTheme, 0, 1);
+    }
+    Tutorial.Decision = Decision;
+})(Tutorial || (Tutorial = {}));
+var Tutorial;
+(function (Tutorial) {
     Tutorial.ƒ = FudgeCore;
     Tutorial.ƒS = FudgeStory;
     console.log("Start");
@@ -129,7 +194,7 @@ var Tutorial;
     };
     // define sound
     Tutorial.sound = {
-        // Musik
+        // Music
         backgroundTheme: "",
         // Sound
         click: ""
@@ -144,7 +209,7 @@ var Tutorial;
             background: "Images/Backgrounds/bg_bench.png"
         }
     };
-    // define
+    // define characters that will show on the stage with some data 
     Tutorial.characters = {
         Narrator: {
             name: ""
@@ -171,7 +236,7 @@ var Tutorial;
     document.addEventListener("keydown", hndKeypress);
     async function hndKeypress(_event) {
         switch (_event.code) {
-            case Tutorial.ƒ.KEYBOARD_CODE.F4:
+            case Tutorial.ƒ.KEYBOARD_CODE.F8:
                 console.log("Save");
                 await Tutorial.ƒS.Progress.save();
                 break;
@@ -185,9 +250,8 @@ var Tutorial;
     function start(_event) {
         // define the sequence of scenes, each scene as an object with a reference to the scene-function, a name and optionally an id and an id to continue the story with
         let scenes = [
-            { scene: Tutorial.Text, name: "HowToText" }
-            // { scene: Case, name: "HowToDecide" }
-            // { scene: Animation, name: "HowToAnimate" }
+            { scene: Tutorial.Text, name: "HowToText" },
+            { scene: Tutorial.Decision, name: "HowToDecide" }
         ];
         // start the sequence
         Tutorial.ƒS.Progress.go(scenes);
@@ -211,15 +275,17 @@ var Tutorial;
                 T0001: ""
             }
         };
-        await Tutorial.ƒS.Speech.hide();
+        Tutorial.ƒS.Speech.hide();
         await Tutorial.ƒS.Location.show(Tutorial.locations.city);
         await Tutorial.ƒS.update(Tutorial.transition.clock.duration, Tutorial.transition.clock.alpha, Tutorial.transition.clock.edge);
         // await ƒS.Character.show(characters.Ryu, characters.Ryu.pose.normal, ƒS.positions.bottomcenter);
         await Tutorial.ƒS.Character.show(Tutorial.characters.Ryu, Tutorial.characters.Ryu.pose.normal, Tutorial.ƒS.positionPercent(30, 100));
         await Tutorial.ƒS.update(1);
-        await Tutorial.ƒS.Speech.show();
+        Tutorial.ƒS.Speech.show();
         await Tutorial.ƒS.Speech.tell(Tutorial.characters.Ryu, text.Ryu.T0000);
         await Tutorial.ƒS.Speech.tell(Tutorial.characters.Ryu, "Fremder.");
+        await Tutorial.ƒS.Character.hide(Tutorial.characters.Ryu);
+        await Tutorial.ƒS.update(1);
     }
     Tutorial.Text = Text;
 })(Tutorial || (Tutorial = {}));

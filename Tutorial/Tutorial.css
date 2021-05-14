@@ -42,3 +42,14 @@ speech.Ryu name {
 speech.Ryu content {
   color: rgb(203, 253, 255);
 }
+
+/* example for Text print */
+dialog[class="start"] {
+  height: 30em;
+  width: 20em;
+  color: rgb(223, 223, 223);
+  background-color: rgba(36, 36, 36, 0.7);
+  line-height: 1.5;
+  border-radius: 10px 0px 0px 0px;
+  background-image: none;
+}
