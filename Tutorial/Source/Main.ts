@@ -16,7 +16,7 @@ namespace Tutorial {
 
   // define sound
   export let sound = {
-    // Musik
+    // Music
     backgroundTheme: "",
 
     // Sound
@@ -35,7 +35,7 @@ namespace Tutorial {
   };
 
 
-  // define
+  // define characters that will show on the stage with some data 
   export let characters = {
     Narrator: {
       name: ""
@@ -61,10 +61,12 @@ namespace Tutorial {
   };
 
 
+  
+
   document.addEventListener("keydown", hndKeypress);
   async function hndKeypress(_event: KeyboardEvent): Promise<void> {
     switch (_event.code) {
-      case ƒ.KEYBOARD_CODE.F4:
+      case ƒ.KEYBOARD_CODE.F8:
         console.log("Save");
         await ƒS.Progress.save();
         break;
@@ -80,10 +82,8 @@ namespace Tutorial {
   function start(_event: Event): void {
     // define the sequence of scenes, each scene as an object with a reference to the scene-function, a name and optionally an id and an id to continue the story with
     let scenes: ƒS.Scenes = [
-      { scene: Text, name: "HowToText" }
-      // { scene: Case, name: "HowToDecide" }
-      // { scene: Animation, name: "HowToAnimate" }
-
+      { scene: Text, name: "HowToText" },
+      { scene: Decision, name: "HowToDecide" }
     ];
 
     // start the sequence

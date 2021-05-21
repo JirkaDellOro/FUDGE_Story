@@ -5,6 +5,9 @@ declare namespace Tutorial {
     function Case(): ƒS.SceneReturn;
 }
 declare namespace Tutorial {
+    function Decision(): ƒS.SceneReturn;
+}
+declare namespace Tutorial {
     export import ƒ = FudgeCore;
     export import ƒS = FudgeStory;
     let transition: {
