@@ -178,6 +178,8 @@ var FudgeStory;
             // _pose.cmpTransform.addEventListener(ƒ.EVENT.MUTATE, () => Base.viewport.draw());
             // ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, () => Base.viewport.draw());
             let cmpAnimator = new ƒ.ComponentAnimator(_animation, _playmode);
+            for (let cmpOldAnimator of _pose.getComponents(ƒ.ComponentAnimator))
+                _pose.removeComponent(cmpOldAnimator);
             _pose.addComponent(cmpAnimator);
             cmpAnimator.addEventListener("componentActivate" /* COMPONENT_ACTIVATE */, Animation.trackComponents);
             cmpAnimator.addEventListener("componentDeactivate" /* COMPONENT_DEACTIVATE */, Animation.trackComponents);
