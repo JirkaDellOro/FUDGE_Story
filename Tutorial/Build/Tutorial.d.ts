@@ -2,10 +2,13 @@ declare namespace Tutorial {
     function Animation(): ƒS.SceneReturn;
 }
 declare namespace Tutorial {
-    function Case(): ƒS.SceneReturn;
+    function Decision(): ƒS.SceneReturn;
 }
 declare namespace Tutorial {
-    function Decision(): ƒS.SceneReturn;
+    function End(): ƒS.SceneReturn;
+}
+declare namespace Tutorial {
+    function Inventory(): ƒS.SceneReturn;
 }
 declare namespace Tutorial {
     export import ƒ = FudgeCore;
@@ -35,9 +38,6 @@ declare namespace Tutorial {
         Narrator: {
             name: string;
         };
-        Protagonist: {
-            name: string;
-        };
         Aoi: {
             name: string;
             origin: ƒ.ORIGIN2D;
@@ -53,6 +53,50 @@ declare namespace Tutorial {
                 smile: string;
             };
         };
+    };
+    let items: {
+        BlobRED: {
+            name: string;
+            description: string;
+            image: string;
+        };
+        BlobBU: {
+            name: string;
+            description: string;
+            image: string;
+        };
+        BlobDKBU: {
+            name: string;
+            description: string;
+            image: string;
+        };
+        BlobGN: {
+            name: string;
+            description: string;
+            image: string;
+        };
+        BlobPK: {
+            name: string;
+            description: string;
+            image: string;
+        };
+        BlobYL: {
+            name: string;
+            description: string;
+            image: string;
+        };
+        BlobOG: {
+            name: string;
+            description: string;
+            image: string;
+        };
+    };
+    let dataForSave: {
+        score: number;
+        Protagonist: {
+            name: string;
+        };
+        ended: boolean;
     };
 }
 declare namespace Tutorial {
