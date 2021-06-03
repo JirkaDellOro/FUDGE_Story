@@ -1,6 +1,10 @@
 # FUDGE_Story
 A FUDGE module for the easy development of interactive stories, visual novels and simple adventure games
 
+
+# Reference
+- [APIs](https://jirkadelloro.github.io/FUDGE_Story/Documentation/Reference/#fudge-story-reference)
+
 ## Bewertungskriterien
 © Prof. Dipl.-Ing. Jirka R. Dell'Oro-Friedl, HFU
 
