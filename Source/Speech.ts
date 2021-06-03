@@ -56,7 +56,7 @@ namespace FudgeStory {
           return;
         console.log("Ticker interrupted");
         Speech.time.clearAllTimers();
-        Speech.set(_character, _text);
+        Speech.set(_character, _text, _class);
         _resolve(null);
       });
 

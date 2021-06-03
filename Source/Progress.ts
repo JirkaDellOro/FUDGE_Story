@@ -184,9 +184,10 @@ namespace FudgeStory {
       splash.style.height = "100vh";
       splash.style.width = "100vw";
       splash.style.textAlign = "center";
-      splash.style.backgroundColor = "white";
+      // splash.style.color = "white";
+      // splash.style.backgroundColor = "#1C1C1C";
       splash.style.cursor = "pointer";
-      // splash.innerHTML = "<img src='../../Images/Splash.png'/>";
+      splash.innerHTML = "<img src='../Images/Splash.png'/>";
       splash.innerHTML = `<img src="data:image/gif;base64,${Progress.splashBlob()}"/>`;
       splash.innerHTML += "<p>" + _text + "</p>";
       splash.showModal();
