@@ -708,7 +708,6 @@ var FudgeStory;
             splash.style.height = "100vh";
             splash.style.width = "100vw";
             splash.style.textAlign = "center";
-<<<<<<< main
             splash.style.color = "black";
             splash.style.backgroundColor = "black";
             splash.style.cursor = "pointer";
@@ -720,14 +719,6 @@ var FudgeStory;
             html += `<p>${_text}</p>`;
             html += `</div>`;
             splash.innerHTML = html;
-=======
-            // splash.style.color = "white";
-            // splash.style.backgroundColor = "#1C1C1C";
-            splash.style.cursor = "pointer";
-            splash.innerHTML = "<img src='../Images/Splash.png'/>";
-            splash.innerHTML = `<img src="data:image/gif;base64,${Progress.splashBlob()}"/>`;
-            splash.innerHTML += "<p>" + _text + "</p>";
->>>>>>> local
             splash.showModal();
             return new Promise(_resolve => {
                 function hndClick(_event) {
