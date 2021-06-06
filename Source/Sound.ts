@@ -25,7 +25,8 @@ namespace FudgeStory {
       let sound: Sound = Sound.sounds.get(_url);
       if (!sound || _loop != sound.loop)
         sound = new Sound(_url, _loop);
-
+      
+      sound.cmpAudio.volume = _volume;
       sound.cmpAudio.play(true);
       return sound;
     }
