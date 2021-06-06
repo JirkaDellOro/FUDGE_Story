@@ -46,7 +46,7 @@ namespace Test {
   // define items as key-object-pairs, the objects with the properties name, description and an address to an image
   export let items = {
     Fudge: {
-      name: "Fudge",
+      name: "Fudge Item",
       description: "A delicious cube of fudge, adds 10 to your health",
       image: "Images/Fudge_48.png"
     }
@@ -54,7 +54,8 @@ namespace Test {
 
   export let state = {
     a: 1,
-    b: ""
+    b: "",
+    c: 2
   };
 
 
@@ -72,7 +73,14 @@ namespace Test {
     }
   }
 
-
+  export function getAnimation(): ƒS.AnimationDefinition {
+    return {
+      start: { translation: ƒS.positions.bottomleft, rotation: -20, scaling: new ƒS.Position(0.5, 1.5), color: ƒS.Color.CSS("white", 0) },
+      end: { translation: ƒS.positions.bottomright, rotation: 20, scaling: new ƒS.Position(1.5, 0.5), color: ƒS.Color.CSS("red") },
+      duration: 1,
+      playmode: ƒS.ANIMATION_PLAYMODE.REVERSELOOP
+    };
+  }
 
 
   window.addEventListener("load", start);
@@ -85,7 +93,7 @@ namespace Test {
 
 
     let uiElement: HTMLElement = document.querySelector("[type=interface]");
-    state = ƒS.Progress.setDataInterface(state, uiElement);
+    state = ƒS.Progress.setData(state, uiElement);
 
     // window.setInterval(() => state.a++, 1000);
 

@@ -132,10 +132,19 @@ var FudgeStory;
     var ƒ = FudgeCore;
     FudgeStory.Color = ƒ.Color;
     FudgeStory.ANIMATION_PLAYMODE = ƒ.ANIMATION_PLAYMODE;
+    /**
+     * Handles animation
+     */
     class Animation extends FudgeStory.Base {
+        /**
+         * Returns true if an animation is being played
+         */
         static get isPending() {
             return (Animation.activeComponents?.length > 0);
         }
+        /**
+         * Creates a FUDGE-Animation from an [[AnimationDefinition]]
+         */
         static create(_animation) {
             let mutator = {};
             let duration = _animation.duration * 1000;
@@ -173,6 +182,9 @@ var FudgeStory;
             let animation = new ƒ.Animation("Animation", result);
             return animation;
         }
+        /**
+         * Attaches the given FUDGE-Animation to the given node with the given mode
+         */
         static attach(_pose, _animation, _playmode) {
             // TODO: Mutate must not initiate drawing, implement render event at component to animate  
             // _pose.cmpTransform.addEventListener(ƒ.EVENT.MUTATE, () => Base.viewport.draw());
@@ -388,21 +400,24 @@ var FudgeStory;
             Inventory.ƒDialog = document.querySelector("dialog[type=inventory]");
             return Inventory.ƒDialog;
         }
+        /**
+         * Adds an item to the inventory
+         */
         static add(_item) {
-            let item = Inventory.dialog.querySelector(`[id=${_item.name}]`);
+            let item = Inventory.dialog.querySelector(`[id=${_item.name.replaceAll(" ", "_")}]`);
             if (item) {
                 let amount = item.querySelector("amount");
                 amount.innerText = (parseInt(amount.innerText) + 1).toString();
                 return;
             }
             item = document.createElement("li");
-            item.id = _item.name;
+            item.id = _item.name.replaceAll(" ", "_");
             item.innerHTML = `<name>${_item.name}</name><amount>1</amount><description>${_item.description}</description><img src="${_item.image}"/>`;
             item.addEventListener("pointerdown", Inventory.hndUseItem);
             Inventory.dialog.querySelector("ul").appendChild(item);
         }
         /**
-         * opens the inventory
+         * Opens the inventory
          */
         static async open() {
             let dialog = Inventory.dialog;
@@ -418,7 +433,7 @@ var FudgeStory;
             });
         }
         /**
-         * closes the inventory
+         * Closes the inventory
          */
         static close() {
             Inventory.dialog.close();
@@ -589,21 +604,17 @@ var FudgeStory;
             } while (index < Progress.scenes.length);
         }
         /**
-         * Defines the object to track containing logical data like score, states, textual inputs given by the play etc.
-         */
-        static setData(_data) {
-            Progress.data = _data;
-        }
-        /**
          * Returns an object to use to track logical data like score, states, textual inputs given by the play etc.
          */
-        static setDataInterface(_data, _dom) {
-            Progress.setData(_data); // test if this is sufficient to support previous save/load functionality
+        static setData(_data, _dom) {
+            // Progress.setData(_data); // test if this is sufficient to support previous save/load functionality
+            Progress.data = _data;
             let hndProxy = {
                 set: function (_target, _prop, _value) {
                     console.log("ProgressData: " + _prop.toString() + " = " + _value);
                     Reflect.set(_target, _prop, _value);
-                    Progress.updateInterface(_dom);
+                    if (_dom)
+                        Progress.updateInterface(_dom);
                     return true;
                 }
                 // get: function (_target: Object, _prop: PropertyKey): Object {
@@ -821,11 +832,11 @@ var FudgeStory;
             return Speech.element;
         }
         /**
-         * Displays the [[Character]]s name and the given text at once
+         * Displays the [[Character]]s name or the string given as name and the given text at once
          */
         static set(_character, _text, _class) {
             Speech.show();
-            let name = _character ? Reflect.get(_character, "name") : "";
+            let name = (typeof (_character) == "string") ? _character : _character ? Reflect.get(_character, "name") : "";
             let nameTag = Speech.div.querySelector("name");
             let textTag = Speech.div.querySelector("content");
             nameTag.innerHTML = "";
@@ -836,7 +847,7 @@ var FudgeStory;
             textTag.innerHTML = _text;
         }
         /**
-         * Displays the [[Character]]s name and slowly writes the text letter by letter
+         * Displays the [[Character]]s name or the string given as name and slowly writes the text letter by letter
          */
         static async tell(_character, _text, _waitForSignalNext = true, _class) {
             Speech.show();

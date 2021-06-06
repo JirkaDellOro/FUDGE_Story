@@ -22,22 +22,25 @@ namespace FudgeStory {
       return Inventory.ƒDialog;
     }
 
+    /**
+     * Adds an item to the inventory
+     */
     static add(_item: ItemDefinition): void {
-      let item: HTMLLIElement = Inventory.dialog.querySelector(`[id=${_item.name}]`);
+      let item: HTMLLIElement = Inventory.dialog.querySelector(`[id=${_item.name.replaceAll(" ", "_")}]`);
       if (item) {
         let amount: HTMLElement = item.querySelector("amount");
         amount.innerText = (parseInt(amount.innerText) + 1).toString();
         return;
       }
       item = document.createElement("li");
-      item.id = _item.name;
+      item.id = _item.name.replaceAll(" ", "_");
       item.innerHTML = `<name>${_item.name}</name><amount>1</amount><description>${_item.description}</description><img src="${_item.image}"/>`;
       item.addEventListener("pointerdown", Inventory.hndUseItem);
       Inventory.dialog.querySelector("ul").appendChild(item);
     }
 
     /**
-     * opens the inventory
+     * Opens the inventory
      */
     public static async open(): Promise<string[]> {
       let dialog: HTMLDialogElement = Inventory.dialog;
@@ -53,8 +56,9 @@ namespace FudgeStory {
         dialog.querySelector("button").addEventListener(EVENT.POINTERDOWN, hndClose);
       });
     }
+
     /**
-     * closes the inventory
+     * Closes the inventory
      */
     public static close(): void {
       Inventory.dialog.close();

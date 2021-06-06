@@ -57,25 +57,19 @@ namespace FudgeStory {
       } while (index < Progress.scenes.length);
     }
 
-
-    /**
-     * Defines the object to track containing logical data like score, states, textual inputs given by the play etc.
-     */
-    public static setData(_data: Object): void {
-      Progress.data = _data;
-    }
-
     /**
      * Returns an object to use to track logical data like score, states, textual inputs given by the play etc.
      */
-    public static setDataInterface<T>(_data: T, _dom: HTMLElement): T {
-      Progress.setData(_data); // test if this is sufficient to support previous save/load functionality
+    public static setData<T>(_data: T, _dom?: HTMLElement): T {
+      // Progress.setData(_data); // test if this is sufficient to support previous save/load functionality
+      Progress.data = _data;
 
       let hndProxy = {
         set: function (_target: Object, _prop: PropertyKey, _value: Object): boolean {
           console.log("ProgressData: " + _prop.toString() + " = " + _value);
           Reflect.set(_target, _prop, _value);
-          Progress.updateInterface(_dom);
+          if (_dom)
+            Progress.updateInterface(_dom);
           return true;
         }
         // get: function (_target: Object, _prop: PropertyKey): Object {

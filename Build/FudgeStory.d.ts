@@ -38,6 +38,33 @@ declare namespace FudgeStory {
     type Color = ƒ.Color;
     let Color: typeof ƒ.Color;
     let ANIMATION_PLAYMODE: typeof ƒ.ANIMATION_PLAYMODE;
+    /**
+     * ## Pattern for the definition of an animation
+     * Define the animation of the transformation or the color over time
+     * ```text
+     * {
+     *    start: {
+     *      translation:  the position at the start of the animation,
+     *      rotation:     the angle of rotation at the start of the animation,
+     *      scaling:      the size at the start of the animation,
+     *      color:        the color at the start of the animation,
+          end: {
+            same as above but for the end of the animation
+          },
+          duration: the duration of one animation-cylce in seconds,
+          playmode: the mode to play the animation in, see ANIMATION_PLAYMODE
+     * }
+     * ```
+     * ## Example
+     * ```typescript
+     * let animation: ƒS.AnimationDefinition = {
+        start: {translation: ƒS.positions.bottomleft, rotation: -20, scaling: new ƒS.Position(0.5, 1.5), color: ƒS.Color.CSS("white", 0)},
+        end: {translation: ƒS.positions.bottomright, rotation: 20, scaling: new ƒS.Position(1.5, 0.5), color: ƒS.Color.CSS("red")},
+        duration: 1,
+        playmode: ƒS.ANIMATION_PLAYMODE.REVERSELOOP
+      };
+     * ```
+     */
     interface AnimationDefinition {
         start: {
             translation?: Position;
@@ -54,10 +81,22 @@ declare namespace FudgeStory {
         duration: number;
         playmode: ƒ.ANIMATION_PLAYMODE;
     }
+    /**
+     * Handles animation
+     */
     class Animation extends Base {
         private static activeComponents;
+        /**
+         * Returns true if an animation is being played
+         */
         static get isPending(): boolean;
+        /**
+         * Creates a FUDGE-Animation from an [[AnimationDefinition]]
+         */
         static create(_animation: AnimationDefinition): ƒ.Animation;
+        /**
+         * Attaches the given FUDGE-Animation to the given node with the given mode
+         */
         static attach(_pose: ƒ.Node, _animation: ƒ.Animation, _playmode: ƒ.ANIMATION_PLAYMODE): void;
         private static trackComponents;
     }
@@ -228,13 +267,16 @@ declare namespace FudgeStory {
         private static ƒDialog;
         private static ƒused;
         private static get dialog();
+        /**
+         * Adds an item to the inventory
+         */
         static add(_item: ItemDefinition): void;
         /**
-         * opens the inventory
+         * Opens the inventory
          */
         static open(): Promise<string[]>;
         /**
-         * closes the inventory
+         * Closes the inventory
          */
         static close(): void;
         private static hndUseItem;
@@ -340,13 +382,9 @@ declare namespace FudgeStory {
          */
         static go(_scenes: Scenes): Promise<void>;
         /**
-         * Defines the object to track containing logical data like score, states, textual inputs given by the play etc.
-         */
-        static setData(_data: Object): void;
-        /**
          * Returns an object to use to track logical data like score, states, textual inputs given by the play etc.
          */
-        static setDataInterface<T>(_data: T, _dom: HTMLElement): T;
+        static setData<T>(_data: T, _dom?: HTMLElement): T;
         /**
          * Opens a dialog for file selection, loads selected file and restarts the program with its contents as url-searchstring
          */
@@ -426,13 +464,13 @@ declare namespace FudgeStory {
         private static delayParagraph;
         private static get div();
         /**
-         * Displays the [[Character]]s name and the given text at once
+         * Displays the [[Character]]s name or the string given as name and the given text at once
          */
-        static set(_character: Object, _text: string, _class?: string): void;
+        static set(_character: Object | string, _text: string, _class?: string): void;
         /**
-         * Displays the [[Character]]s name and slowly writes the text letter by letter
+         * Displays the [[Character]]s name or the string given as name and slowly writes the text letter by letter
          */
-        static tell(_character: Object, _text: string, _waitForSignalNext?: boolean, _class?: string): Promise<void>;
+        static tell(_character: Object | string, _text: string, _waitForSignalNext?: boolean, _class?: string): Promise<void>;
         /**
          * Defines the pauses used by ticker between letters and before a paragraph in milliseconds
          */
