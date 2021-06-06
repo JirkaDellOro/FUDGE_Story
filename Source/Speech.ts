@@ -20,11 +20,11 @@ namespace FudgeStory {
     }
 
     /**
-     * Displays the [[Character]]s name and the given text at once
+     * Displays the [[Character]]s name or the string given as name and the given text at once
      */
-    public static set(_character: Object, _text: string, _class?: string): void {
+    public static set(_character: Object | string, _text: string, _class?: string): void {
       Speech.show();
-      let name: string = _character ? Reflect.get(_character, "name") : "";
+      let name: string = (typeof(_character) == "string") ? _character : _character ? Reflect.get(_character, "name") : "";
       let nameTag: HTMLSpanElement = Speech.div.querySelector("name");
       let textTag: HTMLElement = Speech.div.querySelector("content");
       nameTag.innerHTML = "";
@@ -39,9 +39,9 @@ namespace FudgeStory {
     }
 
     /**
-     * Displays the [[Character]]s name and slowly writes the text letter by letter
+     * Displays the [[Character]]s name or the string given as name and slowly writes the text letter by letter
      */
-    public static async tell(_character: Object, _text: string, _waitForSignalNext: boolean = true, _class?: string): Promise<void> {
+    public static async tell(_character: Object | string, _text: string, _waitForSignalNext: boolean = true, _class?: string): Promise<void> {
       Speech.show();
       let done: boolean = false;
       Speech.set(_character, "", _class);

@@ -45,5 +45,7 @@ declare namespace Test {
     let state: {
         a: number;
         b: string;
+        c: number;
     };
+    function getAnimation(): ƒS.AnimationDefinition;
 }
