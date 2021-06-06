@@ -5,6 +5,10 @@ namespace Tutorial {
 
   console.log("Start");
 
+
+
+
+
   // define transitions
   export let transition = {
     clock: {
@@ -57,6 +61,11 @@ namespace Tutorial {
     }
   };
 
+
+
+  export let animation2: ƒS.AnimationDefinition;
+
+
   // define items as key-object-pairs, the objects with the properties name, description and an address to an image
   export let items = {
     // Toy: {
@@ -108,10 +117,65 @@ namespace Tutorial {
     Protagonist: {
       name: "Protagonist"
     },
-    ended: false
+    nameProtagonist: "Protagonist",
+    scoreAoi: 0,
+    ended: false,
+    state: {
+      a: 1
+    }
   };
 
+  
 
+  let outOfGameMenu = {
+    save: "Save",
+    load: "Load",
+    close: "Close",
+    volume: "Volume",
+    credits: "Credits",
+    about: "About"
+  };
+
+  // let meterBar = {
+  //   open: "Save",
+  //   close: "Close",
+  // };
+
+  // Variable nur zum Löschen für outOfGameMenu
+  let gameMenu: ƒS.Menu;
+
+  async function saveNload(_option: string): Promise<void> {
+    console.log(_option);
+    if (_option == outOfGameMenu.load) {
+      await ƒS.Progress.load();
+    }
+    else if (_option == outOfGameMenu.save) {
+      await ƒS.Progress.save();
+    }
+
+    if (_option == outOfGameMenu.close)
+      gameMenu.close();
+  }
+
+
+
+  // Variable zum Öffnen und Löschen der meterBar
+  // let meter = document.querySelector("[type=interface]");
+
+  // async function closeNopenMeterBar(_option: string): Promise<void> {
+  //   console.log(_option);
+  //   if (_option == meterBar.open) {
+  //     document.open();
+  //   }
+
+  //   if (_option == meterBar.close)
+  //     document.close();
+  // }
+
+
+
+
+  // shortcuts to save and load game progress
   document.addEventListener("keydown", hndKeypress);
   async function hndKeypress(_event: KeyboardEvent): Promise<void> {
     switch (_event.code) {
@@ -125,6 +189,25 @@ namespace Tutorial {
         break;
     }
   }
+
+
+
+  // meter stuff
+  // document.addEventListener("keydown", hndKeypressMeter);
+  // async function hndKeypressMeter(_event: KeyboardEvent): Promise<void> {
+  //   switch (_event.code) {
+  //     case ƒ.KEYBOARD_CODE.Z:
+  //       console.log("Open meter");
+  //       await document.open();
+  //       break;
+  //     case ƒ.KEYBOARD_CODE.T:
+  //       console.log("Close meter");
+  //       await document.close();
+  //       break;
+  //   }
+  // }
+
+
 
   // shortcuts to open and close the inventory
   document.addEventListener("keydown", hndKeypressForInventory);
@@ -144,15 +227,28 @@ namespace Tutorial {
 
   window.addEventListener("load", start);
   function start(_event: Event): void {
+    // to close menu
+    gameMenu =
+      ƒS.Menu.create(outOfGameMenu, saveNload, "gameMenu");
+
     // define the sequence of scenes, each scene as an object with a reference to the scene-function, a name and optionally an id and an id to continue the story with
     let scenes: ƒS.Scenes = [
-      // { scene: Text, name: "HowToText" },
-      // { scene: Decision, name: "HowToDecide" },
+      // { scene: Text, name: "How To Text" },
+      // { scene: Decision, name: "How To Decide" },
       // { scene: End, name: "End" },
-      // { id: "Endo", scene: End, name: "End", next: "Endo" },
-      // { scene: Inventory, name: "HowToMakeAnInventory"}
-      { scene: Animation, name: "HowToAnimate"}
+      // { id: "Endo", scene: End, name: "This is an ending", next: "Endo" },
+      // { scene: Inventory, name: "How To Make An Inventory" }
+      // { scene: Animation, name: "How To Animate" },
+      // { scene: GameMenu, name: "How To Make A Game Menu" },
+      { scene: Meter, name: "How To Make a Progress bar" }
+
     ];
+
+
+
+    let uiElement: HTMLElement = document.querySelector("[type=interface]");
+    dataForSave.state = ƒS.Progress.setDataInterface(dataForSave.state, uiElement);
+
 
     // start the sequence
     ƒS.Progress.setData(dataForSave);

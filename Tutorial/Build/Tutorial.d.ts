@@ -8,6 +8,9 @@ declare namespace Tutorial {
     function End(): ƒS.SceneReturn;
 }
 declare namespace Tutorial {
+    function GameMenu(): ƒS.SceneReturn;
+}
+declare namespace Tutorial {
     function Inventory(): ƒS.SceneReturn;
 }
 declare namespace Tutorial {
@@ -54,6 +57,7 @@ declare namespace Tutorial {
             };
         };
     };
+    let animation2: ƒS.AnimationDefinition;
     let items: {
         BlobRED: {
             name: string;
@@ -96,8 +100,16 @@ declare namespace Tutorial {
         Protagonist: {
             name: string;
         };
+        nameProtagonist: string;
+        scoreAoi: number;
         ended: boolean;
+        state: {
+            a: number;
+        };
     };
+}
+declare namespace Tutorial {
+    function Meter(): ƒS.SceneReturn;
 }
 declare namespace Tutorial {
     function Text(): ƒS.SceneReturn;

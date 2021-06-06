@@ -8,6 +8,7 @@ html, body {
   font-family:'Gill Sans', 'Gill Sans MT', sans-serif;
 }
 
+/* Format frei wählbar */
 scene {
   width: 1280px;
   height: 720px;
@@ -43,6 +44,12 @@ speech.Ryu content {
   color: rgb(203, 253, 255);
 }
 
+dialog > p {
+  color: white;
+  font-family: 'Franklin Gothic Medium';
+  font-size: 3vh;
+}
+
 /* example for Text print */
 dialog[class="start"] {
   height: 30em;
@@ -75,5 +82,28 @@ dialog[type="inventory"] > ul > li {
   /* border-: ; */
   list-style-type: none;
   margin-bottom: 10px;
-
 }
+
+
+dialog[class="gameMenu"] {
+  background-color: #719fd1;
+}
+
+meter::-webkit-meter-optimum-value {
+  background-image: linear-gradient(
+    90deg, 
+    #8bcf69 5%, 
+    #e6d450 5%,
+    #e6d450 15%,
+    #f28f68 15%,
+    #f28f68 55%,
+    #cf82bf 55%,
+    #cf82bf 95%,
+    #719fd1 95%,
+    #719fd1 100%
+  );
+  
+  
+  /* background-color: #719fd1; */
+}
+

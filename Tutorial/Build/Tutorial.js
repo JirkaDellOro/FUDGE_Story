@@ -13,24 +13,34 @@ var Tutorial;
         //     T0000: "Hello~"
         //   }
         // };
-        // let animation: ƒS.AnimationDefinition = {
+        // let animation1: ƒS.AnimationDefinition = {
         //   start: { translation: ƒS.positions.bottomleft, rotation: -20, scaling: new ƒS.Position(0.5, 1.5), color: ƒS.Color.CSS("blue", 0) },
         //   end: { translation: ƒS.positions.bottomright, rotation: 20, scaling: new ƒS.Position(1.5, 0.5), color: ƒS.Color.CSS("red")},
         //   duration: 1,
         //   playmode: ƒS.ANIMATION_PLAYMODE.REVERSELOOP
         // };
-        let animation2 = {
+        Tutorial.animation2 = {
             start: { translation: Tutorial.ƒS.positions.bottomleft },
             end: { translation: Tutorial.ƒS.positions.bottomright },
             duration: 3,
             playmode: Tutorial.ƒS.ANIMATION_PLAYMODE.PLAYONCE
         };
+        // let animation3: ƒS.AnimationDefinition = {
+        //   start: { translation: ƒS.positionPercent(30, 100) },
+        //   end: { translation: ƒS.positionPercent(70, 100) },
+        //   duration: 3,
+        //   playmode: ƒS.ANIMATION_PLAYMODE.PLAYONCE
+        // };
         Tutorial.ƒS.Speech.hide();
         await Tutorial.ƒS.Location.show(Tutorial.locations.bench);
         // await ƒS.Character.animate(characters.Aoi, characters.Aoi.pose.normal, animation);
         // await ƒS.update(2);
-        await Tutorial.ƒS.Character.animate(Tutorial.characters.Aoi, Tutorial.characters.Aoi.pose.normal, animation2);
+        // await ƒS.Character.show(characters.Aoi, characters.Aoi.pose.normal, ƒS.positions.bottomleft);
+        await Tutorial.ƒS.Character.animate(Tutorial.characters.Aoi, Tutorial.characters.Aoi.pose.normal, Tutorial.animation2);
+        await Tutorial.ƒS.Character.hide(Tutorial.characters.Aoi);
         await Tutorial.ƒS.update(2);
+        // await ƒS.Character.hide(characters.Aoi);
+        // await ƒS.update(2);
     }
     Tutorial.Animation = Animation;
 })(Tutorial || (Tutorial = {}));
@@ -121,6 +131,38 @@ var Tutorial;
         console.log("End");
     }
     Tutorial.End = End;
+})(Tutorial || (Tutorial = {}));
+var Tutorial;
+(function (Tutorial) {
+    async function GameMenu() {
+        console.log("Text");
+        let text = {
+            Narrator: {
+                T0000: "",
+                T0001: ""
+            },
+            Protagonist: {
+                T0000: "",
+                T0001: ""
+            },
+            Ryu: {
+                T0000: "Willkommen.",
+                T0001: ""
+            }
+        };
+        Tutorial.ƒS.Speech.hide();
+        await Tutorial.ƒS.Location.show(Tutorial.locations.city);
+        await Tutorial.ƒS.update(Tutorial.transition.clock.duration, Tutorial.transition.clock.alpha, Tutorial.transition.clock.edge);
+        // await ƒS.Character.show(characters.Ryu, characters.Ryu.pose.normal, ƒS.positions.bottomcenter);
+        await Tutorial.ƒS.Character.show(Tutorial.characters.Ryu, Tutorial.characters.Ryu.pose.normal, Tutorial.ƒS.positionPercent(30, 100));
+        await Tutorial.ƒS.update(1);
+        Tutorial.ƒS.Speech.show();
+        await Tutorial.ƒS.Speech.tell(Tutorial.characters.Ryu, text.Ryu.T0000);
+        await Tutorial.ƒS.Speech.tell(Tutorial.characters.Ryu, "Fremder.");
+        await Tutorial.ƒS.Character.hide(Tutorial.characters.Ryu);
+        await Tutorial.ƒS.update(1);
+    }
+    Tutorial.GameMenu = GameMenu;
 })(Tutorial || (Tutorial = {}));
 var Tutorial;
 (function (Tutorial) {
@@ -269,8 +311,49 @@ var Tutorial;
         Protagonist: {
             name: "Protagonist"
         },
-        ended: false
+        nameProtagonist: "Protagonist",
+        scoreAoi: 0,
+        ended: false,
+        state: {
+            a: 1
+        }
     };
+    let outOfGameMenu = {
+        save: "Save",
+        load: "Load",
+        close: "Close",
+        volume: "Volume",
+        credits: "Credits",
+        about: "About"
+    };
+    // let meterBar = {
+    //   open: "Save",
+    //   close: "Close",
+    // };
+    // Variable nur zum Löschen für outOfGameMenu
+    let gameMenu;
+    async function saveNload(_option) {
+        console.log(_option);
+        if (_option == outOfGameMenu.load) {
+            await Tutorial.ƒS.Progress.load();
+        }
+        else if (_option == outOfGameMenu.save) {
+            await Tutorial.ƒS.Progress.save();
+        }
+        if (_option == outOfGameMenu.close)
+            gameMenu.close();
+    }
+    // Variable zum Öffnen und Löschen der meterBar
+    // let meter = document.querySelector("[type=interface]");
+    // async function closeNopenMeterBar(_option: string): Promise<void> {
+    //   console.log(_option);
+    //   if (_option == meterBar.open) {
+    //     document.open();
+    //   }
+    //   if (_option == meterBar.close)
+    //     document.close();
+    // }
+    // shortcuts to save and load game progress
     document.addEventListener("keydown", hndKeypress);
     async function hndKeypress(_event) {
         switch (_event.code) {
@@ -284,6 +367,20 @@ var Tutorial;
                 break;
         }
     }
+    // meter stuff
+    // document.addEventListener("keydown", hndKeypressMeter);
+    // async function hndKeypressMeter(_event: KeyboardEvent): Promise<void> {
+    //   switch (_event.code) {
+    //     case ƒ.KEYBOARD_CODE.Z:
+    //       console.log("Open meter");
+    //       await document.open();
+    //       break;
+    //     case ƒ.KEYBOARD_CODE.T:
+    //       console.log("Close meter");
+    //       await document.close();
+    //       break;
+    //   }
+    // }
     // shortcuts to open and close the inventory
     document.addEventListener("keydown", hndKeypressForInventory);
     async function hndKeypressForInventory(_event) {
@@ -300,19 +397,60 @@ var Tutorial;
     }
     window.addEventListener("load", start);
     function start(_event) {
+        // to close menu
+        gameMenu =
+            Tutorial.ƒS.Menu.create(outOfGameMenu, saveNload, "gameMenu");
         // define the sequence of scenes, each scene as an object with a reference to the scene-function, a name and optionally an id and an id to continue the story with
         let scenes = [
-            // { scene: Text, name: "HowToText" },
-            // { scene: Decision, name: "HowToDecide" },
+            // { scene: Text, name: "How To Text" },
+            // { scene: Decision, name: "How To Decide" },
             // { scene: End, name: "End" },
-            // { id: "Endo", scene: End, name: "End", next: "Endo" },
-            // { scene: Inventory, name: "HowToMakeAnInventory"}
-            { scene: Tutorial.Animation, name: "HowToAnimate" }
+            // { id: "Endo", scene: End, name: "This is an ending", next: "Endo" },
+            // { scene: Inventory, name: "How To Make An Inventory" }
+            // { scene: Animation, name: "How To Animate" },
+            // { scene: GameMenu, name: "How To Make A Game Menu" },
+            { scene: Tutorial.Meter, name: "How To Make a Progress bar" }
         ];
+        let uiElement = document.querySelector("[type=interface]");
+        Tutorial.dataForSave.state = Tutorial.ƒS.Progress.setDataInterface(Tutorial.dataForSave.state, uiElement);
         // start the sequence
         Tutorial.ƒS.Progress.setData(Tutorial.dataForSave);
         Tutorial.ƒS.Progress.go(scenes);
     }
+})(Tutorial || (Tutorial = {}));
+var Tutorial;
+(function (Tutorial) {
+    async function Meter() {
+        console.log("Text");
+        let text = {
+            Narrator: {
+                T0000: "",
+                T0001: ""
+            },
+            Protagonist: {
+                T0000: "",
+                T0001: ""
+            },
+            Ryu: {
+                T0000: "Ich werde dir nun ein paar Fragen stellen...",
+                T0001: "Dann wirst du verstehen, wozu die Skala da ist."
+            }
+        };
+        Tutorial.ƒS.Speech.hide();
+        await Tutorial.ƒS.Location.show(Tutorial.locations.bench);
+        await Tutorial.ƒS.Character.show(Tutorial.characters.Ryu, Tutorial.characters.Ryu.pose.normal, Tutorial.ƒS.positionPercent(30, 100));
+        await Tutorial.ƒS.update(1);
+        Tutorial.ƒS.Speech.show();
+        await Tutorial.ƒS.Speech.tell(Tutorial.characters.Ryu, text.Ryu.T0000);
+        Tutorial.dataForSave.state.a += 53;
+        await Tutorial.ƒS.update(1);
+        await Tutorial.ƒS.Speech.tell(Tutorial.characters.Ryu, text.Ryu.T0001);
+        document.getElementById("meterli").hidden = true;
+        document.getElementById("meterInput").hidden = true;
+        await Tutorial.ƒS.Character.hide(Tutorial.characters.Ryu);
+        Tutorial.dataForSave.state.a += 100;
+    }
+    Tutorial.Meter = Meter;
 })(Tutorial || (Tutorial = {}));
 var Tutorial;
 (function (Tutorial) {
