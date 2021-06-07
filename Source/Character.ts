@@ -120,8 +120,8 @@ namespace FudgeStory {
       let pose: ƒ.Node = await character.getPose(_pose);
 
       let animation: ƒ.Animation = Animation.create(_animation);
-      Animation.attach(pose, animation, _animation.playmode);
       Base.middle.appendChild(pose);
+      return Animation.attach(pose, animation, _animation.playmode);
     }
 
     /**

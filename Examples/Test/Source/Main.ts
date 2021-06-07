@@ -17,8 +17,9 @@ namespace Test {
     // max. Wert für Bar definieren if-Abfrage
     // await ƒS.Character.show(characters.Sue, characters.Sue.pose.normal, ƒS.positions.bottomcenter);
     await ƒS.Character.animate(characters.Sue, characters.Sue.pose.normal, getAnimation());
-    await ƒS.Speech.tell("characters.Sue", "Willkommen zum Test von FUDGE-Story", false);
     await ƒS.Character.hide(characters.Sue);
+    ƒS.update(0.5);
+    await ƒS.Speech.tell("characters.Sue", "Willkommen zum Test von FUDGE-Story", false);
     // await ƒS.Character.show(characters.Sue, characters.Sue.pose.normal, ƒS.positions.bottomcenter);
     await ƒS.update(2);
   }

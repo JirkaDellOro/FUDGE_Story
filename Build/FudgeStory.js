@@ -180,12 +180,14 @@ var FudgeStory;
                 result.components["ComponentTransform"] = [{ "ƒ.ComponentTransform": { mtxLocal: mutator } }];
             // console.log(result);
             let animation = new ƒ.Animation("Animation", result);
+            animation.setEvent("animationStart", 1);
+            animation.setEvent("animationEnd", duration - 1);
             return animation;
         }
         /**
          * Attaches the given FUDGE-Animation to the given node with the given mode
          */
-        static attach(_pose, _animation, _playmode) {
+        static async attach(_pose, _animation, _playmode) {
             // TODO: Mutate must not initiate drawing, implement render event at component to animate  
             // _pose.cmpTransform.addEventListener(ƒ.EVENT.MUTATE, () => Base.viewport.draw());
             // ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, () => Base.viewport.draw());
@@ -196,6 +198,9 @@ var FudgeStory;
             cmpAnimator.addEventListener("componentActivate" /* COMPONENT_ACTIVATE */, Animation.trackComponents);
             cmpAnimator.addEventListener("componentDeactivate" /* COMPONENT_DEACTIVATE */, Animation.trackComponents);
             cmpAnimator.activate(true);
+            return new Promise((resolve) => {
+                cmpAnimator.addEventListener(_playmode == ƒ.ANIMATION_PLAYMODE.REVERSELOOP ? "animationStart" : "animationEnd", () => resolve());
+            });
         }
     }
     Animation.activeComponents = [];
@@ -268,8 +273,8 @@ var FudgeStory;
             let character = Character.get(_character);
             let pose = await character.getPose(_pose);
             let animation = FudgeStory.Animation.create(_animation);
-            FudgeStory.Animation.attach(pose, animation, _animation.playmode);
             FudgeStory.Base.middle.appendChild(pose);
+            return FudgeStory.Animation.attach(pose, animation, _animation.playmode);
         }
         /**
          * Remove all [[Character]]s and objects

@@ -75,10 +75,10 @@ namespace Test {
 
   export function getAnimation(): ƒS.AnimationDefinition {
     return {
-      start: { translation: ƒS.positions.bottomleft, rotation: -20, scaling: new ƒS.Position(0.5, 1.5), color: ƒS.Color.CSS("white", 0) },
+      start: { translation: ƒS.positions.bottomleft, rotation: -20, scaling: new ƒS.Position(0.5, 1.5), color: ƒS.Color.CSS("white", 0.3) },
       end: { translation: ƒS.positions.bottomright, rotation: 20, scaling: new ƒS.Position(1.5, 0.5), color: ƒS.Color.CSS("red") },
       duration: 1,
-      playmode: ƒS.ANIMATION_PLAYMODE.REVERSELOOP
+      playmode: ƒS.ANIMATION_PLAYMODE.PLAYONCE
     };
   }
 

@@ -93,13 +93,15 @@ namespace FudgeStory {
 
       // console.log(result);
       let animation: ƒ.Animation = new ƒ.Animation("Animation", result);
+      animation.setEvent("animationStart", 1);
+      animation.setEvent("animationEnd", duration - 1);
       return animation;
     }
 
     /**
      * Attaches the given FUDGE-Animation to the given node with the given mode
      */
-    public static attach(_pose: ƒ.Node, _animation: ƒ.Animation, _playmode: ƒ.ANIMATION_PLAYMODE): void {
+    public static async attach(_pose: ƒ.Node, _animation: ƒ.Animation, _playmode: ƒ.ANIMATION_PLAYMODE): Promise<void> {
       // TODO: Mutate must not initiate drawing, implement render event at component to animate  
       // _pose.cmpTransform.addEventListener(ƒ.EVENT.MUTATE, () => Base.viewport.draw());
       // ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, () => Base.viewport.draw());
@@ -110,6 +112,13 @@ namespace FudgeStory {
       cmpAnimator.addEventListener(ƒ.EVENT.COMPONENT_ACTIVATE, Animation.trackComponents);
       cmpAnimator.addEventListener(ƒ.EVENT.COMPONENT_DEACTIVATE, Animation.trackComponents);
       cmpAnimator.activate(true);
+
+      return new Promise((resolve) => {
+        cmpAnimator.addEventListener(
+          _playmode == ƒ.ANIMATION_PLAYMODE.REVERSELOOP ? "animationStart" : "animationEnd",
+          () => resolve()
+        );
+      });
     }
 
     private static trackComponents = (_event: Event): void => {
