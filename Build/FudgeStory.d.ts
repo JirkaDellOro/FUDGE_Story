@@ -97,7 +97,7 @@ declare namespace FudgeStory {
         /**
          * Attaches the given FUDGE-Animation to the given node with the given mode
          */
-        static attach(_pose: ƒ.Node, _animation: ƒ.Animation, _playmode: ƒ.ANIMATION_PLAYMODE): void;
+        static attach(_pose: ƒ.Node, _animation: ƒ.Animation, _playmode: ƒ.ANIMATION_PLAYMODE): Promise<void>;
         private static trackComponents;
     }
 }

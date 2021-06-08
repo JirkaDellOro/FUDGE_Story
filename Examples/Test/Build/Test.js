@@ -18,8 +18,9 @@ var Test;
         // max. Wert für Bar definieren if-Abfrage
         // await ƒS.Character.show(characters.Sue, characters.Sue.pose.normal, ƒS.positions.bottomcenter);
         await Test.ƒS.Character.animate(Test.characters.Sue, Test.characters.Sue.pose.normal, Test.getAnimation());
-        await Test.ƒS.Speech.tell("characters.Sue", "Willkommen zum Test von FUDGE-Story", false);
         await Test.ƒS.Character.hide(Test.characters.Sue);
+        Test.ƒS.update(0.5);
+        await Test.ƒS.Speech.tell("characters.Sue", "Willkommen zum Test von FUDGE-Story", false);
         // await ƒS.Character.show(characters.Sue, characters.Sue.pose.normal, ƒS.positions.bottomcenter);
         await Test.ƒS.update(2);
     }
@@ -93,10 +94,10 @@ var Test;
     }
     function getAnimation() {
         return {
-            start: { translation: Test.ƒS.positions.bottomleft, rotation: -20, scaling: new Test.ƒS.Position(0.5, 1.5), color: Test.ƒS.Color.CSS("white", 0) },
+            start: { translation: Test.ƒS.positions.bottomleft, rotation: -20, scaling: new Test.ƒS.Position(0.5, 1.5), color: Test.ƒS.Color.CSS("white", 0.3) },
             end: { translation: Test.ƒS.positions.bottomright, rotation: 20, scaling: new Test.ƒS.Position(1.5, 0.5), color: Test.ƒS.Color.CSS("red") },
             duration: 1,
-            playmode: Test.ƒS.ANIMATION_PLAYMODE.REVERSELOOP
+            playmode: Test.ƒS.ANIMATION_PLAYMODE.PLAYONCE
         };
     }
     Test.getAnimation = getAnimation;
