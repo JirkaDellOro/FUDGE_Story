@@ -21,12 +21,7 @@ namespace Tutorial {
     //   playmode: ƒS.ANIMATION_PLAYMODE.REVERSELOOP
     // };
 
-    animation2 = {
-      start: { translation: ƒS.positions.bottomleft },
-      end: { translation: ƒS.positions.bottomright },
-      duration: 3,
-      playmode: ƒS.ANIMATION_PLAYMODE.PLAYONCE
-    };
+
 
     // let animation3: ƒS.AnimationDefinition = {
     //   start: { translation: ƒS.positionPercent(30, 100) },
@@ -42,7 +37,9 @@ namespace Tutorial {
     // await ƒS.Character.animate(characters.Aoi, characters.Aoi.pose.normal, animation);
     // await ƒS.update(2);
     // await ƒS.Character.show(characters.Aoi, characters.Aoi.pose.normal, ƒS.positions.bottomleft);
-    await ƒS.Character.animate(characters.Aoi, characters.Aoi.pose.normal, animation2);
+    // await ƒS.Character.animate(characters.Aoi, characters.Aoi.pose.normal, leftToRight());
+    await ƒS.Character.animate(characters.Aoi, characters.Aoi.pose.normal, fromRightToOutOfCanvas());
+
     await ƒS.Character.hide(characters.Aoi);
 
     await ƒS.update(2);

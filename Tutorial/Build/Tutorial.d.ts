@@ -57,7 +57,6 @@ declare namespace Tutorial {
             };
         };
     };
-    let animation2: ƒS.AnimationDefinition;
     let items: {
         BlobRED: {
             name: string;
@@ -102,11 +101,13 @@ declare namespace Tutorial {
         };
         nameProtagonist: string;
         scoreAoi: number;
+        scoreForAoi: string;
+        scoreRyu: number;
+        scoreForRyu: string;
         ended: boolean;
-        state: {
-            a: number;
-        };
     };
+    function leftToRight(): ƒS.AnimationDefinition;
+    function fromRightToOutOfCanvas(): ƒS.AnimationDefinition;
 }
 declare namespace Tutorial {
     function Meter(): ƒS.SceneReturn;

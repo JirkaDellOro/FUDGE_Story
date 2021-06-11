@@ -31,6 +31,13 @@ namespace FudgeStory {
       return sound;
     }
 
+    // 
+    public static setVolume(_url: RequestInfo, _volume: number): void {
+      let sound: Sound = Sound.sounds.get(_url);
+      if (sound) 
+         sound.cmpAudio.volume = _volume;
+    }
+    
     /**
      * Changes the volume of the sound defined by the url linearly of the given duration to the define volume.
      * If the sound is not currently playing, it starts it respecting the loop-flag.

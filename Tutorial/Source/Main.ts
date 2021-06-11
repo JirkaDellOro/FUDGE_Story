@@ -21,7 +21,7 @@ namespace Tutorial {
   // define sound
   export let sound = {
     // Music
-    backgroundTheme: "",
+    backgroundTheme: "Audio/Nightclub.ogg",
 
     // Sound
     click: ""
@@ -29,11 +29,11 @@ namespace Tutorial {
 
   export let locations = {
     city: {
-      name: "CloudyCity",
+      name: "Cloudy City",
       background: "Images/Backgrounds/bg_city_cloudy.png"
     },
     bench: {
-      name: "Bench",
+      name: "Bench 1",
       background: "Images/Backgrounds/bg_bench.png"
     }
   };
@@ -62,10 +62,6 @@ namespace Tutorial {
   };
 
 
-
-  export let animation2: ƒS.AnimationDefinition;
-
-
   // define items as key-object-pairs, the objects with the properties name, description and an address to an image
   export let items = {
     // Toy: {
@@ -75,37 +71,37 @@ namespace Tutorial {
     // },
     // Blobbys
     BlobRED: {
-      name: "BlobRed",
+      name: "Blob Red",
       description: "A reddish something",
       image: "Images/Items/blobRED.png"
     },
     BlobBU: {
-      name: "BlobBlue",
+      name: "Blob Blue",
       description: "A blueish something",
       image: "Images/Items/blobBU.png"
     },
     BlobDKBU: {
-      name: "BlobDKBlue",
+      name: "Blob DK Blue",
       description: "A dark blueish something",
       image: "Images/Items/blobDKBU.png"
     },
     BlobGN: {
-      name: "BlobGreen",
+      name: "Blob Green",
       description: "A greenish something",
       image: "Images/Items/blobGN.png"
     },
     BlobPK: {
-      name: "BlobPink",
+      name: "Blob Pink",
       description: "A pinkish something",
       image: "Images/Items/blobPK.png"
     },
     BlobYL: {
-      name: "BlobYellow",
+      name: "Blob Yellow",
       description: "A yellowish something",
       image: "Images/Items/blobYL.png"
     },
     BlobOG: {
-      name: "BlobOrange",
+      name: "Blob Orange",
       description: "An orangeish something",
       image: "Images/Items/blobOG.png"
     }
@@ -114,63 +110,25 @@ namespace Tutorial {
   // tell FUDGE Story the data to save besides the current scene
   export let dataForSave = {
     score: 0,
+    // to fix
     Protagonist: {
       name: "Protagonist"
     },
     nameProtagonist: "Protagonist",
     scoreAoi: 0,
-    ended: false,
-    state: {
-      a: 1
-    }
+    scoreForAoi: "",
+    scoreRyu: 0,
+    scoreForRyu: "",
+    ended: false
   };
 
-  
 
-  let outOfGameMenu = {
-    save: "Save",
-    load: "Load",
-    close: "Close",
-    volume: "Volume",
-    credits: "Credits",
-    about: "About"
-  };
-
-  // let meterBar = {
-  //   open: "Save",
-  //   close: "Close",
-  // };
-
-  // Variable nur zum Löschen für outOfGameMenu
-  let gameMenu: ƒS.Menu;
-
-  async function saveNload(_option: string): Promise<void> {
-    console.log(_option);
-    if (_option == outOfGameMenu.load) {
-      await ƒS.Progress.load();
-    }
-    else if (_option == outOfGameMenu.save) {
-      await ƒS.Progress.save();
-    }
-
-    if (_option == outOfGameMenu.close)
-      gameMenu.close();
-  }
+  //  MENU - Audio functions
 
 
 
-  // Variable zum Öffnen und Löschen der meterBar
-  // let meter = document.querySelector("[type=interface]");
+// MENU - create Menu with Buttons
 
-  // async function closeNopenMeterBar(_option: string): Promise<void> {
-  //   console.log(_option);
-  //   if (_option == meterBar.open) {
-  //     document.open();
-  //   }
-
-  //   if (_option == meterBar.close)
-  //     document.close();
-  // }
 
 
 
@@ -191,24 +149,6 @@ namespace Tutorial {
   }
 
 
-
-  // meter stuff
-  // document.addEventListener("keydown", hndKeypressMeter);
-  // async function hndKeypressMeter(_event: KeyboardEvent): Promise<void> {
-  //   switch (_event.code) {
-  //     case ƒ.KEYBOARD_CODE.Z:
-  //       console.log("Open meter");
-  //       await document.open();
-  //       break;
-  //     case ƒ.KEYBOARD_CODE.T:
-  //       console.log("Close meter");
-  //       await document.close();
-  //       break;
-  //   }
-  // }
-
-
-
   // shortcuts to open and close the inventory
   document.addEventListener("keydown", hndKeypressForInventory);
   async function hndKeypressForInventory(_event: KeyboardEvent): Promise<void> {
@@ -224,12 +164,30 @@ namespace Tutorial {
     }
   }
 
+  export function leftToRight(): ƒS.AnimationDefinition {
+    return {
+      start: { translation: ƒS.positions.bottomleft },
+      end: { translation: ƒS.positions.bottomright },
+      duration: 3,
+      playmode: ƒS.ANIMATION_PLAYMODE.PLAYONCE
+    };
+  }
+
+  export function fromRightToOutOfCanvas(): ƒS.AnimationDefinition {
+    return {
+      start: { translation: ƒS.positionPercent(30, 100) },
+      end: { translation: ƒS.positionPercent(120, 100) },
+      duration: 3,
+      playmode: ƒS.ANIMATION_PLAYMODE.PLAYONCE
+    };
+  }
+
 
   window.addEventListener("load", start);
   function start(_event: Event): void {
-    // to close menu
-    gameMenu =
-      ƒS.Menu.create(outOfGameMenu, saveNload, "gameMenu");
+    // MENU
+
+
 
     // define the sequence of scenes, each scene as an object with a reference to the scene-function, a name and optionally an id and an id to continue the story with
     let scenes: ƒS.Scenes = [
@@ -239,19 +197,19 @@ namespace Tutorial {
       // { id: "Endo", scene: End, name: "This is an ending", next: "Endo" },
       // { scene: Inventory, name: "How To Make An Inventory" }
       // { scene: Animation, name: "How To Animate" },
-      // { scene: GameMenu, name: "How To Make A Game Menu" },
-      { scene: Meter, name: "How To Make a Progress bar" }
+      { scene: GameMenu, name: "How To Make A Game Menu" },
+      // { scene: Meter, name: "How To Make a Progress bar" }
 
     ];
 
 
 
     let uiElement: HTMLElement = document.querySelector("[type=interface]");
-    dataForSave.state = ƒS.Progress.setDataInterface(dataForSave.state, uiElement);
+    dataForSave = ƒS.Progress.setData(dataForSave, uiElement);
 
 
     // start the sequence
-    ƒS.Progress.setData(dataForSave);
+    // ƒS.Progress.setData(dataForSave, uiElement);
     ƒS.Progress.go(scenes);
   }
 }
