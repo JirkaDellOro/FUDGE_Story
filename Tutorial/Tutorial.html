@@ -11,6 +11,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=KoHo:ital@1&display=swap" rel="stylesheet">
   <title>Tutorial</title>
+  <!-- Individuellen Splashscreen hier einfügen -->
+  <splash src="Images/BubblyGirl.png" />
+  </splash>
 </head>
 
 <body>
@@ -25,6 +28,8 @@
         <!-- The text the character says -->
       </content>
     </speech>
+
+    <!-- <dialog class="splash"></dialog> -->
 
     <dialog type="text">
       <!-- The content of a page of text for reading -->
@@ -44,6 +49,24 @@
     <dialog id="menu">
       <!-- Options for the recipient to choose from -->
     </dialog>
+
+
+    <!-- <div type="interface">
+      <input name="a" type="text" disabled />
+      <input name="b" type="text" disabled />
+      <meter name="a" min="0" max="100" disabled></meter>
+      <meter name="c" min="0" max="100" disabled></meter>
+    </div> -->
+
+    <div type="interface">
+      <!-- Ryu Meter -->
+      <input name="scoreForRyu" type="text" disabled />
+      <meter id="ryu" name="scoreRyu" min="0" max="100" disabled></meter>
+      <!-- Aoi Meter -->
+      <!-- <input name="scoreForAoi" type="text" disabled />
+      <meter id="aoi" name="scoreAoi" min="0" max="100" disabled></meter> -->
+    </div>
+
   </scene>
 </body>
 

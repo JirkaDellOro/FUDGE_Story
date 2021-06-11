@@ -8,6 +8,9 @@ declare namespace Tutorial {
     function End(): ƒS.SceneReturn;
 }
 declare namespace Tutorial {
+    function GameMenu(): ƒS.SceneReturn;
+}
+declare namespace Tutorial {
     function Inventory(): ƒS.SceneReturn;
 }
 declare namespace Tutorial {
@@ -96,8 +99,18 @@ declare namespace Tutorial {
         Protagonist: {
             name: string;
         };
+        nameProtagonist: string;
+        scoreAoi: number;
+        scoreForAoi: string;
+        scoreRyu: number;
+        scoreForRyu: string;
         ended: boolean;
     };
+    function leftToRight(): ƒS.AnimationDefinition;
+    function fromRightToOutOfCanvas(): ƒS.AnimationDefinition;
+}
+declare namespace Tutorial {
+    function Meter(): ƒS.SceneReturn;
 }
 declare namespace Tutorial {
     function Text(): ƒS.SceneReturn;

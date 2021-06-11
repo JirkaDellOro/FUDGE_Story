@@ -13,24 +13,29 @@ var Tutorial;
         //     T0000: "Hello~"
         //   }
         // };
-        // let animation: ƒS.AnimationDefinition = {
+        // let animation1: ƒS.AnimationDefinition = {
         //   start: { translation: ƒS.positions.bottomleft, rotation: -20, scaling: new ƒS.Position(0.5, 1.5), color: ƒS.Color.CSS("blue", 0) },
         //   end: { translation: ƒS.positions.bottomright, rotation: 20, scaling: new ƒS.Position(1.5, 0.5), color: ƒS.Color.CSS("red")},
         //   duration: 1,
         //   playmode: ƒS.ANIMATION_PLAYMODE.REVERSELOOP
         // };
-        let animation2 = {
-            start: { translation: Tutorial.ƒS.positions.bottomleft },
-            end: { translation: Tutorial.ƒS.positions.bottomright },
-            duration: 3,
-            playmode: Tutorial.ƒS.ANIMATION_PLAYMODE.PLAYONCE
-        };
+        // let animation3: ƒS.AnimationDefinition = {
+        //   start: { translation: ƒS.positionPercent(30, 100) },
+        //   end: { translation: ƒS.positionPercent(70, 100) },
+        //   duration: 3,
+        //   playmode: ƒS.ANIMATION_PLAYMODE.PLAYONCE
+        // };
         Tutorial.ƒS.Speech.hide();
         await Tutorial.ƒS.Location.show(Tutorial.locations.bench);
         // await ƒS.Character.animate(characters.Aoi, characters.Aoi.pose.normal, animation);
         // await ƒS.update(2);
-        await Tutorial.ƒS.Character.animate(Tutorial.characters.Aoi, Tutorial.characters.Aoi.pose.normal, animation2);
+        // await ƒS.Character.show(characters.Aoi, characters.Aoi.pose.normal, ƒS.positions.bottomleft);
+        // await ƒS.Character.animate(characters.Aoi, characters.Aoi.pose.normal, leftToRight());
+        await Tutorial.ƒS.Character.animate(Tutorial.characters.Aoi, Tutorial.characters.Aoi.pose.normal, Tutorial.fromRightToOutOfCanvas());
+        await Tutorial.ƒS.Character.hide(Tutorial.characters.Aoi);
         await Tutorial.ƒS.update(2);
+        // await ƒS.Character.hide(characters.Aoi);
+        // await ƒS.update(2);
     }
     Tutorial.Animation = Animation;
 })(Tutorial || (Tutorial = {}));
@@ -124,6 +129,41 @@ var Tutorial;
 })(Tutorial || (Tutorial = {}));
 var Tutorial;
 (function (Tutorial) {
+    async function GameMenu() {
+        console.log("Text");
+        let text = {
+            Narrator: {
+                T0000: "",
+                T0001: ""
+            },
+            Protagonist: {
+                T0000: "",
+                T0001: ""
+            },
+            Ryu: {
+                T0000: "Willkommen.",
+                T0001: ""
+            }
+        };
+        Tutorial.ƒS.Sound.play(Tutorial.sound.backgroundTheme, 1);
+        document.getElementsByName("scoreRyu").forEach(meterStuff => meterStuff.hidden = true);
+        document.getElementsByName("scoreForRyu").forEach(meterStuff => meterStuff.hidden = true);
+        Tutorial.ƒS.Speech.hide();
+        await Tutorial.ƒS.Location.show(Tutorial.locations.city);
+        await Tutorial.ƒS.update(Tutorial.transition.clock.duration, Tutorial.transition.clock.alpha, Tutorial.transition.clock.edge);
+        // await ƒS.Character.show(characters.Ryu, characters.Ryu.pose.normal, ƒS.positions.bottomcenter);
+        await Tutorial.ƒS.Character.show(Tutorial.characters.Ryu, Tutorial.characters.Ryu.pose.normal, Tutorial.ƒS.positionPercent(30, 100));
+        await Tutorial.ƒS.update(1);
+        Tutorial.ƒS.Speech.show();
+        await Tutorial.ƒS.Speech.tell(Tutorial.characters.Ryu, text.Ryu.T0000);
+        await Tutorial.ƒS.Speech.tell(Tutorial.characters.Ryu, "Fremder.");
+        await Tutorial.ƒS.Character.hide(Tutorial.characters.Ryu);
+        await Tutorial.ƒS.update(1);
+    }
+    Tutorial.GameMenu = GameMenu;
+})(Tutorial || (Tutorial = {}));
+var Tutorial;
+(function (Tutorial) {
     async function Inventory() {
         console.log("Inventory");
         let text = {
@@ -184,17 +224,17 @@ var Tutorial;
     // define sound
     Tutorial.sound = {
         // Music
-        backgroundTheme: "",
+        backgroundTheme: "Audio/Nightclub.ogg",
         // Sound
         click: ""
     };
     Tutorial.locations = {
         city: {
-            name: "CloudyCity",
+            name: "Cloudy City",
             background: "Images/Backgrounds/bg_city_cloudy.png"
         },
         bench: {
-            name: "Bench",
+            name: "Bench 1",
             background: "Images/Backgrounds/bg_bench.png"
         }
     };
@@ -228,37 +268,37 @@ var Tutorial;
         // },
         // Blobbys
         BlobRED: {
-            name: "BlobRed",
+            name: "Blob Red",
             description: "A reddish something",
             image: "Images/Items/blobRED.png"
         },
         BlobBU: {
-            name: "BlobBlue",
+            name: "Blob Blue",
             description: "A blueish something",
             image: "Images/Items/blobBU.png"
         },
         BlobDKBU: {
-            name: "BlobDKBlue",
+            name: "Blob DK Blue",
             description: "A dark blueish something",
             image: "Images/Items/blobDKBU.png"
         },
         BlobGN: {
-            name: "BlobGreen",
+            name: "Blob Green",
             description: "A greenish something",
             image: "Images/Items/blobGN.png"
         },
         BlobPK: {
-            name: "BlobPink",
+            name: "Blob Pink",
             description: "A pinkish something",
             image: "Images/Items/blobPK.png"
         },
         BlobYL: {
-            name: "BlobYellow",
+            name: "Blob Yellow",
             description: "A yellowish something",
             image: "Images/Items/blobYL.png"
         },
         BlobOG: {
-            name: "BlobOrange",
+            name: "Blob Orange",
             description: "An orangeish something",
             image: "Images/Items/blobOG.png"
         }
@@ -266,11 +306,20 @@ var Tutorial;
     // tell FUDGE Story the data to save besides the current scene
     Tutorial.dataForSave = {
         score: 0,
+        // to fix
         Protagonist: {
             name: "Protagonist"
         },
+        nameProtagonist: "Protagonist",
+        scoreAoi: 0,
+        scoreForAoi: "",
+        scoreRyu: 0,
+        scoreForRyu: "",
         ended: false
     };
+    //  MENU - Audio functions
+    // MENU - create Menu with Buttons
+    // shortcuts to save and load game progress
     document.addEventListener("keydown", hndKeypress);
     async function hndKeypress(_event) {
         switch (_event.code) {
@@ -298,21 +347,87 @@ var Tutorial;
                 break;
         }
     }
+    function leftToRight() {
+        return {
+            start: { translation: Tutorial.ƒS.positions.bottomleft },
+            end: { translation: Tutorial.ƒS.positions.bottomright },
+            duration: 3,
+            playmode: Tutorial.ƒS.ANIMATION_PLAYMODE.PLAYONCE
+        };
+    }
+    Tutorial.leftToRight = leftToRight;
+    function fromRightToOutOfCanvas() {
+        return {
+            start: { translation: Tutorial.ƒS.positionPercent(30, 100) },
+            end: { translation: Tutorial.ƒS.positionPercent(120, 100) },
+            duration: 3,
+            playmode: Tutorial.ƒS.ANIMATION_PLAYMODE.PLAYONCE
+        };
+    }
+    Tutorial.fromRightToOutOfCanvas = fromRightToOutOfCanvas;
     window.addEventListener("load", start);
     function start(_event) {
+        // MENU
         // define the sequence of scenes, each scene as an object with a reference to the scene-function, a name and optionally an id and an id to continue the story with
         let scenes = [
-            // { scene: Text, name: "HowToText" },
-            // { scene: Decision, name: "HowToDecide" },
+            // { scene: Text, name: "How To Text" },
+            // { scene: Decision, name: "How To Decide" },
             // { scene: End, name: "End" },
-            // { id: "Endo", scene: End, name: "End", next: "Endo" },
-            // { scene: Inventory, name: "HowToMakeAnInventory"}
-            { scene: Tutorial.Animation, name: "HowToAnimate" }
+            // { id: "Endo", scene: End, name: "This is an ending", next: "Endo" },
+            // { scene: Inventory, name: "How To Make An Inventory" }
+            // { scene: Animation, name: "How To Animate" },
+            { scene: Tutorial.GameMenu, name: "How To Make A Game Menu" },
+            // { scene: Meter, name: "How To Make a Progress bar" }
         ];
+        let uiElement = document.querySelector("[type=interface]");
+        Tutorial.dataForSave = Tutorial.ƒS.Progress.setData(Tutorial.dataForSave, uiElement);
         // start the sequence
-        Tutorial.ƒS.Progress.setData(Tutorial.dataForSave);
+        // ƒS.Progress.setData(dataForSave, uiElement);
         Tutorial.ƒS.Progress.go(scenes);
     }
+})(Tutorial || (Tutorial = {}));
+var Tutorial;
+(function (Tutorial) {
+    async function Meter() {
+        console.log("Text");
+        let text = {
+            Narrator: {
+                T0000: "",
+                T0001: ""
+            },
+            Protagonist: {
+                T0000: "",
+                T0001: ""
+            },
+            Ryu: {
+                T0000: "Du hast bisher ganz gut durchgehalten...",
+                T0001: "Weiter so."
+            }
+        };
+        document.getElementsByName("scoreRyu").forEach(meterStuff => meterStuff.hidden = true);
+        document.getElementsByName("scoreForRyu").forEach(meterStuff => meterStuff.hidden = true);
+        Tutorial.ƒS.Speech.hide();
+        await Tutorial.ƒS.Location.show(Tutorial.locations.bench);
+        await Tutorial.ƒS.Character.show(Tutorial.characters.Ryu, Tutorial.characters.Ryu.pose.normal, Tutorial.ƒS.positionPercent(30, 100));
+        await Tutorial.ƒS.update(1);
+        Tutorial.ƒS.Speech.show();
+        document.getElementsByName("scoreRyu").forEach(meterStuff => meterStuff.hidden = false);
+        document.getElementsByName("scoreForRyu").forEach(meterStuff => meterStuff.hidden = false);
+        await Tutorial.ƒS.Speech.tell(Tutorial.characters.Ryu, text.Ryu.T0000);
+        Tutorial.dataForSave.scoreRyu += 50;
+        Tutorial.dataForSave.scoreForRyu = "You earned 50 points on Ryus bar",
+            // dataForSave.scoreAoi += 15;
+            // dataForSave.scoreForAoi = "You earned 15 points on Aois bar",
+            await Tutorial.ƒS.update(1);
+        await Tutorial.ƒS.Speech.tell(Tutorial.characters.Ryu, text.Ryu.T0001);
+        // document.getElementById("meterli").hidden = true;
+        // document.getElementById("meterInput").hidden = true;
+        // beide auf einmal hiden
+        // document.getElementsByName("a").forEach(meterStuff => meterStuff.hidden = true);
+        await Tutorial.ƒS.Character.hide(Tutorial.characters.Ryu);
+        // dataForSave.state.scoreAoi += 100;
+    }
+    Tutorial.Meter = Meter;
 })(Tutorial || (Tutorial = {}));
 var Tutorial;
 (function (Tutorial) {
