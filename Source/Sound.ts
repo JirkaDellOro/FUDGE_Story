@@ -31,11 +31,11 @@ namespace FudgeStory {
       return sound;
     }
 
-    // 
-    public static setVolume(_url: RequestInfo, _volume: number): void {
-      let sound: Sound = Sound.sounds.get(_url);
-      if (sound) 
-         sound.cmpAudio.volume = _volume;
+    /**
+     * Set the overall volume for the sound mix
+     */
+    public static setMasterVolume(_volume: number): void {
+         ƒ.AudioManager.default.volume = _volume;
     }
     
     /**

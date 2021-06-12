@@ -768,6 +768,12 @@ var FudgeStory;
             sound.cmpAudio.play(true);
             return sound;
         }
+        // 
+        static setVolume(_url, _volume) {
+            let sound = Sound.sounds.get(_url);
+            if (sound)
+                sound.cmpAudio.volume = _volume;
+        }
         /**
          * Changes the volume of the sound defined by the url linearly of the given duration to the define volume.
          * If the sound is not currently playing, it starts it respecting the loop-flag.
