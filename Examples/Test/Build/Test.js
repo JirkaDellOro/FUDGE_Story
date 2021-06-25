@@ -71,7 +71,8 @@ var Test;
         Fudge: {
             name: "Fudge Item",
             description: "A delicious cube of fudge, adds 10 to your health",
-            image: "Images/Fudge_48.png"
+            image: "Images/Fudge_48.png",
+            static: false
         }
     };
     Test.state = {

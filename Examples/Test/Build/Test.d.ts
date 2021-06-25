@@ -40,6 +40,7 @@ declare namespace Test {
             name: string;
             description: string;
             image: string;
+            static: boolean;
         };
     };
     let state: {

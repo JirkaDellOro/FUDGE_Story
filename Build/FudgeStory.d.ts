@@ -259,6 +259,7 @@ declare namespace FudgeStory {
         name: string;
         description: string;
         image: RequestInfo;
+        static?: boolean;
     }
     /**
      * Manages the inventory
@@ -434,7 +435,10 @@ declare namespace FudgeStory {
          * Plays the audiofile defined by the given url with the given volume and loops it, if desired
          */
         static play(_url: RequestInfo, _volume: number, _loop?: boolean): Sound;
-        static setVolume(_url: RequestInfo, _volume: number): void;
+        /**
+         * Set the overall volume for the sound mix
+         */
+        static setMasterVolume(_volume: number): void;
         /**
          * Changes the volume of the sound defined by the url linearly of the given duration to the define volume.
          * If the sound is not currently playing, it starts it respecting the loop-flag.

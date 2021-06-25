@@ -418,7 +418,8 @@ var FudgeStory;
             item = document.createElement("li");
             item.id = _item.name.replaceAll(" ", "_");
             item.innerHTML = `<name>${_item.name}</name><amount>1</amount><description>${_item.description}</description><img src="${_item.image}"/>`;
-            item.addEventListener("pointerdown", Inventory.hndUseItem);
+            if (!_item.static)
+                item.addEventListener("pointerdown", Inventory.hndUseItem);
             Inventory.dialog.querySelector("ul").appendChild(item);
         }
         /**
@@ -768,11 +769,11 @@ var FudgeStory;
             sound.cmpAudio.play(true);
             return sound;
         }
-        // 
-        static setVolume(_url, _volume) {
-            let sound = Sound.sounds.get(_url);
-            if (sound)
-                sound.cmpAudio.volume = _volume;
+        /**
+         * Set the overall volume for the sound mix
+         */
+        static setMasterVolume(_volume) {
+            ƒ.AudioManager.default.volume = _volume;
         }
         /**
          * Changes the volume of the sound defined by the url linearly of the given duration to the define volume.
