@@ -13,15 +13,15 @@ declare namespace FudgeStory {
         private static graph;
         private static size;
         /**
-         * Will be called once by [[Progress]] before anything else may happen.
+         * Will be called once by {@link Progress} before anything else may happen.
          */
         protected static setup(): void;
         /**
-         * Creates a serialization-object representing the current state of the [[Character]]s currently shown
+         * Creates a serialization-object representing the current state of the {@link Character}s currently shown
          */
         protected static serialize(): ƒ.Serialization;
         /**
-         * Reconstructs the [[Character]]s from a serialization-object and shows them
+         * Reconstructs the {@link Character}s from a serialization-object and shows them
          * @param _serialization
          */
         protected static deserialize(_serialization: ƒ.Serialization): Promise<void>;
@@ -48,21 +48,22 @@ declare namespace FudgeStory {
      *      rotation:     the angle of rotation at the start of the animation,
      *      scaling:      the size at the start of the animation,
      *      color:        the color at the start of the animation,
-          end: {
-            same as above but for the end of the animation
-          },
-          duration: the duration of one animation-cylce in seconds,
-          playmode: the mode to play the animation in, see ANIMATION_PLAYMODE
+     *    },
+     *    end: {
+     *      same as above but for the end of the animation
+     *    },
+     *    duration: the duration of one animation-cylce in seconds,
+     *    playmode: the mode to play the animation in, see ANIMATION_PLAYMODE
      * }
      * ```
      * ## Example
      * ```typescript
      * let animation: ƒS.AnimationDefinition = {
-        start: {translation: ƒS.positions.bottomleft, rotation: -20, scaling: new ƒS.Position(0.5, 1.5), color: ƒS.Color.CSS("white", 0)},
-        end: {translation: ƒS.positions.bottomright, rotation: 20, scaling: new ƒS.Position(1.5, 0.5), color: ƒS.Color.CSS("red")},
-        duration: 1,
-        playmode: ƒS.ANIMATION_PLAYMODE.REVERSELOOP
-      };
+     *    start: {translation: ƒS.positions.bottomleft, rotation: -20, scaling: new ƒS.Position(0.5, 1.5), color: ƒS.Color.CSS("white", 0)},
+     *    end: {translation: ƒS.positions.bottomright, rotation: 20, scaling: new ƒS.Position(1.5, 0.5), color: ƒS.Color.CSS("red")},
+     *    duration: 1,
+     *    playmode: ƒS.ANIMATION_PLAYMODE.REVERSELOOP
+     *};
      * ```
      */
     interface AnimationDefinition {
@@ -91,11 +92,12 @@ declare namespace FudgeStory {
          */
         static get isPending(): boolean;
         /**
-         * Creates a FUDGE-Animation from an [[AnimationDefinition]]
+         * Creates a FUDGE-Animation from an {@link AnimationDefinition}
          */
         static create(_animation: AnimationDefinition): ƒ.Animation;
         /**
-         * Attaches the given FUDGE-Animation to the given node with the given mode
+         * Attaches the given FUDGE-Animation to the given node with the given mode.
+         * Used internally by Character.
          */
         static attach(_pose: ƒ.Node, _animation: ƒ.Animation, _playmode: ƒ.ANIMATION_PLAYMODE): Promise<void>;
         private static trackComponents;
@@ -164,32 +166,34 @@ declare namespace FudgeStory {
      */
     class Character extends Base {
         private static characters;
+        /** A list of poses for that character */
         poses: Map<RequestInfo, ƒ.Node>;
+        /** The local origin of the characters image */
         origin: ƒ.ORIGIN2D;
         private definition;
         private constructor();
         /**
-         * Retrieves or creates the [[Character]] from the [[CharacterDefinition]] given
+         * Retrieves or creates the {@link Character} from the {@link CharacterDefinition} given
          */
         static get(_character: CharacterDefinition): Character;
         /**
-         * Retrieve the [[Character]] from the name given or null if not defined yet
+         * Retrieve the {@link Character} from the name given or null if not defined yet
          */
         static getByName(_name: string): Character;
         /**
-         * Show the given [[Character]] in the specified pose at the given position. See [[CharacterDefinition]] for the definition of a character.
+         * Show the given {@link Character} in the specified pose at the given position. See {@link CharacterDefinition} for the definition of a character.
          */
         static show(_character: CharacterDefinition, _pose: RequestInfo, _position: Position): Promise<void>;
         /**
-         * Hide the given [[Character]]
+         * Hide the given {@link Character}
          */
         static hide(_character: CharacterDefinition): Promise<void>;
         /**
-         * Animate the given [[Character]] in the specified pose using the animation given.
+         * Animate the given {@link Character} in the specified pose using the animation given.
          */
         static animate(_character: CharacterDefinition, _pose: RequestInfo, _animation: AnimationDefinition): Promise<void>;
         /**
-         * Remove all [[Character]]s and objects
+         * Remove all {@link Character}s and objects
          */
         static hideAll(): void;
         /**
@@ -220,7 +224,7 @@ declare namespace FudgeStory {
      *   ...
      * }
      * ```
-     * Calling [[insert]] directly will not register the scene as a save-point for saving and loading.
+     * Calling {@link insert} directly will not register the scene as a save-point for saving and loading.
      */
     function insert(_scene: SceneFunction): Promise<void | string>;
     /**
@@ -229,7 +233,7 @@ declare namespace FudgeStory {
      */
     function update(_duration?: number, _url?: RequestInfo, _edge?: number): Promise<void>;
     /**
-     * Wait for the viewers input. See [[EVENT]] for predefined events to wait for.
+     * Wait for the viewers input. See {@link EVENT} for predefined events to wait for.
      */
     function getInput(_eventTypes: string[]): Promise<Event>;
     /**
@@ -249,17 +253,29 @@ declare namespace FudgeStory {
         right: ƒ.Vector2;
     };
     /**
-     * Calculates and returns a position to place [[Character]]s or objects.
+     * Calculates and returns a position to place {@link Character}s or objects.
      * Pass values in percent relative to the upper left corner.
      */
     function positionPercent(_x: number, _y: number): Position;
 }
 declare namespace FudgeStory {
+    /**
+     * Define an item to use with the inventory using this pattern:
+     * ```text
+     * {
+     *    name: "Name of the item", // also used to identify it,
+     *    description: "Short description to show in the inventory",
+     *    image: "path to the image to be used as icon",
+     *    static: true // if the item can't be consumed
+     * }
+     * ```
+     */
     interface ItemDefinition {
         name: string;
         description: string;
         image: RequestInfo;
         static?: boolean;
+        handler: (_event: CustomEvent) => void;
     }
     /**
      * Manages the inventory
@@ -273,7 +289,7 @@ declare namespace FudgeStory {
          */
         static add(_item: ItemDefinition): void;
         /**
-         * Opens the inventory
+         * Opens the inventory and return a list of the names of consumed items when the inventory closes again
          */
         static open(): Promise<string[]>;
         /**
@@ -319,7 +335,7 @@ declare namespace FudgeStory {
         [id: string]: LocationDefinition;
     }
     /**
-     * Represents a location with foreground, background and the middle, where [[Character]]s show.
+     * Represents a location with foreground, background and the middle, where {@link Character}s show.
      */
     class Location extends Base {
         private static locations;
@@ -327,11 +343,11 @@ declare namespace FudgeStory {
         private foreground;
         private constructor();
         /**
-         * Retrieves the [[Location]] associated with the given [[LocationDefinition]]
+         * Retrieves the {@link Location} associated with the given {@link LocationDefinition}
          */
         static get(_description: LocationDefinition): Promise<Location>;
         /**
-         * Show the location given by [[LocationDefinition]].
+         * Show the location given by {@link LocationDefinition}.
          */
         static show(_location: LocationDefinition): Promise<void>;
         private load;
@@ -351,7 +367,7 @@ declare namespace FudgeStory {
         /**
          * Displays a non-modal dialog showing buttons with the texts given as values with the options-object to be selected by the user.
          * When the user uses a button, the given callback function is envolde with the key the selected text is associated with. The class-parameter allows for specific styling with css.
-         * Returns a [[Menu]]-object.
+         * Returns a {@link Menu}-object.
          */
         static create(_options: Object, _callback: (_option: string) => void, _cssClass?: string): Menu;
         private static createDialog;
@@ -391,11 +407,11 @@ declare namespace FudgeStory {
          */
         static load(): Promise<void>;
         /**
-         * Saves the state the program was in when starting the current scene from [[Progress]].play(...)
+         * Saves the state the program was in when starting the current scene from {@link Progress}.play(...)
          */
         static save(): Promise<void>;
         /**
-         * Defines a [[Signal]] which is a bundle of promises waiting for a set of events to happen.
+         * Defines a {@link Signal} which is a bundle of promises waiting for a set of events to happen.
          * Example:
          * ```typescript
          * // define a signal to observe the keyboard for a keydown-event and a timeout of 5 seconds
@@ -469,11 +485,11 @@ declare namespace FudgeStory {
         private static delayParagraph;
         private static get div();
         /**
-         * Displays the [[Character]]s name or the string given as name and the given text at once
+         * Displays the {@link Character}s name or the string given as name and the given text at once
          */
         static set(_character: Object | string, _text: string, _class?: string): void;
         /**
-         * Displays the [[Character]]s name or the string given as name and slowly writes the text letter by letter
+         * Displays the {@link Character}s name or the string given as name and slowly writes the text letter by letter
          */
         static tell(_character: Object | string, _text: string, _waitForSignalNext?: boolean, _class?: string): Promise<void>;
         /**
@@ -538,7 +554,7 @@ declare namespace FudgeStory {
     class Transition extends Base {
         private static transitions;
         /**
-         * Called by [[update]] to blend from the old display of a scene to the new. Don't call directly.
+         * Called by {@link update} to blend from the old display of a scene to the new. Don't call directly.
          */
         static blend(_imgOld: ImageData, _imgNew: ImageData, _duration: number, _transition: Uint8ClampedArray, _factor?: number): Promise<void>;
         /**

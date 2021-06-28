@@ -7,7 +7,7 @@ var FudgeStory;
      */
     class Base {
         /**
-         * Will be called once by [[Progress]] before anything else may happen.
+         * Will be called once by {@link Progress} before anything else may happen.
          */
         static setup() {
             if (Base.viewport)
@@ -42,7 +42,7 @@ var FudgeStory;
             ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, FudgeStory.Animation.update);
         }
         /**
-         * Creates a serialization-object representing the current state of the [[Character]]s currently shown
+         * Creates a serialization-object representing the current state of the {@link Character}s currently shown
          */
         static serialize() {
             let serialization = { characters: [] };
@@ -54,7 +54,7 @@ var FudgeStory;
             return serialization;
         }
         /**
-         * Reconstructs the [[Character]]s from a serialization-object and shows them
+         * Reconstructs the {@link Character}s from a serialization-object and shows them
          * @param _serialization
          */
         static async deserialize(_serialization) {
@@ -143,7 +143,7 @@ var FudgeStory;
             return (Animation.activeComponents?.length > 0);
         }
         /**
-         * Creates a FUDGE-Animation from an [[AnimationDefinition]]
+         * Creates a FUDGE-Animation from an {@link AnimationDefinition}
          */
         static create(_animation) {
             let mutator = {};
@@ -185,7 +185,8 @@ var FudgeStory;
             return animation;
         }
         /**
-         * Attaches the given FUDGE-Animation to the given node with the given mode
+         * Attaches the given FUDGE-Animation to the given node with the given mode.
+         * Used internally by Character.
          */
         static async attach(_pose, _animation, _playmode) {
             // TODO: Mutate must not initiate drawing, implement render event at component to animate  
@@ -228,26 +229,27 @@ var FudgeStory;
     class Character extends FudgeStory.Base {
         constructor(_character) {
             super();
+            /** A list of poses for that character */
             this.poses = new Map();
             this.origin = Reflect.get(_character, "origin") || ƒ.ORIGIN2D.BOTTOMCENTER;
             this.definition = _character;
             Character.characters.set(_character.name, this);
         }
         /**
-         * Retrieves or creates the [[Character]] from the [[CharacterDefinition]] given
+         * Retrieves or creates the {@link Character} from the {@link CharacterDefinition} given
          */
         static get(_character) {
             let result = Character.characters.get(_character.name);
             return result || new Character(_character);
         }
         /**
-         * Retrieve the [[Character]] from the name given or null if not defined yet
+         * Retrieve the {@link Character} from the name given or null if not defined yet
          */
         static getByName(_name) {
             return Character.characters.get(_name);
         }
         /**
-         * Show the given [[Character]] in the specified pose at the given position. See [[CharacterDefinition]] for the definition of a character.
+         * Show the given {@link Character} in the specified pose at the given position. See {@link CharacterDefinition} for the definition of a character.
          */
         static async show(_character, _pose, _position) {
             let character = Character.get(_character);
@@ -256,7 +258,7 @@ var FudgeStory;
             FudgeStory.Base.middle.appendChild(pose);
         }
         /**
-         * Hide the given [[Character]]
+         * Hide the given {@link Character}
          */
         static async hide(_character) {
             let found = FudgeStory.Base.middle.getChildrenByName(_character.name);
@@ -267,7 +269,7 @@ var FudgeStory;
             FudgeStory.Base.middle.removeChild(found[0]);
         }
         /**
-         * Animate the given [[Character]] in the specified pose using the animation given.
+         * Animate the given {@link Character} in the specified pose using the animation given.
          */
         static async animate(_character, _pose, _animation) {
             let character = Character.get(_character);
@@ -277,7 +279,7 @@ var FudgeStory;
             return FudgeStory.Animation.attach(pose, animation, _animation.playmode);
         }
         /**
-         * Remove all [[Character]]s and objects
+         * Remove all {@link Character}s and objects
          */
         static hideAll() {
             FudgeStory.Base.middle.removeAllChildren();
@@ -323,7 +325,7 @@ var FudgeStory;
      *   ...
      * }
      * ```
-     * Calling [[insert]] directly will not register the scene as a save-point for saving and loading.
+     * Calling {@link insert} directly will not register the scene as a save-point for saving and loading.
      */
     async function insert(_scene) {
         console.log("SceneFunction", _scene.name);
@@ -353,7 +355,7 @@ var FudgeStory;
     }
     FudgeStory.update = update;
     /**
-     * Wait for the viewers input. See [[EVENT]] for predefined events to wait for.
+     * Wait for the viewers input. See {@link EVENT} for predefined events to wait for.
      */
     async function getInput(_eventTypes) {
         return new Promise((resolve) => {
@@ -379,7 +381,7 @@ var FudgeStory;
         left: pos0, right: pos0
     };
     /**
-     * Calculates and returns a position to place [[Character]]s or objects.
+     * Calculates and returns a position to place {@link Character}s or objects.
      * Pass values in percent relative to the upper left corner.
      */
     function positionPercent(_x, _y) {
@@ -420,10 +422,17 @@ var FudgeStory;
             item.innerHTML = `<name>${_item.name}</name><amount>1</amount><description>${_item.description}</description><img src="${_item.image}"/>`;
             if (!_item.static)
                 item.addEventListener("pointerdown", Inventory.hndUseItem);
+            if (_item.handler) {
+                function custom(_event) {
+                    _item.handler(new CustomEvent(_event.type, { detail: _item.name }));
+                }
+                item.addEventListener("pointerup", custom);
+                item.addEventListener("pointerdown", custom);
+            }
             Inventory.dialog.querySelector("ul").appendChild(item);
         }
         /**
-         * Opens the inventory
+         * Opens the inventory and return a list of the names of consumed items when the inventory closes again
          */
         static async open() {
             let dialog = Inventory.dialog;
@@ -459,14 +468,14 @@ var FudgeStory;
 (function (FudgeStory) {
     var ƒ = FudgeCore;
     /**
-     * Represents a location with foreground, background and the middle, where [[Character]]s show.
+     * Represents a location with foreground, background and the middle, where {@link Character}s show.
      */
     class Location extends FudgeStory.Base {
         constructor(_description) {
             super();
         }
         /**
-         * Retrieves the [[Location]] associated with the given [[LocationDefinition]]
+         * Retrieves the {@link Location} associated with the given {@link LocationDefinition}
          */
         static async get(_description) {
             let result = Location.locations.get(_description);
@@ -477,7 +486,7 @@ var FudgeStory;
             return result;
         }
         /**
-         * Show the location given by [[LocationDefinition]].
+         * Show the location given by {@link LocationDefinition}.
          */
         static async show(_location) {
             FudgeStory.Base.back.removeAllChildren();
@@ -537,7 +546,7 @@ var FudgeStory;
         /**
          * Displays a non-modal dialog showing buttons with the texts given as values with the options-object to be selected by the user.
          * When the user uses a button, the given callback function is envolde with the key the selected text is associated with. The class-parameter allows for specific styling with css.
-         * Returns a [[Menu]]-object.
+         * Returns a {@link Menu}-object.
          */
         static create(_options, _callback, _cssClass) {
             return new Menu(_options, _callback, _cssClass);
@@ -639,14 +648,14 @@ var FudgeStory;
                 window.location.href = window.location.origin + window.location.pathname + "?" + loaded[key];
         }
         /**
-         * Saves the state the program was in when starting the current scene from [[Progress]].play(...)
+         * Saves the state the program was in when starting the current scene from {@link Progress}.play(...)
          */
         static async save() {
             let saved = await ƒ.FileIoBrowserLocal.save({ [Progress.currentSceneDescriptor.name]: JSON.stringify(Progress.serialization) }, "application/json");
             console.log(saved);
         }
         /**
-         * Defines a [[Signal]] which is a bundle of promises waiting for a set of events to happen.
+         * Defines a {@link Signal} which is a bundle of promises waiting for a set of events to happen.
          * Example:
          * ```typescript
          * // define a signal to observe the keyboard for a keydown-event and a timeout of 5 seconds
@@ -852,7 +861,7 @@ var FudgeStory;
             return Speech.element;
         }
         /**
-         * Displays the [[Character]]s name or the string given as name and the given text at once
+         * Displays the {@link Character}s name or the string given as name and the given text at once
          */
         static set(_character, _text, _class) {
             Speech.show();
@@ -867,7 +876,7 @@ var FudgeStory;
             textTag.innerHTML = _text;
         }
         /**
-         * Displays the [[Character]]s name or the string given as name and slowly writes the text letter by letter
+         * Displays the {@link Character}s name or the string given as name and slowly writes the text letter by letter
          */
         static async tell(_character, _text, _waitForSignalNext = true, _class) {
             Speech.show();
@@ -1045,7 +1054,7 @@ var FudgeStory;
      */
     class Transition extends FudgeStory.Base {
         /**
-         * Called by [[update]] to blend from the old display of a scene to the new. Don't call directly.
+         * Called by {@link update} to blend from the old display of a scene to the new. Don't call directly.
          */
         static async blend(_imgOld, _imgNew, _duration = 1000, _transition, _factor = 0.5) {
             let crc2 = FudgeStory.Base.viewport.getContext();

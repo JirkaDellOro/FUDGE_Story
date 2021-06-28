@@ -17,6 +17,7 @@ namespace FudgeStory {
     description: string;
     image: RequestInfo;
     static?: boolean;
+    handler: (_event: CustomEvent) => void;
   }
 
   /**
@@ -49,6 +50,13 @@ namespace FudgeStory {
       item.innerHTML = `<name>${_item.name}</name><amount>1</amount><description>${_item.description}</description><img src="${_item.image}"/>`;
       if (!_item.static)
         item.addEventListener("pointerdown", Inventory.hndUseItem);
+      if (_item.handler) {
+        function custom(_event: PointerEvent): void {
+          _item.handler(new CustomEvent(_event.type, {detail: _item.name}));
+        }
+        item.addEventListener("pointerup", custom);
+        item.addEventListener("pointerdown", custom);
+      }
       Inventory.dialog.querySelector("ul").appendChild(item);
     }
 

@@ -4,7 +4,7 @@ declare namespace Test {
 declare namespace Test {
     export import ƒ = FudgeCore;
     export import ƒS = FudgeStory;
-    let transitions: {
+    export let transitions: {
         clock: {
             duration: number;
             alpha: string;
@@ -16,17 +16,17 @@ declare namespace Test {
             edge: number;
         };
     };
-    let sound: {
+    export let sound: {
         backgroundTheme: string;
         shoot: string;
     };
-    let locations: {
+    export let locations: {
         city: {
             name: string;
             background: string;
         };
     };
-    let characters: {
+    export let characters: {
         Sue: {
             name: string;
             origin: ƒ.ORIGIN2D;
@@ -35,18 +35,21 @@ declare namespace Test {
             };
         };
     };
-    let items: {
+    export let items: {
         Fudge: {
             name: string;
             description: string;
             image: string;
             static: boolean;
+            handler: typeof hndItem;
         };
     };
-    let state: {
+    export let state: {
         a: number;
         b: string;
         c: number;
     };
-    function getAnimation(): ƒS.AnimationDefinition;
+    function hndItem(_event: CustomEvent): void;
+    export function getAnimation(): ƒS.AnimationDefinition;
+    export {};
 }

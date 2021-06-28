@@ -49,7 +49,8 @@ namespace Test {
       name: "Fudge Item",
       description: "A delicious cube of fudge, adds 10 to your health",
       image: "Images/Fudge_48.png",
-      static: false
+      static: false,
+      handler: hndItem
     }
   };
 
@@ -72,6 +73,10 @@ namespace Test {
         await ƒS.Progress.load();
         break;
     }
+  }
+  
+  function hndItem(_event: CustomEvent): void {
+    console.log(_event);
   }
 
   export function getAnimation(): ƒS.AnimationDefinition {

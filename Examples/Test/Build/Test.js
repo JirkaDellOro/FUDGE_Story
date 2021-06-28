@@ -72,7 +72,8 @@ var Test;
             name: "Fudge Item",
             description: "A delicious cube of fudge, adds 10 to your health",
             image: "Images/Fudge_48.png",
-            static: false
+            static: false,
+            handler: hndItem
         }
     };
     Test.state = {
@@ -92,6 +93,9 @@ var Test;
                 await Test.ƒS.Progress.load();
                 break;
         }
+    }
+    function hndItem(_event) {
+        console.log(_event);
     }
     function getAnimation() {
         return {
