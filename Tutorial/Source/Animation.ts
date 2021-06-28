@@ -31,14 +31,18 @@ namespace Tutorial {
     // };
 
 
+    document.getElementsByName("scoreRyu").forEach(meterStuff => meterStuff.hidden = true);
+    document.getElementsByName("scoreForRyu").forEach(meterStuff => meterStuff.hidden = true);
+    gameMenu.close();
+    testo = false;
 
     ƒS.Speech.hide();
     await ƒS.Location.show(locations.bench);
     // await ƒS.Character.animate(characters.Aoi, characters.Aoi.pose.normal, animation);
     // await ƒS.update(2);
     // await ƒS.Character.show(characters.Aoi, characters.Aoi.pose.normal, ƒS.positions.bottomleft);
-    // await ƒS.Character.animate(characters.Aoi, characters.Aoi.pose.normal, leftToRight());
-    await ƒS.Character.animate(characters.Aoi, characters.Aoi.pose.normal, fromRightToOutOfCanvas());
+    await ƒS.Character.animate(characters.Aoi, characters.Aoi.pose.normal, leftToRight());
+    // await ƒS.Character.animate(characters.Aoi, characters.Aoi.pose.normal, fromRightToOutOfCanvas());
 
     await ƒS.Character.hide(characters.Aoi);
 

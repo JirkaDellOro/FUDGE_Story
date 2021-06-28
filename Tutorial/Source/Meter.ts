@@ -21,7 +21,7 @@ namespace Tutorial {
     document.getElementsByName("scoreRyu").forEach(meterStuff => meterStuff.hidden = true);
     document.getElementsByName("scoreForRyu").forEach(meterStuff => meterStuff.hidden = true);
 
-    ƒS.Speech.hide();
+    // ƒS.Speech.hide();
     await ƒS.Location.show(locations.bench);
     await ƒS.Character.show(characters.Ryu, characters.Ryu.pose.normal, ƒS.positionPercent(30, 100));
     await ƒS.update(1);

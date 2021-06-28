@@ -104,13 +104,22 @@ declare namespace Tutorial {
         scoreForAoi: string;
         scoreRyu: number;
         scoreForRyu: string;
+        started: boolean;
         ended: boolean;
     };
+    function incrementSound(): void;
+    function decrementSound(): void;
+    function showCredits(): void;
+    let gameMenu: ƒS.Menu;
+    let testo: boolean;
     function leftToRight(): ƒS.AnimationDefinition;
     function fromRightToOutOfCanvas(): ƒS.AnimationDefinition;
 }
 declare namespace Tutorial {
     function Meter(): ƒS.SceneReturn;
+}
+declare namespace Tutorial {
+    function NovelPages(): ƒS.SceneReturn;
 }
 declare namespace Tutorial {
     function Text(): ƒS.SceneReturn;
