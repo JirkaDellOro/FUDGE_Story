@@ -5,6 +5,7 @@ namespace FudgeStory {
     name: string;
     description: string;
     image: RequestInfo;
+    static?: boolean;
   }
 
   /**
@@ -35,7 +36,8 @@ namespace FudgeStory {
       item = document.createElement("li");
       item.id = _item.name.replaceAll(" ", "_");
       item.innerHTML = `<name>${_item.name}</name><amount>1</amount><description>${_item.description}</description><img src="${_item.image}"/>`;
-      item.addEventListener("pointerdown", Inventory.hndUseItem);
+      if (!_item.static)
+        item.addEventListener("pointerdown", Inventory.hndUseItem);
       Inventory.dialog.querySelector("ul").appendChild(item);
     }
 

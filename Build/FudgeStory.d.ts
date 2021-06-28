@@ -259,6 +259,7 @@ declare namespace FudgeStory {
         name: string;
         description: string;
         image: RequestInfo;
+        static?: boolean;
     }
     /**
      * Manages the inventory
