@@ -42,7 +42,7 @@ namespace FudgeStory {
     /**
      * Displays a non-modal dialog showing buttons with the texts given as values with the options-object to be selected by the user.
      * When the user uses a button, the given callback function is envolde with the key the selected text is associated with. The class-parameter allows for specific styling with css.
-     * Returns a [[Menu]]-object. 
+     * Returns a {@link Menu}-object. 
      */
     public static create(_options: Object, _callback: (_option: string) => void, _cssClass?: string): Menu {
       return new Menu(_options, _callback, _cssClass);

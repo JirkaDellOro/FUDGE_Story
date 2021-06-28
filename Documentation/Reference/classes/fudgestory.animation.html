@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Location | Fudge Story</title>
+	<title>Animation | Fudge Story</title>
 	<meta name="description" content="Documentation for Fudge Story">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -58,10 +58,10 @@
 					<a href="../modules/fudgestory.html">FudgeStory</a>
 				</li>
 				<li>
-					<a href="fudgestory.location.html">Location</a>
+					<a href="fudgestory.animation.html">Animation</a>
 				</li>
 			</ul>
-			<h1>Class Location</h1>
+			<h1>Class Animation</h1>
 		</div>
 	</div>
 </header>
@@ -71,7 +71,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Represents a location with foreground, background and the middle, where <a href="fudgestory.character.html">Character</a>s show.</p>
+						<p>Handles animation</p>
 					</div>
 				</div>
 			</section>
@@ -82,7 +82,7 @@
 						<a href="fudgestory.base.html" class="tsd-signature-type" data-tsd-kind="Class">Base</a>
 						<ul class="tsd-hierarchy">
 							<li>
-								<span class="target">Location</span>
+								<span class="target">Animation</span>
 							</li>
 						</ul>
 					</li>
@@ -92,71 +92,133 @@
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
+						<section class="tsd-index-section tsd-is-inherited">
+							<h3>Constructors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><a href="fudgestory.animation.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Accessors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-static"><a href="fudgestory.animation.html#ispending" class="tsd-kind-icon">is<wbr>Pending</a></li>
+							</ul>
+						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="fudgestory.location.html#get" class="tsd-kind-icon">get</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="fudgestory.location.html#show" class="tsd-kind-icon">show</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="fudgestory.animation.html#attach" class="tsd-kind-icon">attach</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="fudgestory.animation.html#create" class="tsd-kind-icon">create</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
+				<h2>Constructors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited">
+					<a name="constructor" class="tsd-anchor"></a>
+					<h3>constructor</h3>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Animation<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="fudgestory.animation.html" class="tsd-signature-type" data-tsd-kind="Class">Animation</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="fudgestory.base.html">Base</a>.<a href="fudgestory.base.html#constructor">constructor</a></p>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <a href="fudgestory.animation.html" class="tsd-signature-type" data-tsd-kind="Class">Animation</a></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
-					<a name="get" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> get</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">get<span class="tsd-signature-symbol">(</span>_description<span class="tsd-signature-symbol">: </span><a href="../interfaces/fudgestory.locationdefinition.html" class="tsd-signature-type" data-tsd-kind="Interface">LocationDefinition</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="fudgestory.location.html" class="tsd-signature-type" data-tsd-kind="Class">Location</a><span class="tsd-signature-symbol">&gt;</span></li>
+				<h2>Accessors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-static">
+					<a name="ispending" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> is<wbr>Pending</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> isPending<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/JirkaDellOro/FUDGE_Story/blob/ff9188a/Source/Location.ts#L54">Documents/HFU/FUDGE_Story/Source/Location.ts:54</a></li>
+									<li>Defined in <a href="https://github.com/JirkaDellOro/FUDGE_Story/blob/ff9188a/Source/Animation.ts#L53">Documents/HFU/FUDGE_Story/Source/Animation.ts:53</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Retrieves the <a href="fudgestory.location.html">Location</a> associated with the given <a href="../interfaces/fudgestory.locationdefinition.html">LocationDefinition</a></p>
+									<p>Returns true if an animation is being played</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<a name="attach" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> attach</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon">attach<span class="tsd-signature-symbol">(</span>_pose<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Node</span>, _animation<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Animation</span>, _playmode<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ANIMATION_PLAYMODE</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/JirkaDellOro/FUDGE_Story/blob/ff9188a/Source/Animation.ts#L106">Documents/HFU/FUDGE_Story/Source/Animation.ts:106</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Attaches the given FUDGE-Animation to the given node with the given mode.
+									Used internally by Character.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>_description: <a href="../interfaces/fudgestory.locationdefinition.html" class="tsd-signature-type" data-tsd-kind="Interface">LocationDefinition</a></h5>
+									<h5>_pose: <span class="tsd-signature-type">Node</span></h5>
+								</li>
+								<li>
+									<h5>_animation: <span class="tsd-signature-type">Animation</span></h5>
+								</li>
+								<li>
+									<h5>_playmode: <span class="tsd-signature-type">ANIMATION_PLAYMODE</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="fudgestory.location.html" class="tsd-signature-type" data-tsd-kind="Class">Location</a><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
-					<a name="show" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> show</h3>
+					<a name="create" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> create</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">show<span class="tsd-signature-symbol">(</span>_location<span class="tsd-signature-symbol">: </span><a href="../interfaces/fudgestory.locationdefinition.html" class="tsd-signature-type" data-tsd-kind="Interface">LocationDefinition</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">create<span class="tsd-signature-symbol">(</span>_animation<span class="tsd-signature-symbol">: </span><a href="../interfaces/fudgestory.animationdefinition.html" class="tsd-signature-type" data-tsd-kind="Interface">AnimationDefinition</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Animation</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/JirkaDellOro/FUDGE_Story/blob/ff9188a/Source/Location.ts#L68">Documents/HFU/FUDGE_Story/Source/Location.ts:68</a></li>
+									<li>Defined in <a href="https://github.com/JirkaDellOro/FUDGE_Story/blob/ff9188a/Source/Animation.ts#L60">Documents/HFU/FUDGE_Story/Source/Animation.ts:60</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Show the location given by <a href="../interfaces/fudgestory.locationdefinition.html">LocationDefinition</a>.</p>
+									<p>Creates a FUDGE-Animation from an <a href="../interfaces/fudgestory.animationdefinition.html">AnimationDefinition</a></p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>_location: <a href="../interfaces/fudgestory.locationdefinition.html" class="tsd-signature-type" data-tsd-kind="Interface">LocationDefinition</a></h5>
+									<h5>_animation: <a href="../interfaces/fudgestory.animationdefinition.html" class="tsd-signature-type" data-tsd-kind="Interface">AnimationDefinition</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Animation</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -181,9 +243,27 @@
 					<li class=" tsd-kind-enum tsd-parent-kind-namespace">
 						<a href="../enums/fudgestory.origin.html" class="tsd-kind-icon">ORIGIN</a>
 					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-namespace">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-class tsd-parent-kind-namespace">
 						<a href="fudgestory.animation.html" class="tsd-kind-icon">Animation</a>
+						<ul>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited">
+								<a href="fudgestory.animation.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-static">
+								<a href="fudgestory.animation.html#ispending" class="tsd-kind-icon">is<wbr>Pending</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
+								<a href="fudgestory.animation.html#attach" class="tsd-kind-icon">attach</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
+								<a href="fudgestory.animation.html#create" class="tsd-kind-icon">create</a>
+							</li>
+						</ul>
 					</li>
+				</ul>
+				<ul class="after-current">
 					<li class=" tsd-kind-class tsd-parent-kind-namespace">
 						<a href="fudgestory.base.html" class="tsd-kind-icon">Base</a>
 					</li>
@@ -193,21 +273,9 @@
 					<li class=" tsd-kind-class tsd-parent-kind-namespace">
 						<a href="fudgestory.inventory.html" class="tsd-kind-icon">Inventory</a>
 					</li>
-				</ul>
-				<ul class="current">
-					<li class="current tsd-kind-class tsd-parent-kind-namespace">
+					<li class=" tsd-kind-class tsd-parent-kind-namespace">
 						<a href="fudgestory.location.html" class="tsd-kind-icon">Location</a>
-						<ul>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
-								<a href="fudgestory.location.html#get" class="tsd-kind-icon">get</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
-								<a href="fudgestory.location.html#show" class="tsd-kind-icon">show</a>
-							</li>
-						</ul>
 					</li>
-				</ul>
-				<ul class="after-current">
 					<li class=" tsd-kind-class tsd-parent-kind-namespace">
 						<a href="fudgestory.menu.html" class="tsd-kind-icon">Menu</a>
 					</li>
@@ -298,6 +366,9 @@
 	<div class="container">
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
+			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
 			</ul>

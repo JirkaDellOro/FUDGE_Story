@@ -7,6 +7,7 @@
 	<meta name="description" content="Documentation for Fudge Story">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
+	<script async src="../assets/js/search.js" id="search-script"></script>
 </head>
 <body>
 <header>
@@ -40,8 +41,6 @@
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
 							<input type="checkbox" id="tsd-filter-externals" checked />
 							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
-							<input type="checkbox" id="tsd-filter-only-exported" />
-							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
 						</div>
 					</div>
 					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
@@ -53,7 +52,7 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="../globals.html">Globals</a>
+					<a href="../modules.html">Fudge Story</a>
 				</li>
 				<li>
 					<a href="../modules/fudgestory.html">FudgeStory</a>
@@ -95,6 +94,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="fudgestory.sound.html#fade" class="tsd-kind-icon">fade</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="fudgestory.sound.html#play" class="tsd-kind-icon">play</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="fudgestory.sound.html#serialize" class="tsd-kind-icon">serialize</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="fudgestory.sound.html#setmastervolume" class="tsd-kind-icon">set<wbr>Master<wbr>Volume</a></li>
 							</ul>
 						</section>
 					</div>
@@ -106,13 +106,13 @@
 					<a name="deserialize" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> deserialize</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">deserialize<span class="tsd-signature-symbol">(</span>_serialization<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ƒ.Serialization</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">deserialize<span class="tsd-signature-symbol">(</span>_serialization<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Serialization</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/JirkaDellOro/FUDGE_Story/blob/080ff92/Source/Sound.ts#L89">Documents/HFU/FUDGE_Story/Source/Sound.ts:89</a></li>
+									<li>Defined in <a href="https://github.com/JirkaDellOro/FUDGE_Story/blob/ff9188a/Source/Sound.ts#L98">Documents/HFU/FUDGE_Story/Source/Sound.ts:98</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -123,7 +123,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>_serialization: <span class="tsd-signature-type">ƒ.Serialization</span><span class="tsd-signature-symbol">[]</span></h5>
+									<h5>_serialization: <span class="tsd-signature-type">Serialization</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -140,7 +140,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/JirkaDellOro/FUDGE_Story/blob/080ff92/Source/Sound.ts#L37">Documents/HFU/FUDGE_Story/Source/Sound.ts:37</a></li>
+									<li>Defined in <a href="https://github.com/JirkaDellOro/FUDGE_Story/blob/ff9188a/Source/Sound.ts#L45">Documents/HFU/FUDGE_Story/Source/Sound.ts:45</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -161,7 +161,7 @@
 									<h5>_duration: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> _loop: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></h5>
+									<h5>_loop: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -172,13 +172,13 @@
 					<a name="play" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> play</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">play<span class="tsd-signature-symbol">(</span>_url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">RequestInfo</span>, _volume<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, _loop<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="fudgestory.sound.html" class="tsd-signature-type">Sound</a></li>
+						<li class="tsd-signature tsd-kind-icon">play<span class="tsd-signature-symbol">(</span>_url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">RequestInfo</span>, _volume<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, _loop<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="fudgestory.sound.html" class="tsd-signature-type" data-tsd-kind="Class">Sound</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/JirkaDellOro/FUDGE_Story/blob/080ff92/Source/Sound.ts#L24">Documents/HFU/FUDGE_Story/Source/Sound.ts:24</a></li>
+									<li>Defined in <a href="https://github.com/JirkaDellOro/FUDGE_Story/blob/ff9188a/Source/Sound.ts#L24">Documents/HFU/FUDGE_Story/Source/Sound.ts:24</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -195,10 +195,10 @@
 									<h5>_volume: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> _loop: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></h5>
+									<h5>_loop: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="fudgestory.sound.html" class="tsd-signature-type">Sound</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="fudgestory.sound.html" class="tsd-signature-type" data-tsd-kind="Class">Sound</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -206,13 +206,13 @@
 					<a name="serialize" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> serialize</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">serialize<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ƒ.Serialization</span><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">serialize<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Serialization</span><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/JirkaDellOro/FUDGE_Story/blob/080ff92/Source/Sound.ts#L69">Documents/HFU/FUDGE_Story/Source/Sound.ts:69</a></li>
+									<li>Defined in <a href="https://github.com/JirkaDellOro/FUDGE_Story/blob/ff9188a/Source/Sound.ts#L78">Documents/HFU/FUDGE_Story/Source/Sound.ts:78</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -220,7 +220,35 @@
 									<p>Used internally for save/load, don&#39;t call directly</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">ƒ.Serialization</span><span class="tsd-signature-symbol">[]</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Serialization</span><span class="tsd-signature-symbol">[]</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<a name="setmastervolume" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> set<wbr>Master<wbr>Volume</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Master<wbr>Volume<span class="tsd-signature-symbol">(</span>_volume<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/JirkaDellOro/FUDGE_Story/blob/ff9188a/Source/Sound.ts#L37">Documents/HFU/FUDGE_Story/Source/Sound.ts:37</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Set the overall volume for the sound mix</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>_volume: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -229,8 +257,8 @@
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 			<nav class="tsd-navigation primary">
 				<ul>
-					<li class="globals  ">
-						<a href="../globals.html"><em>Globals</em></a>
+					<li class=" ">
+						<a href="../modules.html">Exports</a>
 					</li>
 					<li class="current tsd-kind-namespace">
 						<a href="../modules/fudgestory.html">Fudge<wbr>Story</a>
@@ -242,11 +270,20 @@
 					<li class=" tsd-kind-enum tsd-parent-kind-namespace">
 						<a href="../enums/fudgestory.event.html" class="tsd-kind-icon">EVENT</a>
 					</li>
+					<li class=" tsd-kind-enum tsd-parent-kind-namespace">
+						<a href="../enums/fudgestory.origin.html" class="tsd-kind-icon">ORIGIN</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-namespace">
+						<a href="fudgestory.animation.html" class="tsd-kind-icon">Animation</a>
+					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-namespace">
 						<a href="fudgestory.base.html" class="tsd-kind-icon">Base</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-namespace">
 						<a href="fudgestory.character.html" class="tsd-kind-icon">Character</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-namespace">
+						<a href="fudgestory.inventory.html" class="tsd-kind-icon">Inventory</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-namespace">
 						<a href="fudgestory.location.html" class="tsd-kind-icon">Location</a>
@@ -274,6 +311,9 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
 								<a href="fudgestory.sound.html#serialize" class="tsd-kind-icon">serialize</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
+								<a href="fudgestory.sound.html#setmastervolume" class="tsd-kind-icon">set<wbr>Master<wbr>Volume</a>
+							</li>
 						</ul>
 					</li>
 				</ul>
@@ -288,7 +328,13 @@
 						<a href="fudgestory.transition.html" class="tsd-kind-icon">Transition</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="../interfaces/fudgestory.animationdefinition.html" class="tsd-kind-icon">Animation<wbr>Definition</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="../interfaces/fudgestory.characterdefinition.html" class="tsd-kind-icon">Character<wbr>Definition</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="../interfaces/fudgestory.itemdefinition.html" class="tsd-kind-icon">Item<wbr>Definition</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="../interfaces/fudgestory.locationdefinition.html" class="tsd-kind-icon">Location<wbr>Definition</a>
@@ -297,7 +343,13 @@
 						<a href="../interfaces/fudgestory.locationdefinitions.html" class="tsd-kind-icon">Location<wbr>Definitions</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace">
+						<a href="../modules/fudgestory.html#color" class="tsd-kind-icon">Color</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace">
 						<a href="../modules/fudgestory.html#position" class="tsd-kind-icon">Position</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace">
+						<a href="../modules/fudgestory.html#scaling" class="tsd-kind-icon">Scaling</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace">
 						<a href="../modules/fudgestory.html#scenedescriptor" class="tsd-kind-icon">Scene<wbr>Descriptor</a>
@@ -315,16 +367,16 @@
 						<a href="../modules/fudgestory.html#signal" class="tsd-kind-icon">Signal</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-namespace">
-						<a href="../modules/fudgestory.html#origin" class="tsd-kind-icon">ORIGIN</a>
+						<a href="../modules/fudgestory.html#animation_playmode" class="tsd-kind-icon">ANIMATION_<wbr>PLAYMODE</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-namespace">
+						<a href="../modules/fudgestory.html#color-1" class="tsd-kind-icon">Color</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-namespace">
 						<a href="../modules/fudgestory.html#position-1" class="tsd-kind-icon">Position</a>
 					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-namespace tsd-is-not-exported">
-						<a href="../modules/fudgestory.html#pos0" class="tsd-kind-icon">pos0</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-namespace tsd-is-not-exported">
-						<a href="../modules/fudgestory.html#_" class="tsd-kind-icon">ƒ</a>
+					<li class=" tsd-kind-variable tsd-parent-kind-namespace">
+						<a href="../modules/fudgestory.html#positions" class="tsd-kind-icon">positions</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-namespace">
 						<a href="../modules/fudgestory.html#getinput" class="tsd-kind-icon">get<wbr>Input</a>
@@ -337,9 +389,6 @@
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-namespace">
 						<a href="../modules/fudgestory.html#update" class="tsd-kind-icon">update</a>
-					</li>
-					<li class=" tsd-kind-object-literal tsd-parent-kind-namespace">
-						<a href="../modules/fudgestory.html#positions" class="tsd-kind-icon">positions</a>
 					</li>
 				</ul>
 			</nav>

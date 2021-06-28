@@ -91,7 +91,7 @@ namespace FudgeStory {
     }
 
     /**
-     * Saves the state the program was in when starting the current scene from [[Progress]].play(...)
+     * Saves the state the program was in when starting the current scene from {@link Progress}.play(...)
      */
     public static async save(): Promise<void> {
       let saved: ƒ.MapFilenameToContent = await ƒ.FileIoBrowserLocal.save(
@@ -101,7 +101,7 @@ namespace FudgeStory {
     }
 
     /**
-     * Defines a [[Signal]] which is a bundle of promises waiting for a set of events to happen.
+     * Defines a {@link Signal} which is a bundle of promises waiting for a set of events to happen.
      * Example: 
      * ```typescript
      * // define a signal to observe the keyboard for a keydown-event and a timeout of 5 seconds

@@ -8,7 +8,7 @@ namespace FudgeStory {
     private static transitions: Map<RequestInfo, Uint8ClampedArray> = new Map();
 
     /**
-     * Called by [[update]] to blend from the old display of a scene to the new. Don't call directly.
+     * Called by {@link update} to blend from the old display of a scene to the new. Don't call directly.
      */
     public static async blend(_imgOld: ImageData, _imgNew: ImageData, _duration: number = 1000, _transition: Uint8ClampedArray, _factor: number = 0.5): Promise<void> {
       let crc2: CanvasRenderingContext2D = Base.viewport.getContext();

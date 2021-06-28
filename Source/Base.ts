@@ -17,7 +17,7 @@ namespace FudgeStory {
     private static size: ƒ.Vector2;
 
     /**
-     * Will be called once by [[Progress]] before anything else may happen.
+     * Will be called once by {@link Progress} before anything else may happen.
      */
     protected static setup(): void {
       if (Base.viewport)
@@ -65,7 +65,7 @@ namespace FudgeStory {
 
 
     /**
-     * Creates a serialization-object representing the current state of the [[Character]]s currently shown
+     * Creates a serialization-object representing the current state of the {@link Character}s currently shown
      */
     protected static serialize(): ƒ.Serialization {
       let serialization: ƒ.Serialization = { characters: [] };
@@ -84,7 +84,7 @@ namespace FudgeStory {
     }
 
     /**
-     * Reconstructs the [[Character]]s from a serialization-object and shows them
+     * Reconstructs the {@link Character}s from a serialization-object and shows them
      * @param _serialization
      */
     protected static async deserialize(_serialization: ƒ.Serialization): Promise<void> {

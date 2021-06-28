@@ -1,0 +1,361 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>AnimationDefinition | Fudge Story</title>
+	<meta name="description" content="Documentation for Fudge Story">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="../assets/css/main.css">
+	<script async src="../assets/js/search.js" id="search-script"></script>
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.json" data-base="..">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="../index.html" class="title">Fudge Story</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="../modules.html">Fudge Story</a>
+				</li>
+				<li>
+					<a href="../modules/fudgestory.html">FudgeStory</a>
+				</li>
+				<li>
+					<a href="fudgestory.animationdefinition.html">AnimationDefinition</a>
+				</li>
+			</ul>
+			<h1>Interface AnimationDefinition</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<a href="#pattern-for-the-definition-of-an-animation" id="pattern-for-the-definition-of-an-animation" style="color: inherit; text-decoration: none;">
+							<h2>Pattern for the definition of an animation</h2>
+						</a>
+						<p>Define the animation of the transformation or the color over time</p>
+						<pre><code class="language-text">{
+   start: {
+     translation:  the position at the start of the animation, 
+     rotation:     the angle of rotation at the start of the animation, 
+     scaling:      the size at the start of the animation, 
+     color:        the color at the start of the animation,
+   },
+   end: {
+     same as above but for the end of the animation
+   },
+   duration: the duration of one animation-cylce in seconds,
+   playmode: the mode to play the animation in, see ANIMATION_PLAYMODE
+}
+</code></pre>
+						<a href="#example" id="example" style="color: inherit; text-decoration: none;">
+							<h2>Example</h2>
+						</a>
+						<pre><code class="language-typescript"><span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">animation</span><span style="color: #000000">: </span><span style="color: #267F99">ƒS</span><span style="color: #000000">.</span><span style="color: #267F99">AnimationDefinition</span><span style="color: #000000"> = {</span>
+<span style="color: #000000">   </span><span style="color: #001080">start:</span><span style="color: #000000"> {</span><span style="color: #001080">translation:</span><span style="color: #000000"> </span><span style="color: #001080">ƒS</span><span style="color: #000000">.</span><span style="color: #001080">positions</span><span style="color: #000000">.</span><span style="color: #001080">bottomleft</span><span style="color: #000000">, </span><span style="color: #001080">rotation:</span><span style="color: #000000"> -</span><span style="color: #098658">20</span><span style="color: #000000">, </span><span style="color: #001080">scaling:</span><span style="color: #000000"> </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #001080">ƒS</span><span style="color: #000000">.</span><span style="color: #795E26">Position</span><span style="color: #000000">(</span><span style="color: #098658">0.5</span><span style="color: #000000">, </span><span style="color: #098658">1.5</span><span style="color: #000000">), </span><span style="color: #001080">color:</span><span style="color: #000000"> </span><span style="color: #001080">ƒS</span><span style="color: #000000">.</span><span style="color: #001080">Color</span><span style="color: #000000">.</span><span style="color: #795E26">CSS</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;white&quot;</span><span style="color: #000000">, </span><span style="color: #098658">0</span><span style="color: #000000">)},</span>
+<span style="color: #000000">   </span><span style="color: #001080">end:</span><span style="color: #000000"> {</span><span style="color: #001080">translation:</span><span style="color: #000000"> </span><span style="color: #001080">ƒS</span><span style="color: #000000">.</span><span style="color: #001080">positions</span><span style="color: #000000">.</span><span style="color: #001080">bottomright</span><span style="color: #000000">, </span><span style="color: #001080">rotation:</span><span style="color: #000000"> </span><span style="color: #098658">20</span><span style="color: #000000">, </span><span style="color: #001080">scaling:</span><span style="color: #000000"> </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #001080">ƒS</span><span style="color: #000000">.</span><span style="color: #795E26">Position</span><span style="color: #000000">(</span><span style="color: #098658">1.5</span><span style="color: #000000">, </span><span style="color: #098658">0.5</span><span style="color: #000000">), </span><span style="color: #001080">color:</span><span style="color: #000000"> </span><span style="color: #001080">ƒS</span><span style="color: #000000">.</span><span style="color: #001080">Color</span><span style="color: #000000">.</span><span style="color: #795E26">CSS</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;red&quot;</span><span style="color: #000000">)},</span>
+<span style="color: #000000">   </span><span style="color: #001080">duration:</span><span style="color: #000000"> </span><span style="color: #098658">1</span><span style="color: #000000">,</span>
+<span style="color: #000000">   </span><span style="color: #001080">playmode:</span><span style="color: #000000"> </span><span style="color: #001080">ƒS</span><span style="color: #000000">.</span><span style="color: #0070C1">ANIMATION_PLAYMODE</span><span style="color: #000000">.</span><span style="color: #0070C1">REVERSELOOP</span>
+<span style="color: #000000">};</span>
+</code></pre>
+					</div>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<span class="target">AnimationDefinition</span>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="fudgestory.animationdefinition.html#duration" class="tsd-kind-icon">duration</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="fudgestory.animationdefinition.html#end" class="tsd-kind-icon">end</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="fudgestory.animationdefinition.html#playmode" class="tsd-kind-icon">playmode</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="fudgestory.animationdefinition.html#start" class="tsd-kind-icon">start</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="duration" class="tsd-anchor"></a>
+					<h3>duration</h3>
+					<div class="tsd-signature tsd-kind-icon">duration<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/JirkaDellOro/FUDGE_Story/blob/ff9188a/Source/Animation.ts#L40">Documents/HFU/FUDGE_Story/Source/Animation.ts:40</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="end" class="tsd-anchor"></a>
+					<h3>end</h3>
+					<div class="tsd-signature tsd-kind-icon">end<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>color<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Color</span><span class="tsd-signature-symbol">; </span>rotation<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>scaling<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Vector2</span><span class="tsd-signature-symbol">; </span>translation<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Vector2</span><span class="tsd-signature-symbol"> }</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/JirkaDellOro/FUDGE_Story/blob/ff9188a/Source/Animation.ts#L39">Documents/HFU/FUDGE_Story/Source/Animation.ts:39</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> color<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Color</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> rotation<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> scaling<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Vector2</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> translation<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Vector2</span></h5>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="playmode" class="tsd-anchor"></a>
+					<h3>playmode</h3>
+					<div class="tsd-signature tsd-kind-icon">playmode<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ANIMATION_PLAYMODE</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/JirkaDellOro/FUDGE_Story/blob/ff9188a/Source/Animation.ts#L41">Documents/HFU/FUDGE_Story/Source/Animation.ts:41</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="start" class="tsd-anchor"></a>
+					<h3>start</h3>
+					<div class="tsd-signature tsd-kind-icon">start<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>color<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Color</span><span class="tsd-signature-symbol">; </span>rotation<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>scaling<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Vector2</span><span class="tsd-signature-symbol">; </span>translation<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Vector2</span><span class="tsd-signature-symbol"> }</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/JirkaDellOro/FUDGE_Story/blob/ff9188a/Source/Animation.ts#L38">Documents/HFU/FUDGE_Story/Source/Animation.ts:38</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> color<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Color</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> rotation<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> scaling<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Vector2</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> translation<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Vector2</span></h5>
+							</li>
+						</ul>
+					</div>
+				</section>
+			</section>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class=" ">
+						<a href="../modules.html">Exports</a>
+					</li>
+					<li class="current tsd-kind-namespace">
+						<a href="../modules/fudgestory.html">Fudge<wbr>Story</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+					<li class=" tsd-kind-enum tsd-parent-kind-namespace">
+						<a href="../enums/fudgestory.event.html" class="tsd-kind-icon">EVENT</a>
+					</li>
+					<li class=" tsd-kind-enum tsd-parent-kind-namespace">
+						<a href="../enums/fudgestory.origin.html" class="tsd-kind-icon">ORIGIN</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-namespace">
+						<a href="../classes/fudgestory.animation.html" class="tsd-kind-icon">Animation</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-namespace">
+						<a href="../classes/fudgestory.base.html" class="tsd-kind-icon">Base</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-namespace">
+						<a href="../classes/fudgestory.character.html" class="tsd-kind-icon">Character</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-namespace">
+						<a href="../classes/fudgestory.inventory.html" class="tsd-kind-icon">Inventory</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-namespace">
+						<a href="../classes/fudgestory.location.html" class="tsd-kind-icon">Location</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-namespace">
+						<a href="../classes/fudgestory.menu.html" class="tsd-kind-icon">Menu</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-namespace">
+						<a href="../classes/fudgestory.progress.html" class="tsd-kind-icon">Progress</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-namespace">
+						<a href="../classes/fudgestory.sound.html" class="tsd-kind-icon">Sound</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-namespace">
+						<a href="../classes/fudgestory.speech.html" class="tsd-kind-icon">Speech</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-namespace">
+						<a href="../classes/fudgestory.text.html" class="tsd-kind-icon">Text</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-namespace">
+						<a href="../classes/fudgestory.transition.html" class="tsd-kind-icon">Transition</a>
+					</li>
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="fudgestory.animationdefinition.html" class="tsd-kind-icon">Animation<wbr>Definition</a>
+						<ul>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="fudgestory.animationdefinition.html#duration" class="tsd-kind-icon">duration</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="fudgestory.animationdefinition.html#end" class="tsd-kind-icon">end</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="fudgestory.animationdefinition.html#playmode" class="tsd-kind-icon">playmode</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="fudgestory.animationdefinition.html#start" class="tsd-kind-icon">start</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="fudgestory.characterdefinition.html" class="tsd-kind-icon">Character<wbr>Definition</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="fudgestory.itemdefinition.html" class="tsd-kind-icon">Item<wbr>Definition</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="fudgestory.locationdefinition.html" class="tsd-kind-icon">Location<wbr>Definition</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="fudgestory.locationdefinitions.html" class="tsd-kind-icon">Location<wbr>Definitions</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace">
+						<a href="../modules/fudgestory.html#color" class="tsd-kind-icon">Color</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace">
+						<a href="../modules/fudgestory.html#position" class="tsd-kind-icon">Position</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace">
+						<a href="../modules/fudgestory.html#scaling" class="tsd-kind-icon">Scaling</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace">
+						<a href="../modules/fudgestory.html#scenedescriptor" class="tsd-kind-icon">Scene<wbr>Descriptor</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace">
+						<a href="../modules/fudgestory.html#scenefunction" class="tsd-kind-icon">Scene<wbr>Function</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace">
+						<a href="../modules/fudgestory.html#scenereturn" class="tsd-kind-icon">Scene<wbr>Return</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace">
+						<a href="../modules/fudgestory.html#scenes" class="tsd-kind-icon">Scenes</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace">
+						<a href="../modules/fudgestory.html#signal" class="tsd-kind-icon">Signal</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-namespace">
+						<a href="../modules/fudgestory.html#animation_playmode" class="tsd-kind-icon">ANIMATION_<wbr>PLAYMODE</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-namespace">
+						<a href="../modules/fudgestory.html#color-1" class="tsd-kind-icon">Color</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-namespace">
+						<a href="../modules/fudgestory.html#position-1" class="tsd-kind-icon">Position</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-namespace">
+						<a href="../modules/fudgestory.html#positions" class="tsd-kind-icon">positions</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-namespace">
+						<a href="../modules/fudgestory.html#getinput" class="tsd-kind-icon">get<wbr>Input</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-namespace">
+						<a href="../modules/fudgestory.html#insert" class="tsd-kind-icon">insert</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-namespace">
+						<a href="../modules/fudgestory.html#positionpercent" class="tsd-kind-icon">position<wbr>Percent</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-namespace">
+						<a href="../modules/fudgestory.html#update" class="tsd-kind-icon">update</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

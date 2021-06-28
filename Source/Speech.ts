@@ -20,7 +20,7 @@ namespace FudgeStory {
     }
 
     /**
-     * Displays the [[Character]]s name or the string given as name and the given text at once
+     * Displays the {@link Character}s name or the string given as name and the given text at once
      */
     public static set(_character: Object | string, _text: string, _class?: string): void {
       Speech.show();
@@ -39,7 +39,7 @@ namespace FudgeStory {
     }
 
     /**
-     * Displays the [[Character]]s name or the string given as name and slowly writes the text letter by letter
+     * Displays the {@link Character}s name or the string given as name and slowly writes the text letter by letter
      */
     public static async tell(_character: Object | string, _text: string, _waitForSignalNext: boolean = true, _class?: string): Promise<void> {
       Speech.show();
