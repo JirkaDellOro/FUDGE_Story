@@ -64,7 +64,9 @@ namespace FudgeStory {
   export class Character extends Base {
     private static characters: Map<string, Character> = new Map();
 
+    /** A list of poses for that character */
     public poses: Map<RequestInfo, ƒ.Node> = new Map();
+    /** The local origin of the characters image */
     public origin: ƒ.ORIGIN2D;
     private definition: CharacterDefinition;
 
@@ -76,7 +78,7 @@ namespace FudgeStory {
     }
 
     /**
-     * Retrieves or creates the [[Character]] from the [[CharacterDefinition]] given
+     * Retrieves or creates the {@link Character} from the {@link CharacterDefinition} given
      */
     public static get(_character: CharacterDefinition): Character {
       let result: Character = Character.characters.get(_character.name);
@@ -84,14 +86,14 @@ namespace FudgeStory {
     }
 
     /**
-     * Retrieve the [[Character]] from the name given or null if not defined yet
+     * Retrieve the {@link Character} from the name given or null if not defined yet
      */
     public static getByName(_name: string): Character {
       return Character.characters.get(_name);
     }
 
     /**
-     * Show the given [[Character]] in the specified pose at the given position. See [[CharacterDefinition]] for the definition of a character.
+     * Show the given {@link Character} in the specified pose at the given position. See {@link CharacterDefinition} for the definition of a character.
      */
     public static async show(_character: CharacterDefinition, _pose: RequestInfo, _position: Position): Promise<void> {
       let character: Character = Character.get(_character);
@@ -101,7 +103,7 @@ namespace FudgeStory {
     }
 
     /**
-     * Hide the given [[Character]]
+     * Hide the given {@link Character}
      */
     public static async hide(_character: CharacterDefinition): Promise<void> {
       let found: ƒ.Node[] = Base.middle.getChildrenByName(_character.name);
@@ -113,7 +115,7 @@ namespace FudgeStory {
     }
 
     /**
-     * Animate the given [[Character]] in the specified pose using the animation given.
+     * Animate the given {@link Character} in the specified pose using the animation given.
      */
     public static async animate(_character: CharacterDefinition, _pose: RequestInfo, _animation: AnimationDefinition): Promise<void> {
       let character: Character = Character.get(_character);
@@ -125,7 +127,7 @@ namespace FudgeStory {
     }
 
     /**
-     * Remove all [[Character]]s and objects
+     * Remove all {@link Character}s and objects
      */
     public static hideAll(): void {
       Base.middle.removeAllChildren();

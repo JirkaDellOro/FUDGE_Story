@@ -16,21 +16,22 @@ namespace FudgeStory {
    *      rotation:     the angle of rotation at the start of the animation, 
    *      scaling:      the size at the start of the animation, 
    *      color:        the color at the start of the animation,
-        end: {
-          same as above but for the end of the animation
-        },
-        duration: the duration of one animation-cylce in seconds,
-        playmode: the mode to play the animation in, see ANIMATION_PLAYMODE
+   *    },
+   *    end: {
+   *      same as above but for the end of the animation
+   *    },
+   *    duration: the duration of one animation-cylce in seconds,
+   *    playmode: the mode to play the animation in, see ANIMATION_PLAYMODE
    * }
    * ```
    * ## Example
    * ```typescript
    * let animation: ƒS.AnimationDefinition = {
-      start: {translation: ƒS.positions.bottomleft, rotation: -20, scaling: new ƒS.Position(0.5, 1.5), color: ƒS.Color.CSS("white", 0)},
-      end: {translation: ƒS.positions.bottomright, rotation: 20, scaling: new ƒS.Position(1.5, 0.5), color: ƒS.Color.CSS("red")},
-      duration: 1,
-      playmode: ƒS.ANIMATION_PLAYMODE.REVERSELOOP
-    };
+   *    start: {translation: ƒS.positions.bottomleft, rotation: -20, scaling: new ƒS.Position(0.5, 1.5), color: ƒS.Color.CSS("white", 0)},
+   *    end: {translation: ƒS.positions.bottomright, rotation: 20, scaling: new ƒS.Position(1.5, 0.5), color: ƒS.Color.CSS("red")},
+   *    duration: 1,
+   *    playmode: ƒS.ANIMATION_PLAYMODE.REVERSELOOP
+   *};
    * ```
    */
   export interface AnimationDefinition {
@@ -54,7 +55,7 @@ namespace FudgeStory {
     }
 
     /**
-     * Creates a FUDGE-Animation from an [[AnimationDefinition]]
+     * Creates a FUDGE-Animation from an {@link AnimationDefinition}
      */
     public static create(_animation: AnimationDefinition): ƒ.Animation {
       let mutator: ƒ.Mutator = {};
@@ -99,7 +100,8 @@ namespace FudgeStory {
     }
 
     /**
-     * Attaches the given FUDGE-Animation to the given node with the given mode
+     * Attaches the given FUDGE-Animation to the given node with the given mode.  
+     * Used internally by Character.
      */
     public static async attach(_pose: ƒ.Node, _animation: ƒ.Animation, _playmode: ƒ.ANIMATION_PLAYMODE): Promise<void> {
       // TODO: Mutate must not initiate drawing, implement render event at component to animate  

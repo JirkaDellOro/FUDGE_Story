@@ -81,21 +81,22 @@
      rotation:     the angle of rotation at the start of the animation, 
      scaling:      the size at the start of the animation, 
      color:        the color at the start of the animation,
-end: {
-same as above but for the end of the animation
-},
-duration: the duration of one animation-cylce in seconds,
-playmode: the mode to play the animation in, see ANIMATION_PLAYMODE
+   },
+   end: {
+     same as above but for the end of the animation
+   },
+   duration: the duration of one animation-cylce in seconds,
+   playmode: the mode to play the animation in, see ANIMATION_PLAYMODE
 }
 </code></pre>
 						<a href="#example" id="example" style="color: inherit; text-decoration: none;">
 							<h2>Example</h2>
 						</a>
 						<pre><code class="language-typescript"><span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">animation</span><span style="color: #000000">: </span><span style="color: #267F99">ƒS</span><span style="color: #000000">.</span><span style="color: #267F99">AnimationDefinition</span><span style="color: #000000"> = {</span>
-<span style="color: #001080">start:</span><span style="color: #000000"> {</span><span style="color: #001080">translation:</span><span style="color: #000000"> </span><span style="color: #001080">ƒS</span><span style="color: #000000">.</span><span style="color: #001080">positions</span><span style="color: #000000">.</span><span style="color: #001080">bottomleft</span><span style="color: #000000">, </span><span style="color: #001080">rotation:</span><span style="color: #000000"> -</span><span style="color: #098658">20</span><span style="color: #000000">, </span><span style="color: #001080">scaling:</span><span style="color: #000000"> </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #001080">ƒS</span><span style="color: #000000">.</span><span style="color: #795E26">Position</span><span style="color: #000000">(</span><span style="color: #098658">0.5</span><span style="color: #000000">, </span><span style="color: #098658">1.5</span><span style="color: #000000">), </span><span style="color: #001080">color:</span><span style="color: #000000"> </span><span style="color: #001080">ƒS</span><span style="color: #000000">.</span><span style="color: #001080">Color</span><span style="color: #000000">.</span><span style="color: #795E26">CSS</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;white&quot;</span><span style="color: #000000">, </span><span style="color: #098658">0</span><span style="color: #000000">)},</span>
-<span style="color: #001080">end:</span><span style="color: #000000"> {</span><span style="color: #001080">translation:</span><span style="color: #000000"> </span><span style="color: #001080">ƒS</span><span style="color: #000000">.</span><span style="color: #001080">positions</span><span style="color: #000000">.</span><span style="color: #001080">bottomright</span><span style="color: #000000">, </span><span style="color: #001080">rotation:</span><span style="color: #000000"> </span><span style="color: #098658">20</span><span style="color: #000000">, </span><span style="color: #001080">scaling:</span><span style="color: #000000"> </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #001080">ƒS</span><span style="color: #000000">.</span><span style="color: #795E26">Position</span><span style="color: #000000">(</span><span style="color: #098658">1.5</span><span style="color: #000000">, </span><span style="color: #098658">0.5</span><span style="color: #000000">), </span><span style="color: #001080">color:</span><span style="color: #000000"> </span><span style="color: #001080">ƒS</span><span style="color: #000000">.</span><span style="color: #001080">Color</span><span style="color: #000000">.</span><span style="color: #795E26">CSS</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;red&quot;</span><span style="color: #000000">)},</span>
-<span style="color: #001080">duration:</span><span style="color: #000000"> </span><span style="color: #098658">1</span><span style="color: #000000">,</span>
-<span style="color: #001080">playmode:</span><span style="color: #000000"> </span><span style="color: #001080">ƒS</span><span style="color: #000000">.</span><span style="color: #0070C1">ANIMATION_PLAYMODE</span><span style="color: #000000">.</span><span style="color: #0070C1">REVERSELOOP</span>
+<span style="color: #000000">   </span><span style="color: #001080">start:</span><span style="color: #000000"> {</span><span style="color: #001080">translation:</span><span style="color: #000000"> </span><span style="color: #001080">ƒS</span><span style="color: #000000">.</span><span style="color: #001080">positions</span><span style="color: #000000">.</span><span style="color: #001080">bottomleft</span><span style="color: #000000">, </span><span style="color: #001080">rotation:</span><span style="color: #000000"> -</span><span style="color: #098658">20</span><span style="color: #000000">, </span><span style="color: #001080">scaling:</span><span style="color: #000000"> </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #001080">ƒS</span><span style="color: #000000">.</span><span style="color: #795E26">Position</span><span style="color: #000000">(</span><span style="color: #098658">0.5</span><span style="color: #000000">, </span><span style="color: #098658">1.5</span><span style="color: #000000">), </span><span style="color: #001080">color:</span><span style="color: #000000"> </span><span style="color: #001080">ƒS</span><span style="color: #000000">.</span><span style="color: #001080">Color</span><span style="color: #000000">.</span><span style="color: #795E26">CSS</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;white&quot;</span><span style="color: #000000">, </span><span style="color: #098658">0</span><span style="color: #000000">)},</span>
+<span style="color: #000000">   </span><span style="color: #001080">end:</span><span style="color: #000000"> {</span><span style="color: #001080">translation:</span><span style="color: #000000"> </span><span style="color: #001080">ƒS</span><span style="color: #000000">.</span><span style="color: #001080">positions</span><span style="color: #000000">.</span><span style="color: #001080">bottomright</span><span style="color: #000000">, </span><span style="color: #001080">rotation:</span><span style="color: #000000"> </span><span style="color: #098658">20</span><span style="color: #000000">, </span><span style="color: #001080">scaling:</span><span style="color: #000000"> </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #001080">ƒS</span><span style="color: #000000">.</span><span style="color: #795E26">Position</span><span style="color: #000000">(</span><span style="color: #098658">1.5</span><span style="color: #000000">, </span><span style="color: #098658">0.5</span><span style="color: #000000">), </span><span style="color: #001080">color:</span><span style="color: #000000"> </span><span style="color: #001080">ƒS</span><span style="color: #000000">.</span><span style="color: #001080">Color</span><span style="color: #000000">.</span><span style="color: #795E26">CSS</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;red&quot;</span><span style="color: #000000">)},</span>
+<span style="color: #000000">   </span><span style="color: #001080">duration:</span><span style="color: #000000"> </span><span style="color: #098658">1</span><span style="color: #000000">,</span>
+<span style="color: #000000">   </span><span style="color: #001080">playmode:</span><span style="color: #000000"> </span><span style="color: #001080">ƒS</span><span style="color: #000000">.</span><span style="color: #0070C1">ANIMATION_PLAYMODE</span><span style="color: #000000">.</span><span style="color: #0070C1">REVERSELOOP</span>
 <span style="color: #000000">};</span>
 </code></pre>
 					</div>
@@ -133,7 +134,7 @@ playmode: the mode to play the animation in, see ANIMATION_PLAYMODE
 					<div class="tsd-signature tsd-kind-icon">duration<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/JirkaDellOro/FUDGE_Story/blob/1257c25/Source/Animation.ts#L39">Documents/HFU/FUDGE_Story/Source/Animation.ts:39</a></li>
+							<li>Defined in <a href="https://github.com/JirkaDellOro/FUDGE_Story/blob/ff9188a/Source/Animation.ts#L40">Documents/HFU/FUDGE_Story/Source/Animation.ts:40</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -143,7 +144,7 @@ playmode: the mode to play the animation in, see ANIMATION_PLAYMODE
 					<div class="tsd-signature tsd-kind-icon">end<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>color<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Color</span><span class="tsd-signature-symbol">; </span>rotation<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>scaling<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Vector2</span><span class="tsd-signature-symbol">; </span>translation<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Vector2</span><span class="tsd-signature-symbol"> }</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/JirkaDellOro/FUDGE_Story/blob/1257c25/Source/Animation.ts#L38">Documents/HFU/FUDGE_Story/Source/Animation.ts:38</a></li>
+							<li>Defined in <a href="https://github.com/JirkaDellOro/FUDGE_Story/blob/ff9188a/Source/Animation.ts#L39">Documents/HFU/FUDGE_Story/Source/Animation.ts:39</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -170,7 +171,7 @@ playmode: the mode to play the animation in, see ANIMATION_PLAYMODE
 					<div class="tsd-signature tsd-kind-icon">playmode<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ANIMATION_PLAYMODE</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/JirkaDellOro/FUDGE_Story/blob/1257c25/Source/Animation.ts#L40">Documents/HFU/FUDGE_Story/Source/Animation.ts:40</a></li>
+							<li>Defined in <a href="https://github.com/JirkaDellOro/FUDGE_Story/blob/ff9188a/Source/Animation.ts#L41">Documents/HFU/FUDGE_Story/Source/Animation.ts:41</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -180,7 +181,7 @@ playmode: the mode to play the animation in, see ANIMATION_PLAYMODE
 					<div class="tsd-signature tsd-kind-icon">start<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>color<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Color</span><span class="tsd-signature-symbol">; </span>rotation<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>scaling<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Vector2</span><span class="tsd-signature-symbol">; </span>translation<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Vector2</span><span class="tsd-signature-symbol"> }</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/JirkaDellOro/FUDGE_Story/blob/1257c25/Source/Animation.ts#L37">Documents/HFU/FUDGE_Story/Source/Animation.ts:37</a></li>
+							<li>Defined in <a href="https://github.com/JirkaDellOro/FUDGE_Story/blob/ff9188a/Source/Animation.ts#L38">Documents/HFU/FUDGE_Story/Source/Animation.ts:38</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">

@@ -24,7 +24,7 @@ namespace FudgeStory {
    *   ...
    * }
    * ```
-   * Calling [[insert]] directly will not register the scene as a save-point for saving and loading.
+   * Calling {@link insert} directly will not register the scene as a save-point for saving and loading.
    */
   export async function insert(_scene: SceneFunction): Promise<void | string> {
     console.log("SceneFunction", _scene.name);
@@ -56,7 +56,7 @@ namespace FudgeStory {
   }
 
   /**
-   * Wait for the viewers input. See [[EVENT]] for predefined events to wait for.
+   * Wait for the viewers input. See {@link EVENT} for predefined events to wait for.
    */
   export async function getInput(_eventTypes: string[]): Promise<Event> {
     return new Promise((resolve) => {
@@ -84,7 +84,7 @@ namespace FudgeStory {
   
 
   /**
-   * Calculates and returns a position to place [[Character]]s or objects.
+   * Calculates and returns a position to place {@link Character}s or objects.
    * Pass values in percent relative to the upper left corner.
    */
   export function positionPercent(_x: number, _y: number): Position {

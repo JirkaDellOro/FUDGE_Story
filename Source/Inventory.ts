@@ -1,6 +1,17 @@
 namespace FudgeStory {
   // import ƒ = FudgeCore;
 
+  /**
+   * Define an item to use with the inventory using this pattern:
+   * ```text
+   * {
+   *    name: "Name of the item", // also used to identify it,
+   *    description: "Short description to show in the inventory",
+   *    image: "path to the image to be used as icon",
+   *    static: true // if the item can't be consumed
+   * }
+   * ```
+   */
   export interface ItemDefinition {
     name: string;
     description: string;
@@ -42,7 +53,7 @@ namespace FudgeStory {
     }
 
     /**
-     * Opens the inventory
+     * Opens the inventory and return a list of the names of consumed items when the inventory closes again
      */
     public static async open(): Promise<string[]> {
       let dialog: HTMLDialogElement = Inventory.dialog;

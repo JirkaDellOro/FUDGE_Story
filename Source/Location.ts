@@ -37,7 +37,7 @@ namespace FudgeStory {
   }
 
   /**
-   * Represents a location with foreground, background and the middle, where [[Character]]s show.
+   * Represents a location with foreground, background and the middle, where {@link Character}s show.
    */
   export class Location extends Base {
     private static locations: Map<Object, Location> = new Map();
@@ -49,7 +49,7 @@ namespace FudgeStory {
     }
 
     /**
-     * Retrieves the [[Location]] associated with the given [[LocationDefinition]]
+     * Retrieves the {@link Location} associated with the given {@link LocationDefinition}
      */
     public static async get(_description: LocationDefinition): Promise<Location> {
       let result: Location = Location.locations.get(_description);
@@ -63,7 +63,7 @@ namespace FudgeStory {
 
 
     /**
-     * Show the location given by [[LocationDefinition]].
+     * Show the location given by {@link LocationDefinition}.
      */
     public static async show(_location: LocationDefinition): Promise<void> {
       Base.back.removeAllChildren();
