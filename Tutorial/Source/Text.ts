@@ -18,6 +18,9 @@ namespace Tutorial {
     };
 
 
+    document.getElementsByName("scoreRyu").forEach(meterStuff => meterStuff.hidden = true);
+    document.getElementsByName("scoreForRyu").forEach(meterStuff => meterStuff.hidden = true);
+
 
     ƒS.Speech.hide();
     await ƒS.Location.show(locations.city);
@@ -26,13 +29,10 @@ namespace Tutorial {
     await ƒS.Character.show(characters.Ryu, characters.Ryu.pose.normal, ƒS.positionPercent(30, 100));
     await ƒS.update(1);
     ƒS.Speech.show();
-    await ƒS.Speech.tell(characters.Ryu, text.Ryu.T0000);
+    await ƒS.Speech.tell(characters.Ryu, text.Ryu.T0000, false);
     await ƒS.Speech.tell(characters.Ryu, "Fremder.");
     await ƒS.Character.hide(characters.Ryu);
     await ƒS.update(1);
-
-
-
 
 
 

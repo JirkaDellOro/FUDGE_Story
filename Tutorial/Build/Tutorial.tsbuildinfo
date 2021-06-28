@@ -9,6 +9,7 @@
       "../Source/Inventory.ts",
       "../Source/Main.ts",
       "../Source/Meter.ts",
+      "../Source/NovelPages.ts",
       "../Source/Text.ts"
     ],
     "js": {
@@ -21,7 +22,7 @@
         },
         {
           "pos": 15,
-          "end": 19695,
+          "end": 26201,
           "kind": "text"
         }
       ],
@@ -49,7 +50,7 @@
       "sections": [
         {
           "pos": 0,
-          "end": 2775,
+          "end": 3043,
           "kind": "text"
         }
       ]

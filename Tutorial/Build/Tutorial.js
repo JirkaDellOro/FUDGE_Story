@@ -25,13 +25,17 @@ var Tutorial;
         //   duration: 3,
         //   playmode: ƒS.ANIMATION_PLAYMODE.PLAYONCE
         // };
+        document.getElementsByName("scoreRyu").forEach(meterStuff => meterStuff.hidden = true);
+        document.getElementsByName("scoreForRyu").forEach(meterStuff => meterStuff.hidden = true);
+        Tutorial.gameMenu.close();
+        Tutorial.testo = false;
         Tutorial.ƒS.Speech.hide();
         await Tutorial.ƒS.Location.show(Tutorial.locations.bench);
         // await ƒS.Character.animate(characters.Aoi, characters.Aoi.pose.normal, animation);
         // await ƒS.update(2);
         // await ƒS.Character.show(characters.Aoi, characters.Aoi.pose.normal, ƒS.positions.bottomleft);
-        // await ƒS.Character.animate(characters.Aoi, characters.Aoi.pose.normal, leftToRight());
-        await Tutorial.ƒS.Character.animate(Tutorial.characters.Aoi, Tutorial.characters.Aoi.pose.normal, Tutorial.fromRightToOutOfCanvas());
+        await Tutorial.ƒS.Character.animate(Tutorial.characters.Aoi, Tutorial.characters.Aoi.pose.normal, Tutorial.leftToRight());
+        // await ƒS.Character.animate(characters.Aoi, characters.Aoi.pose.normal, fromRightToOutOfCanvas());
         await Tutorial.ƒS.Character.hide(Tutorial.characters.Aoi);
         await Tutorial.ƒS.update(2);
         // await ƒS.Character.hide(characters.Aoi);
@@ -180,6 +184,8 @@ var Tutorial;
                 T0001: ""
             }
         };
+        document.getElementsByName("scoreRyu").forEach(meterStuff => meterStuff.hidden = true);
+        document.getElementsByName("scoreForRyu").forEach(meterStuff => meterStuff.hidden = true);
         Tutorial.ƒS.Speech.hide();
         await Tutorial.ƒS.Location.show(Tutorial.locations.city);
         await Tutorial.ƒS.update(Tutorial.transition.clock.duration, Tutorial.transition.clock.alpha, Tutorial.transition.clock.edge);
@@ -315,11 +321,70 @@ var Tutorial;
         scoreForAoi: "",
         scoreRyu: 0,
         scoreForRyu: "",
+        started: false,
         ended: false
     };
     //  MENU - Audio functions
+    let volume = 1.0;
+    function incrementSound() {
+        if (volume < 100) {
+            volume += 0.1;
+            Tutorial.ƒS.Sound.setMasterVolume(volume);
+        }
+    }
+    Tutorial.incrementSound = incrementSound;
+    function decrementSound() {
+        if (volume > 0) {
+            volume -= 0.1;
+            Tutorial.ƒS.Sound.setMasterVolume(volume);
+        }
+    }
+    Tutorial.decrementSound = decrementSound;
+    function showCredits() {
+        Tutorial.ƒS.Text.addClass("credits");
+        Tutorial.ƒS.Text.print("Hello Test Test");
+        // showCredits();
+    }
+    Tutorial.showCredits = showCredits;
     // MENU - create Menu with Buttons
+    let inGameMenu = {
+        save: "Save",
+        load: "Load",
+        close: "Close",
+        turnUpVolume: "+",
+        turndownVolume: "-",
+        credits: "Credits",
+        about: "About",
+        open: "Open"
+    };
+    async function buttonFunctionalities(_option) {
+        console.log(_option);
+        if (_option == inGameMenu.save) {
+            await Tutorial.ƒS.Progress.save();
+        }
+        else if (_option == inGameMenu.load) {
+            await Tutorial.ƒS.Progress.load();
+        }
+        else if (_option == inGameMenu.turnUpVolume) {
+            incrementSound();
+        }
+        else if (_option == inGameMenu.turndownVolume) {
+            decrementSound();
+        }
+        if (_option == inGameMenu.close) {
+            Tutorial.gameMenu.close();
+        }
+        if (_option == inGameMenu.open) {
+            Tutorial.gameMenu.open();
+        }
+        if (_option == inGameMenu.credits) {
+            showCredits();
+        }
+    }
+    // true heißt hier offen und false geschlossen
+    Tutorial.testo = true;
     // shortcuts to save and load game progress
+    // && doesn't work in a switch
     document.addEventListener("keydown", hndKeypress);
     async function hndKeypress(_event) {
         switch (_event.code) {
@@ -330,6 +395,22 @@ var Tutorial;
             case Tutorial.ƒ.KEYBOARD_CODE.F9:
                 console.log("Load");
                 await Tutorial.ƒS.Progress.load();
+                break;
+            // case ƒ.KEYBOARD_CODE.X:
+            //   console.log("Close");
+            //   gameMenu.close();
+            //   break;
+            // Englische Tastatur beachten, zwei Funktionen mit einer Taste
+            case Tutorial.ƒ.KEYBOARD_CODE.Y:
+                console.log("Open n Close");
+                if (Tutorial.testo) {
+                    Tutorial.gameMenu.close();
+                    Tutorial.testo = false;
+                }
+                else {
+                    Tutorial.gameMenu.open();
+                    Tutorial.testo = true;
+                }
                 break;
         }
     }
@@ -343,6 +424,7 @@ var Tutorial;
                 break;
             case Tutorial.ƒ.KEYBOARD_CODE.ESC:
                 console.log("close inventory");
+                await Tutorial.ƒS.Inventory.open();
                 Tutorial.ƒS.Inventory.close();
                 break;
         }
@@ -368,21 +450,23 @@ var Tutorial;
     window.addEventListener("load", start);
     function start(_event) {
         // MENU
+        Tutorial.gameMenu =
+            Tutorial.ƒS.Menu.create(inGameMenu, buttonFunctionalities, "gameMenu");
         // define the sequence of scenes, each scene as an object with a reference to the scene-function, a name and optionally an id and an id to continue the story with
         let scenes = [
-            // { scene: Text, name: "How To Text" },
+            // { scene: Text, name: "How To Text"},
             // { scene: Decision, name: "How To Decide" },
             // { scene: End, name: "End" },
             // { id: "Endo", scene: End, name: "This is an ending", next: "Endo" },
-            // { scene: Inventory, name: "How To Make An Inventory" }
+            // { scene: Inventory, name: "How To Make An Inventory" },
             // { scene: Animation, name: "How To Animate" },
-            { scene: Tutorial.GameMenu, name: "How To Make A Game Menu" },
-            // { scene: Meter, name: "How To Make a Progress bar" }
+            // { scene: GameMenu, name: "How To Make A Game Menu" },
+            // { scene: Meter, name: "How To Make a Progress bar" },
+            { scene: Tutorial.NovelPages, name: "Different uses of novel pages" }
         ];
         let uiElement = document.querySelector("[type=interface]");
         Tutorial.dataForSave = Tutorial.ƒS.Progress.setData(Tutorial.dataForSave, uiElement);
         // start the sequence
-        // ƒS.Progress.setData(dataForSave, uiElement);
         Tutorial.ƒS.Progress.go(scenes);
     }
 })(Tutorial || (Tutorial = {}));
@@ -406,7 +490,7 @@ var Tutorial;
         };
         document.getElementsByName("scoreRyu").forEach(meterStuff => meterStuff.hidden = true);
         document.getElementsByName("scoreForRyu").forEach(meterStuff => meterStuff.hidden = true);
-        Tutorial.ƒS.Speech.hide();
+        // ƒS.Speech.hide();
         await Tutorial.ƒS.Location.show(Tutorial.locations.bench);
         await Tutorial.ƒS.Character.show(Tutorial.characters.Ryu, Tutorial.characters.Ryu.pose.normal, Tutorial.ƒS.positionPercent(30, 100));
         await Tutorial.ƒS.update(1);
@@ -431,6 +515,73 @@ var Tutorial;
 })(Tutorial || (Tutorial = {}));
 var Tutorial;
 (function (Tutorial) {
+    async function NovelPages() {
+        console.log("Novel Pages");
+        let text = {
+            Narrator: {
+                T0000: "",
+                T0001: ""
+            },
+            Protagonist: {
+                T0000: "",
+                T0001: ""
+            },
+            Ryu: {
+                T0000: "Novel pages können ganz verschieden verwendet werden.",
+                T0001: "blabla"
+            }
+        };
+        document.getElementsByName("scoreRyu").forEach(meterStuff => meterStuff.hidden = true);
+        document.getElementsByName("scoreForRyu").forEach(meterStuff => meterStuff.hidden = true);
+        Tutorial.gameMenu.close();
+        Tutorial.testo = false;
+        Tutorial.ƒS.Speech.hide();
+        await Tutorial.ƒS.Location.show(Tutorial.locations.bench);
+        // await ƒS.update(transition.clock.duration, transition.clock.alpha, transition.clock.edge);
+        await Tutorial.ƒS.Character.show(Tutorial.characters.Ryu, Tutorial.characters.Ryu.pose.normal, Tutorial.ƒS.positionPercent(30, 100));
+        await Tutorial.ƒS.update(1);
+        // await ƒS.Speech.tell(characters.Ryu, text.Ryu.T0000);
+        if (!Tutorial.dataForSave.started) {
+            Tutorial.ƒS.Text.addClass("contract");
+            Tutorial.ƒS.Speech.hide();
+            let pages = ["<strong>Überschrift:</strong>blabla<br></br> \
+      <br>Seite 1</br>", "<strong>Überschrift</strong>\
+      <br>Seite 2</br>", "<strong>Überschrift</strong> \
+      <br>test text test</br> text test text <br>test text test</br> text<br></br> Seite 3", "Seite 4", "Seite 5", "Seite 6", "Seite 7", "Seite 8"];
+            let current = 0;
+            let flip = { back: "Back", next: "Next", done: "Close" };
+            let choice;
+            Tutorial.ƒS.Text.addClass("flip");
+            do {
+                Tutorial.ƒS.Text.print(pages[current]);
+                choice = await Tutorial.ƒS.Menu.getInput(flip, "flip");
+                switch (choice) {
+                    case flip.back:
+                        current = Math.max(0, current - 1);
+                        break;
+                    case flip.next:
+                        current = Math.min(pages.length - 1, current + 1);
+                        break;
+                    // case flip.back: current = Math.max(0, current - 1); break;
+                    // case flip.next: current = Math.min(2, current + 1); break;
+                }
+            } while (choice != flip.done);
+            Tutorial.ƒS.Text.close();
+            // ƒS.Speech.show();
+        }
+        // Delay reinmachen + testen
+        await Tutorial.ƒS.Speech.tell(Tutorial.characters.Ryu, text.Ryu.T0000);
+        await Tutorial.ƒS.Speech.tell(Tutorial.characters.Ryu, text.Ryu.T0001);
+        Tutorial.ƒS.Text.print("eiN coOleR tExT könNte jEtzT hiEr stEheN");
+        Tutorial.ƒS.Text.setClass("text");
+        await Tutorial.ƒS.Speech.tell(Tutorial.characters.Ryu, "Probier' es doch einmal selbst aus.");
+        await Tutorial.ƒS.Character.hide(Tutorial.characters.Ryu);
+        await Tutorial.ƒS.update(1);
+    }
+    Tutorial.NovelPages = NovelPages;
+})(Tutorial || (Tutorial = {}));
+var Tutorial;
+(function (Tutorial) {
     async function Text() {
         console.log("Text");
         let text = {
@@ -447,6 +598,8 @@ var Tutorial;
                 T0001: ""
             }
         };
+        document.getElementsByName("scoreRyu").forEach(meterStuff => meterStuff.hidden = true);
+        document.getElementsByName("scoreForRyu").forEach(meterStuff => meterStuff.hidden = true);
         Tutorial.ƒS.Speech.hide();
         await Tutorial.ƒS.Location.show(Tutorial.locations.city);
         await Tutorial.ƒS.update(Tutorial.transition.clock.duration, Tutorial.transition.clock.alpha, Tutorial.transition.clock.edge);
@@ -454,7 +607,7 @@ var Tutorial;
         await Tutorial.ƒS.Character.show(Tutorial.characters.Ryu, Tutorial.characters.Ryu.pose.normal, Tutorial.ƒS.positionPercent(30, 100));
         await Tutorial.ƒS.update(1);
         Tutorial.ƒS.Speech.show();
-        await Tutorial.ƒS.Speech.tell(Tutorial.characters.Ryu, text.Ryu.T0000);
+        await Tutorial.ƒS.Speech.tell(Tutorial.characters.Ryu, text.Ryu.T0000, false);
         await Tutorial.ƒS.Speech.tell(Tutorial.characters.Ryu, "Fremder.");
         await Tutorial.ƒS.Character.hide(Tutorial.characters.Ryu);
         await Tutorial.ƒS.update(1);

@@ -62,6 +62,9 @@ namespace Tutorial {
   };
 
 
+
+
+
   // define items as key-object-pairs, the objects with the properties name, description and an address to an image
   export let items = {
     // Toy: {
@@ -119,21 +122,89 @@ namespace Tutorial {
     scoreForAoi: "",
     scoreRyu: 0,
     scoreForRyu: "",
+    started: false,
     ended: false
   };
 
 
   //  MENU - Audio functions
 
+  let volume: number = 1.0;
+
+  export function incrementSound(): void {
+    if (volume < 100) {
+      volume += 0.1;
+      ƒS.Sound.setMasterVolume(volume);
+    }
+  }
+
+  export function decrementSound(): void {
+    if (volume > 0) {
+      volume -= 0.1;
+      ƒS.Sound.setMasterVolume(volume);
+    }
+  }
+
+  export function showCredits(): void {
+    ƒS.Text.addClass("credits");
+    ƒS.Text.print("Hello Test Test");
+
+    // showCredits();
+  }
+
+  // MENU - create Menu with Buttons
+
+  let inGameMenu = {
+    save: "Save",
+    load: "Load",
+    close: "Close",
+    turnUpVolume: "+",
+    turndownVolume: "-",
+    credits: "Credits",
+    about: "About",
+    open: "Open"
+  };
 
 
-// MENU - create Menu with Buttons
 
+
+  // MENU - create Menu with buttons
+  export let gameMenu: ƒS.Menu;
+
+  async function buttonFunctionalities(_option: string): Promise<void> {
+    console.log(_option);
+    if (_option == inGameMenu.save) {
+      await ƒS.Progress.save();
+    }
+    else if (_option == inGameMenu.load) {
+      await ƒS.Progress.load();
+    }
+    else if (_option == inGameMenu.turnUpVolume) {
+      incrementSound();
+    }
+    else if (_option == inGameMenu.turndownVolume) {
+      decrementSound();
+    }
+    if (_option == inGameMenu.close) {
+      gameMenu.close();
+    }
+    if (_option == inGameMenu.open) {
+      gameMenu.open();
+    }
+    if (_option == inGameMenu.credits) {
+      showCredits();
+    }
+  }
+
+
+  // true heißt hier offen und false geschlossen
+  export let testo: boolean = true;
 
 
 
 
   // shortcuts to save and load game progress
+  // && doesn't work in a switch
   document.addEventListener("keydown", hndKeypress);
   async function hndKeypress(_event: KeyboardEvent): Promise<void> {
     switch (_event.code) {
@@ -144,6 +215,22 @@ namespace Tutorial {
       case ƒ.KEYBOARD_CODE.F9:
         console.log("Load");
         await ƒS.Progress.load();
+        break;
+      // case ƒ.KEYBOARD_CODE.X:
+      //   console.log("Close");
+      //   gameMenu.close();
+      //   break;
+      // Englische Tastatur beachten, zwei Funktionen mit einer Taste
+      case ƒ.KEYBOARD_CODE.Y:
+        console.log("Open n Close");
+        if (testo) {
+          gameMenu.close();
+          testo = false;
+        }
+        else {
+          gameMenu.open();
+          testo = true;
+        }
         break;
     }
   }
@@ -159,6 +246,7 @@ namespace Tutorial {
         break;
       case ƒ.KEYBOARD_CODE.ESC:
         console.log("close inventory");
+        await ƒS.Inventory.open();
         ƒS.Inventory.close();
         break;
     }
@@ -186,19 +274,23 @@ namespace Tutorial {
   window.addEventListener("load", start);
   function start(_event: Event): void {
     // MENU
+    gameMenu =
+      ƒS.Menu.create(inGameMenu, buttonFunctionalities, "gameMenu");
 
 
 
     // define the sequence of scenes, each scene as an object with a reference to the scene-function, a name and optionally an id and an id to continue the story with
     let scenes: ƒS.Scenes = [
-      // { scene: Text, name: "How To Text" },
+      // { scene: Text, name: "How To Text"},
       // { scene: Decision, name: "How To Decide" },
       // { scene: End, name: "End" },
       // { id: "Endo", scene: End, name: "This is an ending", next: "Endo" },
-      // { scene: Inventory, name: "How To Make An Inventory" }
+      // { scene: Inventory, name: "How To Make An Inventory" },
       // { scene: Animation, name: "How To Animate" },
-      { scene: GameMenu, name: "How To Make A Game Menu" },
-      // { scene: Meter, name: "How To Make a Progress bar" }
+      // { scene: GameMenu, name: "How To Make A Game Menu" },
+      // { scene: Meter, name: "How To Make a Progress bar" },
+      { scene: NovelPages, name: "Different uses of novel pages" }
+
 
     ];
 
@@ -209,7 +301,6 @@ namespace Tutorial {
 
 
     // start the sequence
-    // ƒS.Progress.setData(dataForSave, uiElement);
     ƒS.Progress.go(scenes);
   }
 }

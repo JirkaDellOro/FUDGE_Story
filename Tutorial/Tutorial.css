@@ -49,13 +49,13 @@ speech.Ryu content {
 
 /* SPLASH SCREEN BACKGROUND */
 
-/* dialog {
+dialog {
   background-image: url("Images/Backgrounds/starry.gif");
-} */
+}
 
 div {
   background-color: #1c1c1c;
-  color: white;
+  color: black;
   font-family: 'Gill Sans MT', sans-serif;
   font-size: 1.5vh;
 }
@@ -107,6 +107,8 @@ dialog[type="inventory"]>ul>li {
 
 dialog[class="gameMenu"] {
   background-color: #719fd1;
+  background-image: none;
+  border: none;
 }
 
 
@@ -160,4 +162,34 @@ meter[id="aoi"]::-webkit-meter-optimum-value {
   background-color: #c44eb2;
 } */
 
+/* INGAME MENU BUTTONS */
 
+dialog.credits {
+  color: white;
+  background-image: none;
+  background-color: #1c1c1c;
+}
+
+/* dialog.contract {
+  background-image: none;
+} */
+
+dialog.flip {
+  background-image: none;
+  color: blue;
+}
+
+dialog.contract {
+  color: red;
+
+}
+
+
+dialog.flip>button {
+  cursor: pointer;
+}
+
+dialog.text {
+  color: blue;
+  background-image: url("Images/Backgrounds/bg_bench.png");
+}

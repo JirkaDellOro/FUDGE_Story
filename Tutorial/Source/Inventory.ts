@@ -17,6 +17,9 @@ namespace Tutorial {
       }
     };
 
+    document.getElementsByName("scoreRyu").forEach(meterStuff => meterStuff.hidden = true);
+    document.getElementsByName("scoreForRyu").forEach(meterStuff => meterStuff.hidden = true);
+
     ƒS.Speech.hide();
 
     await ƒS.Location.show(locations.city);
@@ -33,6 +36,7 @@ namespace Tutorial {
     ƒS.Inventory.add(items.BlobYL);
     ƒS.Inventory.add(items.BlobPK);
     ƒS.Inventory.add(items.BlobOG);
+
 
 
     // console.log(await ƒS.Inventory.open());
