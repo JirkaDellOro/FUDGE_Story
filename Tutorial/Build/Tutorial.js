@@ -327,17 +327,17 @@ var Tutorial;
     //  MENU - Audio functions
     let volume = 1.0;
     function incrementSound() {
-        if (volume < 100) {
-            volume += 0.1;
-            Tutorial.ƒS.Sound.setMasterVolume(volume);
-        }
+        if (volume >= 100)
+            return;
+        volume += 0.5;
+        Tutorial.ƒS.Sound.setMasterVolume(volume);
     }
     Tutorial.incrementSound = incrementSound;
     function decrementSound() {
-        if (volume > 0) {
-            volume -= 0.1;
-            Tutorial.ƒS.Sound.setMasterVolume(volume);
-        }
+        if (volume <= 0)
+            return;
+        volume -= 0.5;
+        Tutorial.ƒS.Sound.setMasterVolume(volume);
     }
     Tutorial.decrementSound = decrementSound;
     function showCredits() {
@@ -531,8 +531,8 @@ var Tutorial;
                 T0001: "blabla"
             }
         };
-        document.getElementsByName("scoreRyu").forEach(meterStuff => meterStuff.hidden = true);
-        document.getElementsByName("scoreForRyu").forEach(meterStuff => meterStuff.hidden = true);
+        // document.getElementsByName("scoreRyu").forEach(meterStuff => meterStuff.hidden = true);
+        // document.getElementsByName("scoreForRyu").forEach(meterStuff => meterStuff.hidden = true);
         Tutorial.gameMenu.close();
         Tutorial.testo = false;
         Tutorial.ƒS.Speech.hide();
