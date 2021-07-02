@@ -132,17 +132,17 @@ namespace Tutorial {
   let volume: number = 1.0;
 
   export function incrementSound(): void {
-    if (volume < 100) {
-      volume += 0.1;
-      ƒS.Sound.setMasterVolume(volume);
-    }
+    if (volume >= 100)
+      return;
+    volume += 0.5;
+    ƒS.Sound.setMasterVolume(volume);
   }
 
   export function decrementSound(): void {
-    if (volume > 0) {
-      volume -= 0.1;
-      ƒS.Sound.setMasterVolume(volume);
-    }
+    if (volume <= 0)
+      return;
+    volume -= 0.5;
+    ƒS.Sound.setMasterVolume(volume);
   }
 
   export function showCredits(): void {

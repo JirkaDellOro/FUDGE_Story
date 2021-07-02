@@ -17,7 +17,7 @@ namespace FudgeStory {
     description: string;
     image: RequestInfo;
     static?: boolean;
-    handler: (_event: CustomEvent) => void;
+    handler?: (_event: CustomEvent) => void;
   }
 
   /**
