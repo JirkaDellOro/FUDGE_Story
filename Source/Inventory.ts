@@ -39,25 +39,35 @@ namespace FudgeStory {
      * Adds an item to the inventory
      */
     static add(_item: ItemDefinition): void {
-      let item: HTMLLIElement = Inventory.dialog.querySelector(`[id=${_item.name.replaceAll(" ", "_")}]`);
+      let item: HTMLLIElement = Inventory.getItemElement(_item);
       if (item) {
         let amount: HTMLElement = item.querySelector("amount");
         amount.innerText = (parseInt(amount.innerText) + 1).toString();
         return;
       }
       item = document.createElement("li");
-      item.id = _item.name.replaceAll(" ", "_");
+      item.id = Inventory.replaceWhitespace(_item.name);
       item.innerHTML = `<name>${_item.name}</name><amount>1</amount><description>${_item.description}</description><img src="${_item.image}"/>`;
       if (!_item.static)
         item.addEventListener("pointerdown", Inventory.hndUseItem);
       if (_item.handler) {
         function custom(_event: PointerEvent): void {
-          _item.handler(new CustomEvent(_event.type, {detail: _item.name}));
+          _item.handler(new CustomEvent(_event.type, { detail: _item.name }));
         }
         item.addEventListener("pointerup", custom);
         item.addEventListener("pointerdown", custom);
       }
       Inventory.dialog.querySelector("ul").appendChild(item);
+    }
+
+    /**
+     * Adds an item to the inventory
+     */
+    static getAmount(_item: ItemDefinition): number {
+      let item: HTMLLIElement = Inventory.getItemElement(_item);
+      if (item)
+        return parseInt((<HTMLElement>item.querySelector("amount")).innerText);
+      return 0;
     }
 
     /**
@@ -93,6 +103,14 @@ namespace FudgeStory {
       amount.innerText = (parseInt(amount.innerText) - 1).toString();
       if (amount.innerText == "0")
         Inventory.dialog.querySelector("ul").removeChild(item);
+    }
+
+    private static replaceWhitespace(_text: string): string {
+      return _text.replaceAll(" ", "_");
+    }
+
+    private static getItemElement(_item: ItemDefinition): HTMLLIElement {
+      return Inventory.dialog.querySelector(`[id=${Inventory.replaceWhitespace(_item.name)}]`);
     }
   }
 }

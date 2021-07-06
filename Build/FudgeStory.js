@@ -411,14 +411,14 @@ var FudgeStory;
          * Adds an item to the inventory
          */
         static add(_item) {
-            let item = Inventory.dialog.querySelector(`[id=${_item.name.replaceAll(" ", "_")}]`);
+            let item = Inventory.getItemElement(_item);
             if (item) {
                 let amount = item.querySelector("amount");
                 amount.innerText = (parseInt(amount.innerText) + 1).toString();
                 return;
             }
             item = document.createElement("li");
-            item.id = _item.name.replaceAll(" ", "_");
+            item.id = Inventory.replaceWhitespace(_item.name);
             item.innerHTML = `<name>${_item.name}</name><amount>1</amount><description>${_item.description}</description><img src="${_item.image}"/>`;
             if (!_item.static)
                 item.addEventListener("pointerdown", Inventory.hndUseItem);
@@ -430,6 +430,15 @@ var FudgeStory;
                 item.addEventListener("pointerdown", custom);
             }
             Inventory.dialog.querySelector("ul").appendChild(item);
+        }
+        /**
+         * Adds an item to the inventory
+         */
+        static getAmount(_item) {
+            let item = Inventory.getItemElement(_item);
+            if (item)
+                return parseInt(item.querySelector("amount").innerText);
+            return 0;
         }
         /**
          * Opens the inventory and return a list of the names of consumed items when the inventory closes again
@@ -452,6 +461,12 @@ var FudgeStory;
          */
         static close() {
             Inventory.dialog.close();
+        }
+        static replaceWhitespace(_text) {
+            return _text.replaceAll(" ", "_");
+        }
+        static getItemElement(_item) {
+            return Inventory.dialog.querySelector(`[id=${Inventory.replaceWhitespace(_item.name)}]`);
         }
     }
     Inventory.hndUseItem = (_event) => {

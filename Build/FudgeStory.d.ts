@@ -289,6 +289,10 @@ declare namespace FudgeStory {
          */
         static add(_item: ItemDefinition): void;
         /**
+         * Adds an item to the inventory
+         */
+        static getAmount(_item: ItemDefinition): number;
+        /**
          * Opens the inventory and return a list of the names of consumed items when the inventory closes again
          */
         static open(): Promise<string[]>;
@@ -297,6 +301,8 @@ declare namespace FudgeStory {
          */
         static close(): void;
         private static hndUseItem;
+        private static replaceWhitespace;
+        private static getItemElement;
     }
 }
 declare namespace FudgeStory {
