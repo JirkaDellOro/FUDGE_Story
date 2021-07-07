@@ -198,7 +198,7 @@ namespace Tutorial {
 
 
   // true heißt hier offen und false geschlossen
-  export let testo: boolean = true;
+  export let menu: boolean = true;
 
 
 
@@ -220,16 +220,17 @@ namespace Tutorial {
       //   console.log("Close");
       //   gameMenu.close();
       //   break;
-      // Englische Tastatur beachten, zwei Funktionen mit einer Taste
-      case ƒ.KEYBOARD_CODE.Y:
-        console.log("Open n Close");
-        if (testo) {
+      // Englische Tastatur beachten, Öffnen und Schließen des Inventars mit derselben Taste
+      case ƒ.KEYBOARD_CODE.M:
+        if (menu) {
+          console.log("Close");
           gameMenu.close();
-          testo = false;
+          menu = false;
         }
         else {
+          console.log("Open");
           gameMenu.open();
-          testo = true;
+          menu = true;
         }
         break;
     }
@@ -285,7 +286,7 @@ namespace Tutorial {
       // { scene: Decision, name: "How To Decide" },
       // { scene: End, name: "End" },
       // { id: "Endo", scene: End, name: "This is an ending", next: "Endo" },
-      // { scene: Inventory, name: "How To Make An Inventory" },
+      { scene: Inventory, name: "How To Make An Inventory" },
       // { scene: Animation, name: "How To Animate" },
       // { scene: GameMenu, name: "How To Make A Game Menu" },
       // { scene: Meter, name: "How To Make a Progress bar" },
