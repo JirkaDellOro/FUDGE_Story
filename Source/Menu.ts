@@ -26,6 +26,7 @@ namespace FudgeStory {
 
       let promise: Promise<string> = new Promise<string>((_resolve) => {
         let hndSelect = (_event: Event) => {
+          _event.stopPropagation();
           if (_event.target == dialog)
             return;
 

@@ -96,6 +96,7 @@ namespace FudgeStory {
     }
 
     private static hndUseItem = (_event: PointerEvent): void => {
+      _event.stopPropagation();
       let item: HTMLLIElement = <HTMLLIElement>_event.currentTarget;
       Inventory.ƒused.push(item.querySelector("name").textContent);
 

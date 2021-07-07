@@ -470,6 +470,7 @@ var FudgeStory;
         }
     }
     Inventory.hndUseItem = (_event) => {
+        _event.stopPropagation();
         let item = _event.currentTarget;
         Inventory.ƒused.push(item.querySelector("name").textContent);
         let amount = item.querySelector("amount");
@@ -548,6 +549,7 @@ var FudgeStory;
             });
             let promise = new Promise((_resolve) => {
                 let hndSelect = (_event) => {
+                    _event.stopPropagation();
                     if (_event.target == dialog)
                         return;
                     dialog.removeEventListener(FudgeStory.EVENT.POINTERDOWN, hndSelect);
