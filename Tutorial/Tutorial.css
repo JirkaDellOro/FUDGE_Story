@@ -190,6 +190,11 @@ dialog.flip>button {
 }
 
 dialog.text {
-  color: blue;
-  background-image: url("Images/Backgrounds/bg_bench.png");
+  color: rgb(255, 255, 255);
+  font-size: 2vh;
+  font-weight: bold;
+  width: 20vw;
+  height: 20vh;
+  font-family: 'Century Gothic';
+  background-image: url("Images/NovelPageBGs/old_paper.jpg");
 }
