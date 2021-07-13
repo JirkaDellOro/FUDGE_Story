@@ -36,9 +36,9 @@ var Tutorial;
         console.log("Decision");
         let text = {
             Aoi: {
-                T0000: "Hi, wie heißt Du?",
+                T0000: "Hi, wie heißt duu?",
                 T0001: "<p>Das war's auch schon.</p>",
-                T0002: "Hast du die Verzögerung gemerkt?"
+                T0002: "Hast du die Verzögerung bemerkt?"
             }
         };
         // let signalDelay2: ƒS.Signal = ƒS.Progress.defineSignal([() => ƒS.Progress.delay(2)]);
@@ -72,9 +72,18 @@ var Tutorial;
             case firstDialogueElementAnswers.iSayOk:
                 Tutorial.ƒS.Sound.play(Tutorial.sound.click, 1);
                 //continue writing on this path here
-                await Tutorial.ƒS.Speech.tell(Tutorial.characters.Aoi, "okay");
+                // testing audio stuff
+                await Tutorial.ƒS.Speech.tell(Tutorial.characters.Aoi, "Okay");
+                Tutorial.ƒS.Sound.fade(Tutorial.sound.backgroundTheme, 0, 1);
+                Tutorial.ƒS.Sound.play(Tutorial.sound.dystopian, 0.5);
+                await Tutorial.ƒS.Speech.tell(Tutorial.characters.Aoi, "Okay");
+                await Tutorial.ƒS.Speech.tell(Tutorial.characters.Aoi, "Okay");
+                await Tutorial.ƒS.Speech.tell(Tutorial.characters.Aoi, "Okay");
+                await Tutorial.ƒS.Speech.tell(Tutorial.characters.Aoi, "Okay");
+                await Tutorial.ƒS.Speech.tell(Tutorial.characters.Aoi, "Okay");
                 Tutorial.ƒS.Character.hide(Tutorial.characters.Aoi);
                 Tutorial.ƒS.Speech.clear();
+                Tutorial.ƒS.Sound.fade(Tutorial.sound.dystopian, 0, 0.5);
                 await Tutorial.ƒS.update(1);
                 Tutorial.dataForSave.ended = true;
                 break;
@@ -94,12 +103,13 @@ var Tutorial;
                 await Tutorial.ƒS.update(1);
                 await Tutorial.ƒS.Character.show(Tutorial.characters.Ryu, Tutorial.characters.Ryu.pose.normal, Tutorial.ƒS.positionPercent(70, 100));
                 await Tutorial.ƒS.update(1);
-                await Tutorial.ƒS.Speech.tell(Tutorial.characters.Ryu, "No.");
+                await Tutorial.ƒS.Speech.tell(Tutorial.characters.Ryu, "Nein.");
                 await Tutorial.ƒS.Character.hide(Tutorial.characters.Ryu);
                 Tutorial.ƒS.Speech.clear();
                 await Tutorial.ƒS.update(1);
                 break;
         }
+        Tutorial.ƒS.Sound.fade(Tutorial.sound.backgroundTheme, 0.2, 0.1, true);
         await Tutorial.ƒS.Character.show(Tutorial.characters.Aoi, Tutorial.characters.Aoi.pose.normal, Tutorial.ƒS.positions.bottomcenter);
         await Tutorial.ƒS.update();
         await Tutorial.ƒS.Speech.tell(Tutorial.characters.Aoi, text.Aoi.T0001);
@@ -180,16 +190,13 @@ var Tutorial;
         // ƒS.Inventory.add(items.Toy);
         // ƒS.Inventory.add(items.Toy);
         // ƒS.Inventory.add(items.Toy);
-        Tutorial.ƒS.Inventory.getAmount(Tutorial.items.BlobBU);
         Tutorial.ƒS.Inventory.add(Tutorial.items.BlobBU);
         Tutorial.ƒS.Inventory.add(Tutorial.items.BlobRED);
         Tutorial.ƒS.Inventory.add(Tutorial.items.BlobGN);
         Tutorial.ƒS.Inventory.add(Tutorial.items.BlobDKBU);
-        Tutorial.ƒS.Inventory.getAmount(Tutorial.items.BlobBU);
         Tutorial.ƒS.Inventory.add(Tutorial.items.BlobYL);
         Tutorial.ƒS.Inventory.add(Tutorial.items.BlobPK);
         Tutorial.ƒS.Inventory.add(Tutorial.items.BlobOG);
-        Tutorial.ƒS.Inventory.getAmount(Tutorial.items.BlobBU);
         // console.log(await ƒS.Inventory.open());
         await Tutorial.ƒS.Inventory.open();
         Tutorial.ƒS.Speech.hide();
@@ -221,6 +228,7 @@ var Tutorial;
     Tutorial.sound = {
         // Music
         backgroundTheme: "Audio/Nightclub.ogg",
+        dystopian: "Audio/Dystopian.ogg",
         // Sound
         click: ""
     };
@@ -257,12 +265,6 @@ var Tutorial;
     };
     // define items as key-object-pairs, the objects with the properties name, description and an address to an image
     Tutorial.items = {
-        // Toy: {
-        //   name: "Fish",
-        //   description: "Fishy fish",
-        //   image: "Images/Items/fishySmall.png"
-        // },
-        // Blobbys
         BlobRED: {
             name: "Blob Red",
             description: "A reddish something",
@@ -446,10 +448,10 @@ var Tutorial;
         // define the sequence of scenes, each scene as an object with a reference to the scene-function, a name and optionally an id and an id to continue the story with
         let scenes = [
             // { scene: Text, name: "How To Text"},
-            // { scene: Decision, name: "How To Decide" },
+            { scene: Tutorial.Decision, name: "How To Decide" },
             // { scene: End, name: "End" },
             // { id: "Endo", scene: End, name: "This is an ending", next: "Endo" },
-            { scene: Tutorial.Inventory, name: "How To Make An Inventory" },
+            // { scene: Inventory, name: "How To Make An Inventory" },
             // { scene: Animation, name: "How To Animate" },
             // { scene: GameMenu, name: "How To Make A Game Menu" },
             // { scene: Meter, name: "How To Make a Progress bar" },
