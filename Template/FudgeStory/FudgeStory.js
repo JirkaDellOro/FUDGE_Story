@@ -526,6 +526,7 @@ var FudgeStory;
     class Menu {
         constructor(_options, _callback, _cssClass) {
             this.hndSelect = (_event) => {
+                _event.stopPropagation();
                 if (_event.target == this.dialog)
                     return;
                 this.callback(Reflect.get(_event.target, "innerHTML"));

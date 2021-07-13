@@ -77,6 +77,7 @@ namespace FudgeStory {
     }
 
     private hndSelect = (_event: Event) => {
+      _event.stopPropagation();
       if (_event.target == this.dialog)
         return;
 
