@@ -22,6 +22,7 @@ namespace Tutorial {
   export let sound = {
     // Music
     backgroundTheme: "Audio/Nightclub.ogg",
+    dystopian: "Audio/Dystopian.ogg", 
 
     // Sound
     click: ""
@@ -62,17 +63,8 @@ namespace Tutorial {
   };
 
 
-
-
-
   // define items as key-object-pairs, the objects with the properties name, description and an address to an image
   export let items = {
-    // Toy: {
-    //   name: "Fish",
-    //   description: "Fishy fish",
-    //   image: "Images/Items/fishySmall.png"
-    // },
-    // Blobbys
     BlobRED: {
       name: "Blob Red",
       description: "A reddish something",
@@ -283,10 +275,10 @@ namespace Tutorial {
     // define the sequence of scenes, each scene as an object with a reference to the scene-function, a name and optionally an id and an id to continue the story with
     let scenes: ƒS.Scenes = [
       // { scene: Text, name: "How To Text"},
-      // { scene: Decision, name: "How To Decide" },
+      { scene: Decision, name: "How To Decide" },
       // { scene: End, name: "End" },
       // { id: "Endo", scene: End, name: "This is an ending", next: "Endo" },
-      { scene: Inventory, name: "How To Make An Inventory" },
+      // { scene: Inventory, name: "How To Make An Inventory" },
       // { scene: Animation, name: "How To Animate" },
       // { scene: GameMenu, name: "How To Make A Game Menu" },
       // { scene: Meter, name: "How To Make a Progress bar" },

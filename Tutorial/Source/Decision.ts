@@ -5,9 +5,9 @@ namespace Tutorial {
 
     let text = {
       Aoi: {
-        T0000: "Hi, wie heißt Du?",
+        T0000: "Hi, wie heißt duu?",
         T0001: "<p>Das war's auch schon.</p>",
-        T0002: "Hast du die Verzögerung gemerkt?"
+        T0002: "Hast du die Verzögerung bemerkt?"
       }
     };
 
@@ -58,9 +58,18 @@ namespace Tutorial {
       case firstDialogueElementAnswers.iSayOk:
         ƒS.Sound.play(sound.click, 1);
         //continue writing on this path here
-        await ƒS.Speech.tell(characters.Aoi, "okay");
+        // testing audio stuff
+        await ƒS.Speech.tell(characters.Aoi, "Okay");
+        ƒS.Sound.fade(sound.backgroundTheme, 0, 1);
+        ƒS.Sound.play(sound.dystopian, 0.5);
+        await ƒS.Speech.tell(characters.Aoi, "Okay");
+        await ƒS.Speech.tell(characters.Aoi, "Okay");
+        await ƒS.Speech.tell(characters.Aoi, "Okay");
+        await ƒS.Speech.tell(characters.Aoi, "Okay");
+        await ƒS.Speech.tell(characters.Aoi, "Okay");
         ƒS.Character.hide(characters.Aoi);
         ƒS.Speech.clear();
+        ƒS.Sound.fade(sound.dystopian, 0, 0.5);
         await ƒS.update(1);
         dataForSave.ended = true;
         break;
@@ -80,7 +89,7 @@ namespace Tutorial {
         await ƒS.update(1);
         await ƒS.Character.show(characters.Ryu, characters.Ryu.pose.normal, ƒS.positionPercent(70, 100));
         await ƒS.update(1);
-        await ƒS.Speech.tell(characters.Ryu, "No.");
+        await ƒS.Speech.tell(characters.Ryu, "Nein.");
         await ƒS.Character.hide(characters.Ryu);
         ƒS.Speech.clear();
         await ƒS.update(1);
@@ -88,7 +97,7 @@ namespace Tutorial {
     }
 
 
-
+    ƒS.Sound.fade(sound.backgroundTheme, 0.2, 0.1, true);
     await ƒS.Character.show(characters.Aoi, characters.Aoi.pose.normal, ƒS.positions.bottomcenter);
     await ƒS.update();
     await ƒS.Speech.tell(characters.Aoi, text.Aoi.T0001);

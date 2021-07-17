@@ -25,6 +25,7 @@ declare namespace Tutorial {
     };
     let sound: {
         backgroundTheme: string;
+        dystopian: string;
         click: string;
     };
     let locations: {
