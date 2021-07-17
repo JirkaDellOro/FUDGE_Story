@@ -237,6 +237,11 @@ declare namespace FudgeStory {
      */
     function getInput(_eventTypes: string[]): Promise<Event>;
     /**
+     * Returns a promise that resolves when the given key is pressed.
+     * Can be used with {@link Progress.defineSignal} as e.g. () => getKeypress(ƒ.KEYBOARD_CODE.SPACE)
+     */
+    function getKeypress(_code: ƒ.KEYBOARD_CODE): Promise<Event>;
+    /**
      * Standard positions
      */
     let positions: {

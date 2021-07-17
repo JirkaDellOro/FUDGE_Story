@@ -1,18 +1,18 @@
 namespace FudgeStory {
   import ƒ = FudgeCore;
   export import ORIGIN = FudgeCore.ORIGIN2D;
-  export type Position =  ƒ.Vector2;
+  export type Position = ƒ.Vector2;
   export type Signal = () => Promise<Event>;
-  
+
   export enum EVENT {
     KEYDOWN = "keydown",
     KEYUP = "keyup",
     POINTERDOWN = "pointerdown",
     POINTERUP = "pointerup"
   }
-  
+
   // tslint:disable-next-line
-  export let Position =  ƒ.Vector2;
+  export let Position = ƒ.Vector2;
   let pos0: Position = new Position(0, 0);
 
   /**
@@ -73,6 +73,22 @@ namespace FudgeStory {
   }
 
   /**
+   * Returns a promise that resolves when the given key is pressed. 
+   * Can be used with {@link Progress.defineSignal} as e.g. () => getKeypress(ƒ.KEYBOARD_CODE.SPACE)
+   */
+  export async function getKeypress(_code: ƒ.KEYBOARD_CODE): Promise<Event> {
+    return new Promise((resolve) => {
+      let hndEvent = (_event: KeyboardEvent): void => {
+        if (_event.code == _code) {
+          document.removeEventListener("keypress", hndEvent);
+          resolve(_event);
+        }
+      };
+      document.addEventListener("keypress", hndEvent);
+    });
+  }
+
+  /**
    * Standard positions
    */
   export let positions = {
@@ -81,7 +97,7 @@ namespace FudgeStory {
     bottomleft: pos0, bottomright: pos0, bottomcenter: pos0,
     left: pos0, right: pos0
   };
-  
+
 
   /**
    * Calculates and returns a position to place {@link Character}s or objects.

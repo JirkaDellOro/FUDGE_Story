@@ -5,8 +5,8 @@ namespace FudgeStory {
    * Displays the phrases told by the characters or the narrator
    */
   export class Speech {
-    public static signalForwardTicker = Progress.defineSignal([EVENT.KEYUP, EVENT.POINTERDOWN]);
-    public static signalNext = Progress.defineSignal([EVENT.KEYUP, EVENT.POINTERDOWN]);
+    public static signalForwardTicker = Progress.defineSignal([() => getKeypress(ƒ.KEYBOARD_CODE.SPACE), EVENT.POINTERDOWN]);
+    public static signalNext = Progress.defineSignal([() => getKeypress(ƒ.KEYBOARD_CODE.SPACE), EVENT.POINTERDOWN]);
 
     private static element: HTMLDivElement;
     private static time = new ƒ.Time();
@@ -24,7 +24,7 @@ namespace FudgeStory {
      */
     public static set(_character: Object | string, _text: string, _class?: string): void {
       Speech.show();
-      let name: string = (typeof(_character) == "string") ? _character : _character ? Reflect.get(_character, "name") : "";
+      let name: string = (typeof (_character) == "string") ? _character : _character ? Reflect.get(_character, "name") : "";
       let nameTag: HTMLSpanElement = Speech.div.querySelector("name");
       let textTag: HTMLElement = Speech.div.querySelector("content");
       nameTag.innerHTML = "";

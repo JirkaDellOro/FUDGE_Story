@@ -372,6 +372,22 @@ var FudgeStory;
     }
     FudgeStory.getInput = getInput;
     /**
+     * Returns a promise that resolves when the given key is pressed.
+     * Can be used with {@link Progress.defineSignal} as e.g. () => getKeypress(ƒ.KEYBOARD_CODE.SPACE)
+     */
+    async function getKeypress(_code) {
+        return new Promise((resolve) => {
+            let hndEvent = (_event) => {
+                if (_event.code == _code) {
+                    document.removeEventListener("keypress", hndEvent);
+                    resolve(_event);
+                }
+            };
+            document.addEventListener("keypress", hndEvent);
+        });
+    }
+    FudgeStory.getKeypress = getKeypress;
+    /**
      * Standard positions
      */
     FudgeStory.positions = {
@@ -1008,8 +1024,8 @@ var FudgeStory;
             }
         }
     }
-    Speech.signalForwardTicker = FudgeStory.Progress.defineSignal([FudgeStory.EVENT.KEYUP, FudgeStory.EVENT.POINTERDOWN]);
-    Speech.signalNext = FudgeStory.Progress.defineSignal([FudgeStory.EVENT.KEYUP, FudgeStory.EVENT.POINTERDOWN]);
+    Speech.signalForwardTicker = FudgeStory.Progress.defineSignal([() => FudgeStory.getKeypress(ƒ.KEYBOARD_CODE.SPACE), FudgeStory.EVENT.POINTERDOWN]);
+    Speech.signalNext = FudgeStory.Progress.defineSignal([() => FudgeStory.getKeypress(ƒ.KEYBOARD_CODE.SPACE), FudgeStory.EVENT.POINTERDOWN]);
     Speech.time = new ƒ.Time();
     Speech.delayLetter = 50;
     Speech.delayParagraph = 1000;
