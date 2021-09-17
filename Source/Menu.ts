@@ -7,6 +7,7 @@ namespace FudgeStory {
     private constructor(_options: Object, _callback: (_option: string) => void, _cssClass?: string) {
       this.dialog = Menu.createDialog(_options, _cssClass);
       this.callback = _callback;
+      //@ts-ignore
       this.dialog.show();
       this.dialog.addEventListener(EVENT.POINTERDOWN, this.hndSelect);
     }
@@ -18,6 +19,7 @@ namespace FudgeStory {
      */
     public static async getInput(_options: Object, _cssClass?: string): Promise<string> {
       let dialog: HTMLDialogElement = Menu.createDialog(_options, _cssClass);
+      //@ts-ignore
       dialog.showModal();
       dialog.addEventListener("cancel", (_event: Event) => {
         _event.preventDefault();
@@ -31,6 +33,7 @@ namespace FudgeStory {
             return;
 
           dialog.removeEventListener(EVENT.POINTERDOWN, hndSelect);
+          //@ts-ignore
           dialog.close();
           _resolve(Reflect.get(_event.target, "innerHTML"));
         };

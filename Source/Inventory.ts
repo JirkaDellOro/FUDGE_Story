@@ -23,7 +23,8 @@ namespace FudgeStory {
   /**
    * Manages the inventory
    */
-  export class Inventory extends HTMLDialogElement {
+  //@ts-ignore
+  export class Inventory extends (HTMLDialogElement) {
     private static ƒDialog: HTMLDialogElement;
     private static ƒused: string[];
 
@@ -75,12 +76,14 @@ namespace FudgeStory {
      */
     public static async open(): Promise<string[]> {
       let dialog: HTMLDialogElement = Inventory.dialog;
+      //@ts-ignore
       dialog.showModal();
       Inventory.ƒused = [];
 
       return new Promise((_resolve) => {
         let hndClose = (_event: Event) => {
           dialog.querySelector("button").removeEventListener(EVENT.POINTERDOWN, hndClose);
+          //@ts-ignore
           dialog.close();
           _resolve(Inventory.ƒused);
         };
@@ -92,6 +95,7 @@ namespace FudgeStory {
      * Closes the inventory
      */
     public static close(): void {
+      //@ts-ignore
       Inventory.dialog.close();
     }
 

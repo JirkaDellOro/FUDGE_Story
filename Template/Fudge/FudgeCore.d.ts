@@ -23,6 +23,7 @@ declare namespace FudgeCore {
         GROUP = 257,
         GROUPCOLLAPSED = 258,
         GROUPEND = 260,
+        SOURCE = 512,
         MESSAGES = 31,
         FORMAT = 263,
         ALL = 287
@@ -42,9 +43,13 @@ declare namespace FudgeCore {
     class DebugConsole extends DebugTarget {
         static delegates: MapDebugFilterToDelegate;
         /**
-         * Displays critical information about failures, which is emphasized e.g. by color
+         * Should be used to display uncritical state information of FUDGE, only visible in browser's verbose mode
          */
         static fudge(_message: Object, ..._args: Object[]): void;
+        /**
+         * Displays an extra line with information about the source of the debug message
+         */
+        static source(_message: Object, ..._args: Object[]): void;
     }
 }
 declare namespace FudgeCore {
@@ -102,6 +107,10 @@ declare namespace FudgeCore {
          * Log a branch of the node hierarchy
          */
         static branch(_branch: Node): void;
+        /**
+         * Displays messages about the source of the debug call
+         */
+        static source(_message: unknown, ..._args: unknown[]): void;
         /**
          * Lookup all delegates registered to the filter and call them using the given arguments
          */
@@ -216,7 +225,7 @@ declare namespace FudgeCore {
         get type(): string;
         /**
          * Collect applicable attributes of the instance and copies of their values in a Mutator-object.
-         * By default, a mutator cannot extended, since extensions are not available in the object the mutator belongs to.
+         * By default, a mutator cannot be extended, since extensions are not available in the object the mutator belongs to.
          * A mutator may be reduced by the descendants of {@link Mutable} to contain only the properties needed.
          */
         getMutator(_extendable?: boolean): Mutator;
@@ -841,6 +850,7 @@ declare namespace FudgeCore {
          * Inactive nodes and their descendants can be filtered
          */
         getIterator(_active?: boolean): IterableIterator<Node>;
+        [Symbol.iterator](): IterableIterator<Node>;
         activate(_on: boolean): void;
         /**
          * Returns a reference to this nodes parent node
@@ -850,6 +860,10 @@ declare namespace FudgeCore {
          * Traces back the ancestors of this node and returns the first
          */
         getAncestor(): Node | null;
+        /**
+         * Traces the hierarchy upwards to the first ancestor and returns the path through the graph to this node
+         */
+        getPath(): Node[];
         /**
          * Returns child at the given index in the list of children
          */
@@ -1009,7 +1023,7 @@ declare namespace FudgeCore {
         TIMEBASED_CONTINOUS = 0,
         /**Limits the calculation of the state of the animation to the FPS value of the animation. Skips frames if needed.*/
         TIMEBASED_RASTERED_TO_FPS = 1,
-        /**Uses the FPS value of the animation to advance once per frame, no matter the speed of the frames. Doesn't skip any frames.*/
+        /** Advances the time each frame according to the FPS value of the animation, ignoring the actual duration of the frames. Doesn't skip any frames.*/
         FRAMEBASED = 2
     }
     /**
@@ -1023,7 +1037,6 @@ declare namespace FudgeCore {
         name: string;
         totalTime: number;
         labels: AnimationLabel;
-        stepsPerSecond: number;
         animationStructure: AnimationStructure;
         events: AnimationEventTrigger;
         private framesPerSecond;
@@ -1353,6 +1366,7 @@ declare namespace FudgeCore {
      * @link https://github.com/JirkaDellOro/FUDGE/wiki/Component
      */
     abstract class Component extends Mutable implements Serializable {
+        #private;
         /** subclasses get a iSubclass number for identification */
         static readonly iSubclass: number;
         /** refers back to this class from any subclass e.g. in order to find compatible other resources*/
@@ -1361,19 +1375,17 @@ declare namespace FudgeCore {
         static readonly subclasses: typeof Component[];
         protected singleton: boolean;
         protected active: boolean;
-        private container;
         protected static registerSubclass(_subclass: typeof Component): number;
         get isActive(): boolean;
         /**
          * Is true, when only one instance of the component class can be attached to a node
          */
         get isSingleton(): boolean;
-        activate(_on: boolean): void;
         /**
          * Retrieves the node, this component is currently attached to
-         * @returns The container node or null, if the component is not attached to
          */
-        getContainer(): Node | null;
+        get node(): Node | null;
+        activate(_on: boolean): void;
         /**
          * Tries to add the component to the given node, removing it from the previous container if applicable
          * @param _container The node to attach this component to
@@ -1387,28 +1399,31 @@ declare namespace FudgeCore {
 declare namespace FudgeCore {
     /**
      * Holds a reference to an {@link Animation} and controls it. Controls playback and playmode as well as speed.
-     * @authors Lukas Scheuerle, HFU, 2019
+     * @authors Lukas Scheuerle, HFU, 2019 | Jirka Dell'Oro-Friedl, HFU, 2021
      */
     class ComponentAnimator extends Component {
+        #private;
         static readonly iSubclass: number;
         animation: Animation;
         playmode: ANIMATION_PLAYMODE;
         playback: ANIMATION_PLAYBACK;
-        speedScalesWithGlobalSpeed: boolean;
-        private localTime;
-        private speedScale;
-        private lastTime;
+        scaleWithGameTime: boolean;
         constructor(_animation?: Animation, _playmode?: ANIMATION_PLAYMODE, _playback?: ANIMATION_PLAYBACK);
-        set speed(_s: number);
+        set scale(_scale: number);
+        get scale(): number;
+        /**
+         * Returns the current sample time of the animation
+         */
+        get time(): number;
         activate(_on: boolean): void;
         /**
          * Jumps to a certain time in the animation to play from there.
          */
         jumpTo(_time: number): void;
         /**
-         * Returns the current time of the animation, modulated for animation length.
+         * Jumps to a certain label in the animation if defined
          */
-        getCurrentTime(): number;
+        jumpToLabel(_label: string): void;
         /**
          * Forces an update of the animation from outside. Used in the ViewAnimation. Shouldn't be used during the game.
          * @param _time the (unscaled) time to update the animation with.
@@ -1416,7 +1431,7 @@ declare namespace FudgeCore {
          */
         updateAnimation(_time: number): [Mutator, number];
         serialize(): Serialization;
-        deserialize(_s: Serialization): Promise<Serializable>;
+        deserialize(_serialization: Serialization): Promise<Serializable>;
         /**
          * Updates the Animation.
          * Gets called every time the Loop fires the LOOP_FRAME Event.
@@ -1429,11 +1444,6 @@ declare namespace FudgeCore {
          * @param events a list of names of custom events to fire
          */
         private executeEvents;
-        /**   MOVED TO ANIMATION, TODO: delete
-         * Calculates the actual time to use, using the current playmodes.
-         * @param _time the time to apply the playmodes to
-         * @returns the recalculated time
-         */
         /**
          * Updates the scale of the animation if the user changes it or if the global game timer changed its scale.
          */
@@ -1484,6 +1494,8 @@ declare namespace FudgeCore {
         constructor(_audio?: Audio, _loop?: boolean, _start?: boolean, _audioManager?: AudioManager);
         set volume(_value: number);
         get volume(): number;
+        set loop(_on: boolean);
+        get loop(): boolean;
         get isPlaying(): boolean;
         get isAttached(): boolean;
         get isListened(): boolean;
@@ -1528,6 +1540,9 @@ declare namespace FudgeCore {
         connect(_on: boolean): void;
         serialize(): Serialization;
         deserialize(_serialization: Serialization): Promise<Serializable>;
+        getMutator(): Mutator;
+        mutate(_mutator: Mutator): Promise<void>;
+        protected reduceMutator(_mutator: Mutator): void;
         private hndAudioReady;
         private hndAudioEnded;
         private install;
@@ -1875,6 +1890,9 @@ declare namespace FudgeCore {
          * Calculates the output of this control
          */
         protected calculateOutput(): number;
+        /**
+         * calculates the output considering the time of the delay
+         */
         private getValueDelayed;
         private dispatchOutput;
     }
@@ -2522,6 +2540,10 @@ declare namespace FudgeCore {
     }
 }
 declare namespace FudgeCore {
+    function Mash(): Function;
+    function LFIB4(): Function;
+}
+declare namespace FudgeCore {
     /**
      * Simple class for 3x3 matrix operations
      * @authors Jascha Karagöl, HFU, 2019 | Jirka Dell'Oro-Friedl, HFU, 2020
@@ -2828,7 +2850,7 @@ declare namespace FudgeCore {
         /**
          * Sets the elements of this matrix to the values of the given matrix
          */
-        set(_mtxTo: Matrix4x4): void;
+        set(_mtxTo: Matrix4x4 | Float32Array): void;
         toString(): string;
         /**
          * Return the elements of this matrix as a Float32Array
@@ -2872,6 +2894,81 @@ declare namespace FudgeCore {
     }
     export {};
 }
+/**
+ * Baseclass for Noise2, Noise3 and Noise4
+ * @authors Jirka Dell'Oro-Friedl, HFU, 2021
+ * This is an adaption of https://www.npmjs.com/package/fast-simplex-noise
+ */
+declare namespace FudgeCore {
+    class Noise {
+        protected perm: Uint8Array;
+        protected permMod12: Uint8Array;
+        constructor(_random?: Function);
+    }
+}
+/**
+ * This is an adaption of https://www.npmjs.com/package/fast-simplex-noise
+ * done by Jirka Dell'Oro-Friedl, HFU, 2021
+ *
+ * Based on example code by Stefan Gustavson (stegu@itn.liu.se).
+ * Optimisations by Peter Eastman (peastman@drizzle.stanford.edu).
+ * Better rank ordering method by Stefan Gustavson in 2012.
+ *
+ * This code was placed in the public domain by its original author,
+ * Stefan Gustavson. You may use it as you see fit, but
+ * attribution is appreciated.
+ */
+declare namespace FudgeCore {
+    class Noise2 extends Noise {
+        #private;
+        private static offset;
+        private static gradient;
+        constructor(_random?: Function);
+        sample: (_x: number, _y: number) => number;
+    }
+}
+/**
+ * This is an adaption of https://www.npmjs.com/package/fast-simplex-noise
+ * done by Jirka Dell'Oro-Friedl, HFU, 2021
+ *
+ * Based on example code by Stefan Gustavson (stegu@itn.liu.se).
+ * Optimisations by Peter Eastman (peastman@drizzle.stanford.edu).
+ * Better rank ordering method by Stefan Gustavson in 2012.
+ *
+ * This code was placed in the public domain by its original author,
+ * Stefan Gustavson. You may use it as you see fit, but
+ * attribution is appreciated.
+ */
+declare namespace FudgeCore {
+    class Noise3 extends Noise {
+        #private;
+        private static offset;
+        private static gradient;
+        constructor(_random?: Function);
+        sample: (_x: number, _y: number, _z: number) => number;
+    }
+}
+/**
+ * This is an adaption of https://www.npmjs.com/package/fast-simplex-noise
+ * done by Jirka Dell'Oro-Friedl, HFU, 2021
+ *
+ * Based on example code by Stefan Gustavson (stegu@itn.liu.se).
+ * Optimisations by Peter Eastman (peastman@drizzle.stanford.edu).
+ * Better rank ordering method by Stefan Gustavson in 2012.
+ *
+ * This code was placed in the public domain by its original author,
+ * Stefan Gustavson. You may use it as you see fit, but
+ * attribution is appreciated.
+ */
+declare namespace FudgeCore {
+    class Noise4 extends Noise {
+        #private;
+        private static offset;
+        private static gradient;
+        constructor(_random?: Function);
+        sample: (_x: number, _y: number, _z: number, _w: number) => number;
+    }
+}
 declare namespace FudgeCore {
     /**
      * Class for creating random values, supporting Javascript's Math.random and a deterministig pseudo-random number generator (PRNG)
@@ -2883,15 +2980,11 @@ declare namespace FudgeCore {
         static default: Random;
         private generate;
         /**
-         * Create an instance of {@link Random}. If desired, creates a PRNG with it and feeds the given seed.
-         * @param _ownGenerator Default is false
-         * @param _seed Default is Math.random()
+         * Create an instance of {@link Random}.
+         * If a seed is given, LFIB4 is used as generator, reproducing a series of numbers from that seed.
+         * If a function producing values between 0 and 1 is given, it will be used as generator.
          */
-        constructor(_ownGenerator?: boolean, _seed?: number);
-        /**
-         * Creates a dererminstic PRNG with the given seed
-         */
-        static createGenerator(_seed: number): Function;
+        constructor(_seedOrFunction?: number | Function);
         /**
          * Returns a normed random number, thus in the range of [0, 1[
          */
@@ -3339,6 +3432,60 @@ declare namespace FudgeCore {
 }
 declare namespace FudgeCore {
     /**
+     * This function type takes x and z as Parameters and returns a number between -1 and 1 to be used as a heightmap.
+     * x * z * 2 represent the amout of faces which are created. As a result you get 1 vertex more in each direction (x and z axis)
+     * The y-component of the resulting mesh may be moved to values between 0 and a maximum height.
+     * @authors Simon Storl-Schulke, HFU, 2020 | Jirka Dell'Oro-Friedl, HFU, 2021
+     */
+    type HeightMapFunction = (x: number, z: number) => number;
+    class PositionOnTerrain {
+        position: Vector3;
+        normal: Vector3;
+    }
+    /**
+     * Generates a planar grid and applies a heightmap-function to it.
+     * @authors Jirka Dell'Oro-Friedl, HFU, 2021 | Simon Storl-Schulke, HFU, 2020 | Moritz Beaugrand, HFU, 2021
+     */
+    class MeshTerrain extends Mesh {
+        static readonly iSubclass: number;
+        protected resolution: Vector2;
+        protected scale: Vector2;
+        protected seed: number;
+        protected heightMapFunction: HeightMapFunction;
+        constructor(_name?: string, _resolution?: Vector2, _scaleInput?: Vector2, _functionOrSeed?: HeightMapFunction | number);
+        create(_resolution?: Vector2, _scaleInput?: Vector2, _functionOrSeed?: HeightMapFunction | number): void;
+        getPositionOnTerrain(position: Vector3, mtxWorld?: Matrix4x4): PositionOnTerrain;
+        serialize(): Serialization;
+        deserialize(_serialization: Serialization): Promise<Serializable>;
+        mutate(_mutator: Mutator): Promise<void>;
+        protected createVertices(): Float32Array;
+        protected createIndices(): Uint16Array;
+        protected createTextureUVs(): Float32Array;
+        private calculateHeight;
+        private findNearestFace;
+    }
+}
+declare namespace FudgeCore {
+    /**
+     * Generates a planar Grid and applies a Heightmap-Function to it.
+     * @authors Jirka Dell'Oro-Friedl, HFU, 2021 | Moritz Beaugrand, HFU, 2020
+     */
+    class MeshRelief extends MeshTerrain {
+        static readonly iSubclass: number;
+        private texture;
+        constructor(_name?: string, _texture?: TextureImage);
+        private static createHeightMapFunction;
+        private static textureToClampedArray;
+        setTexture(_texture?: TextureImage): void;
+        serialize(): Serialization;
+        deserialize(_serialization: Serialization): Promise<Serializable>;
+        mutate(_mutator: Mutator): Promise<void>;
+        protected reduceMutator(_mutator: Mutator): void;
+        protected createVertices(): Float32Array;
+    }
+}
+declare namespace FudgeCore {
+    /**
      * Generates a rotation of a polygon around the y-axis
      * ```plaintext
      * ```
@@ -3365,7 +3512,6 @@ declare namespace FudgeCore {
      */
     class MeshSphere extends Mesh {
         static readonly iSubclass: number;
-        protected ƒnormals: Float32Array;
         private sectors;
         private stacks;
         constructor(_name?: string, _sectors?: number, _stacks?: number);
@@ -3393,46 +3539,6 @@ declare namespace FudgeCore {
         protected createIndices(): Uint16Array;
         protected createTextureUVs(): Float32Array;
         protected createFaceNormals(): Float32Array;
-    }
-}
-declare namespace FudgeCore {
-    /** This function type takes x and z as Parameters and returns a number - to be used as a heightmap.
-     * x and z are mapped from 0 to 1 when used to generate a Heightmap Mesh
-     * x * z * 2 represent the amout of faces whiche are created. As a result you get 1 Vertice more in each direction (x and z achsis)
-     * For Example: x = 4, z = 4, 16 squares (32 Faces), 25 vertices
-     * @authors Simon Storl-Schulke, HFU, 2020*/
-    type HeightMapFunction = (x: number, z: number) => number;
-    class PositionOnTerrain {
-        position: Vector3;
-        normal: Vector3;
-    }
-    /**
-     * Generates a planar Grid and applies a Heightmap-Function to it.
-     * @authors Jirka Dell'Oro-Friedl, Simon Storl-Schulke, Moritz Beaugrand HFU, 2020
-     */
-    class MeshTerrain extends Mesh {
-        static readonly iSubclass: number;
-        resolutionX: number;
-        resolutionZ: number;
-        imgScale: number;
-        node: Node;
-        private heightMapFunction;
-        private image;
-        /**
-         * HeightMapFunction or PNG
-         * @param _name
-         * @param source
-         * @param _resolutionX
-         * @param _resolutionZ
-         */
-        constructor(_name?: string, source?: HeightMapFunction | TextureImage, _resolutionX?: number, _resolutionZ?: number);
-        getPositionOnTerrain(position: Vector3, mtxWorld?: Matrix4x4): PositionOnTerrain;
-        protected createVertices(): Float32Array;
-        protected createIndices(): Uint16Array;
-        protected createTextureUVs(): Float32Array;
-        protected imageToClampedArray(image: TextureImage): Uint8ClampedArray;
-        private calculateHeight;
-        private findNearestFace;
     }
 }
 declare namespace FudgeCore {
@@ -3503,7 +3609,7 @@ declare namespace FudgeCore {
         /** Setting both bodies to the bodies that belong to the loaded IDs and reconnecting them */
         protected setBodiesFromLoadedIDs(): void;
         /** Deserialize Base Class Information - Component, since Typescript does not give the ability to call super.super */
-        protected baseDeserialize(_serialization: Serialization): Serializable;
+        protected baseDeserialize(_serialization: Serialization): Promise<Serializable>;
         /** Serialize Base Class Information - Component, since Typescript does not give the ability to call super.super in Child classes of e.g. ComponentJointPrismatic */
         protected baseSerialize(): Serialization;
     }
@@ -4294,6 +4400,73 @@ declare namespace FudgeCore {
 }
 declare namespace FudgeCore {
     /**
+       * A physical connection between two bodies with no movement.
+       * Best way to simulate convex objects like a char seat connected to chair legs.
+       * The actual anchor point does not matter that much, only in very specific edge cases.
+       * Because welding means they simply do not disconnect. (unless you add Breakability)
+       * @author Marko Fehrenbach, HFU 2020
+       */
+    class ComponentJointWelding extends ComponentJoint {
+        static readonly iSubclass: number;
+        /**
+          * If the two connected RigidBodies collide with eath other. (Default = false)
+          * On a welding joint the connected bodies should not be colliding with each other,
+          * for best results
+         */
+        get internalCollision(): boolean;
+        set internalCollision(_value: boolean);
+        /**
+ * The amount of force needed to break the JOINT, in Newton. 0 equals unbreakable (default)
+*/
+        get breakForce(): number;
+        set breakForce(_value: number);
+        /**
+           * The amount of force needed to break the JOINT, while rotating, in Newton. 0 equals unbreakable (default)
+          */
+        get breakTorque(): number;
+        set breakTorque(_value: number);
+        /**
+         * The exact position where the two {@link Node}s are connected. When changed after initialization the joint needs to be reconnected.
+         */
+        get anchor(): Vector3;
+        set anchor(_value: Vector3);
+        private jointAnchor;
+        private jointInternalCollision;
+        private jointBreakForce;
+        private jointBreakTorque;
+        private config;
+        private oimoJoint;
+        constructor(_attachedRigidbody?: ComponentRigidbody, _connectedRigidbody?: ComponentRigidbody, _localAnchor?: Vector3);
+        /**
+         * Initializing and connecting the two rigidbodies with the configured joint properties
+         * is automatically called by the physics system. No user interaction needed.
+         */
+        connect(): void;
+        /**
+         * Disconnecting the two rigidbodies and removing them from the physics system,
+         * is automatically called by the physics system. No user interaction needed.
+         */
+        disconnect(): void;
+        /**
+         * Returns the original Joint used by the physics engine. Used internally no user interaction needed.
+         * Only to be used when functionality that is not added within Fudge is needed.
+        */
+        getOimoJoint(): OIMO.Joint;
+        protected dirtyStatus(): void;
+        private constructJoint;
+        private superAdd;
+        private superRemove;
+        serialize(): Serialization;
+        deserialize(_serialization: Serialization): Promise<Serializable>;
+    }
+}
+declare namespace FudgeCore {
+    enum BODY_ADJUST {
+        TO_MESH = 0,
+        TO_NODE = 1,
+        TO_PIVOT = 2
+    }
+    /**
        * Acts as the physical representation of the {@link Node} it's attached to.
        * It's the connection between the Fudge Rendered world and the Physics world.
        * For the physics to correctly get the transformations rotations need to be applied with from left = true.
@@ -4301,6 +4474,7 @@ declare namespace FudgeCore {
        * @author Marko Fehrenbach, HFU 2020
        */
     class ComponentRigidbody extends Component {
+        #private;
         static readonly iSubclass: number;
         /** The pivot of the physics itself. Default the pivot is identical to the transform. It's used like an offset. */
         mtxPivot: Matrix4x4;
@@ -4309,43 +4483,28 @@ declare namespace FudgeCore {
         /** Collisions with rigidbodies happening to this body, can be used to build a custom onCollisionStay functionality. */
         collisions: ComponentRigidbody[];
         /** Triggers that are currently triggering this body */
-        triggers: ComponentRigidbody[];
-        /** Bodies that trigger this "trigger", only happening if this body is a trigger */
-        bodiesInTrigger: ComponentRigidbody[];
-        /** ID to reference this specific ComponentRigidbody */
-        id: number;
-        private rigidbody;
-        private massData;
-        private collider;
-        private colliderInfo;
-        private rigidbodyInfo;
-        private rbType;
-        private colType;
-        private colGroup;
-        private colMask;
-        private bodyRestitution;
-        private bodyFriction;
-        private linDamping;
-        private angDamping;
-        private rotationalInfluenceFactor;
-        private gravityInfluenceFactor;
+        triggerings: ComponentRigidbody[];
+        /** The groups this object collides with. Groups must be writen in form of
+         *  e.g. collisionMask = PHYSICS_GROUP.DEFAULT | PHYSICS_GROUP.GROUP_1 and so on to collide with multiple groups. */
+        collisionMask: number;
+        adjust: BODY_ADJUST.TO_MESH;
         /** Creating a new rigidbody with a weight in kg, a physics type (default = dynamic), a collider type what physical form has the collider, to what group does it belong, is there a transform Matrix that should be used, and is the collider defined as a group of points that represent a convex mesh. */
-        constructor(_mass?: number, _type?: PHYSICS_TYPE, _colliderType?: COLLIDER_TYPE, _group?: PHYSICS_GROUP, _mtxTransform?: Matrix4x4, _convexMesh?: Float32Array);
+        constructor(_mass?: number, _type?: BODY_TYPE, _colliderType?: COLLIDER_TYPE, _group?: COLLISION_GROUP, _mtxTransform?: Matrix4x4, _convexMesh?: Float32Array);
+        get id(): number;
         /** The type of interaction between the physical world and the transform hierarchy world. DYNAMIC means the body ignores hierarchy and moves by physics. KINEMATIC it's
          * reacting to a {@link Node} that is using physics but can still be controlled by animation or transform. And STATIC means its immovable.
          */
-        get physicsType(): PHYSICS_TYPE;
-        set physicsType(_value: PHYSICS_TYPE);
+        get typeBody(): BODY_TYPE;
+        set typeBody(_value: BODY_TYPE);
         /** The shape that represents the {@link Node} in the physical world. Default is a Cube. */
-        get colliderType(): COLLIDER_TYPE;
-        set colliderType(_value: COLLIDER_TYPE);
+        get typeCollider(): COLLIDER_TYPE;
+        set typeCollider(_value: COLLIDER_TYPE);
         /** The physics group this {@link Node} belongs to it's the default group normally which means it physically collides with every group besides trigger. */
-        get collisionGroup(): PHYSICS_GROUP;
-        set collisionGroup(_value: PHYSICS_GROUP);
-        /** The groups this object collides with. Groups must be writen in form of
-         *  e.g. collisionMask = PHYSICS_GROUP.DEFAULT | PHYSICS_GROUP.GROUP_1 and so on to collide with multiple groups. */
-        get collisionMask(): number;
-        set collisionMask(_value: number);
+        get collisionGroup(): COLLISION_GROUP;
+        set collisionGroup(_value: COLLISION_GROUP);
+        /** Marking the Body as a trigger therefore not influencing the collision system but only sending triggerEvents */
+        get isTrigger(): boolean;
+        set isTrigger(_value: boolean);
         /**
        * Returns the physical weight of the {@link Node}
        */
@@ -4355,17 +4514,17 @@ declare namespace FudgeCore {
       */
         set mass(_value: number);
         /** Air reistance, when moving. A Body does slow down even on a surface without friction. */
-        get linearDamping(): number;
-        set linearDamping(_value: number);
+        get dampTranslation(): number;
+        set dampTranslation(_value: number);
         /** Air resistance, when rotating. */
-        get angularDamping(): number;
-        set angularDamping(_value: number);
+        get dampRotation(): number;
+        set dampRotation(_value: number);
         /** The factor this rigidbody reacts rotations that happen in the physical world. 0 to lock rotation this axis. */
-        get rotationInfluenceFactor(): Vector3;
-        set rotationInfluenceFactor(_influence: Vector3);
+        get effectRotation(): Vector3;
+        set effectRotation(_effect: Vector3);
         /** The factor this rigidbody reacts to world gravity. Default = 1 e.g. 1*9.81 m/s. */
-        get gravityScale(): number;
-        set gravityScale(_influence: number);
+        get effectGravity(): number;
+        set effectGravity(_effect: number);
         /**
       * Get the friction of the rigidbody, which is the factor of sliding resistance of this rigidbody on surfaces
       */
@@ -4399,11 +4558,6 @@ declare namespace FudgeCore {
        * Automatically called in the RenderManager, no interaction needed.
        */
         checkCollisionEvents(): void;
-        /**
-          * Checking for Collision with Triggers with a overlapping test, dispatching a custom event with information about the trigger,
-          * or triggered {@link Node}. Automatically called in the RenderManager, no interaction needed.
-          */
-        checkTriggerEvents(): void;
         /**
        * Checks that the Rigidbody is positioned correctly and recreates the Collider with new scale/position/rotation
        */
@@ -4492,7 +4646,10 @@ declare namespace FudgeCore {
         deserialize(_serialization: Serialization): Promise<Serializable>;
         /** Change properties by an associative array */
         mutate(_mutator: Mutator): Promise<void>;
+        getMutator(): Mutator;
+        getMutatorAttributeTypes(_mutator: Mutator): MutatorAttributeTypes;
         reduceMutator(_mutator: Mutator): void;
+        private create;
         /** Creates the actual OimoPhysics Rigidbody out of informations the Fudge Component has. */
         private createRigidbody;
         /** Creates a collider a shape that represents the object in the physical world.  */
@@ -4505,15 +4662,19 @@ declare namespace FudgeCore {
         private addRigidbodyToWorld;
         /** Removing this ComponentRigidbody from the Physiscs.world taking the informations from the oimoPhysics system */
         private removeRigidbodyFromWorld;
-        /** Check if two OimoPhysics Shapes collide with each other. By overlapping their approximations */
-        private collidesWith;
-        /** Find the approximated entry point of a trigger event. To give the event a approximated information where to put something in the world when a triggerEvent has happened */
-        private getTriggerEnterPoint;
-        /**
-         * Events in case a body is in a trigger, so not only the body registers a triggerEvent but also the trigger itself.
-         */
-        private checkBodiesInTrigger;
         private collisionCenterPoint;
+        /**
+        * Trigger EnteringEvent Callback, automatically called by OIMO Physics within their calculations.
+        * Since the event does not know which body is the trigger iniator, the event can be listened to
+        * on either the trigger or the triggered. (This is only possible with the Fudge OIMO Fork!)
+        */
+        private triggerEnter;
+        /**
+        * Trigger LeavingEvent Callback, automatically called by OIMO Physics within their calculations.
+        * Since the event does not know which body is the trigger iniator, the event can be listened to
+        * on either the trigger or the triggered. (This is only possible with the Fudge OIMO Fork!)
+        */
+        private triggerExit;
     }
 }
 declare namespace FudgeCore {
@@ -4662,21 +4823,21 @@ declare namespace FudgeCore {
         constructor(_type: EVENT_PHYSICS, _hitRigidbody: ComponentRigidbody, _normalImpulse: number, _tangentImpulse: number, _binormalImpulse: number, _collisionPoint?: Vector3, _collisionNormal?: Vector3);
     }
     /**
-  * Groups to place a node in, not every group should collide with every group. Use a Mask in to exclude collisions
-  */
-    enum PHYSICS_GROUP {
+    * Groups to place a node in, not every group should collide with every group. Use a Mask in to exclude collisions
+    */
+    enum COLLISION_GROUP {
         DEFAULT = 1,
-        TRIGGER = 60000,
         GROUP_1 = 2,
         GROUP_2 = 4,
         GROUP_3 = 8,
-        GROUP_4 = 16
+        GROUP_4 = 16,
+        GROUP_5 = 32
     }
     /**
     * Different types of physical interaction, DYNAMIC is fully influenced by physics and only physics, STATIC means immovable,
     * KINEMATIC is moved through transform and animation instead of physics code.
     */
-    enum PHYSICS_TYPE {
+    enum BODY_TYPE {
         DYNAMIC = 0,
         STATIC = 1,
         KINEMATIC = 2
@@ -4753,8 +4914,8 @@ declare namespace FudgeCore {
         get defaultCollisionMask(): number;
         set defaultCollisionMask(_value: number);
         /** The group that this rigidbody belongs to. Default is the DEFAULT Group which means its just a normal Rigidbody not a trigger nor anything special. */
-        get defaultCollisionGroup(): PHYSICS_GROUP;
-        set defaultCollisionGroup(_value: PHYSICS_GROUP);
+        get defaultCollisionGroup(): COLLISION_GROUP;
+        set defaultCollisionGroup(_value: COLLISION_GROUP);
         /** Change the type of joint solver algorithm. Default Iterative == 0, is faster but less stable. Direct == 1, slow but more stable, recommended for complex joint work. Change this setting only at the start of your game. */
         get defaultConstraintSolverType(): number;
         set defaultConstraintSolverType(_value: number);
@@ -4770,17 +4931,16 @@ declare namespace FudgeCore {
       * @author Marko Fehrenbach, HFU 2020
       */
     class Physics {
-        /** The PHYSICAL WORLD that gives every {@link Node} with a ComponentRigidbody a physical representation and moves them accordingly to the laws of the physical world. */
-        static world: Physics;
         /** The SETTINGS that apply to the physical world. Ranging from things like sleeping, collisionShapeThickness and others */
         static settings: PhysicsSettings;
+        /** The PHYSICAL WORLD that gives every {@link Node} with a ComponentRigidbody a physical representation and moves them accordingly to the laws of the physical world. */
+        static world: Physics;
         /** The rendering of physical debug informations. Used internally no interaction needed.*/
         debugDraw: PhysicsDebugDraw;
         /** The camera/viewport the physics are debugged to. Used internally no interaction needed. */
         mainCam: ComponentCamera;
         private oimoWorld;
         private bodyList;
-        private triggerBodyList;
         private jointList;
         /**
          * Creating a physical world to represent the {@link Node} Scene Tree. Call once before using any physics functions or
@@ -4791,7 +4951,7 @@ declare namespace FudgeCore {
         * Cast a RAY into the physical world from a origin point in a certain direction. Receiving informations about the hit object and the
         * hit point. Do not specify a _group to raycast the whole world, else only bodies within the specific group can be hit.
         */
-        static raycast(_origin: Vector3, _direction: Vector3, _length?: number, _group?: PHYSICS_GROUP): RayHitInfo;
+        static raycast(_origin: Vector3, _direction: Vector3, _length?: number, _group?: COLLISION_GROUP): RayHitInfo;
         /**
           * Adjusts the transforms of the {@link ComponentRigidbody}s in the given branch to match their nodes or meshes
           */
@@ -4804,8 +4964,6 @@ declare namespace FudgeCore {
         private static getRayDistance;
         /** Returns all the ComponentRigidbodies that are known to the physical space. */
         getBodyList(): ComponentRigidbody[];
-        /** Returns all the ComponentRigidbodies that are in the specific group of triggers. */
-        getTriggerList(): ComponentRigidbody[];
         /**
         * Getting the solver iterations of the physics engine. Higher iteration numbers increase accuracy but decrease performance
         */
@@ -4841,14 +4999,11 @@ declare namespace FudgeCore {
         /** Returns the actual used world of the OIMO physics engine. No user interaction needed.*/
         getOimoWorld(): OIMO.World;
         /**
-        * Simulates the physical world. _deltaTime is the amount of time between physical steps, default is 60 frames per second ~17ms
+        * Simulates the physical world. _deltaTime is the amount of time between physical steps, default is 60 frames per second ~17ms.
+        * A frame timing can't be smaller than 1/30 of a second, or else it will be set to 30 frames, to have more consistent frame calculations.
         */
         simulate(_deltaTime?: number): void;
         draw(_cmpCamera: ComponentCamera): void;
-        /** Make the given ComponentRigidbody known to the world as a body that is not colliding, but only triggering events. Used internally no interaction needed. */
-        registerTrigger(_rigidbody: ComponentRigidbody): void;
-        /** Remove the given ComponentRigidbody the world as viable triggeringBody. Used internally no interaction needed. */
-        unregisterTrigger(_rigidbody: ComponentRigidbody): void;
         /** Connect all joints that are not connected yet. Used internally no user interaction needed. This functionality is called and needed to make sure joints connect/disconnect
          * if any of the two paired ComponentRigidbodies change.
          */
@@ -5425,7 +5580,7 @@ declare namespace FudgeCore {
     }
 }
 declare namespace FudgeCore {
-    enum MIPMAP {
+    export enum MIPMAP {
         CRISP = 0,
         MEDIUM = 1,
         BLURRY = 2
@@ -5434,7 +5589,7 @@ declare namespace FudgeCore {
      * Baseclass for different kinds of textures.
      * @authors Jirka Dell'Oro-Friedl, HFU, 2019
      */
-    abstract class Texture extends Mutable implements SerializableResource {
+    export abstract class Texture extends Mutable implements SerializableResource {
         name: string;
         idResource: string;
         mipmap: MIPMAP;
@@ -5451,7 +5606,7 @@ declare namespace FudgeCore {
     /**
      * Texture created from an existing image
      */
-    class TextureImage extends Texture {
+    export class TextureImage extends Texture {
         image: HTMLImageElement;
         url: RequestInfo;
         constructor(_url?: RequestInfo);
@@ -5467,7 +5622,7 @@ declare namespace FudgeCore {
     /**
      * Texture created from a canvas
      */
-    class TextureBase64 extends Texture {
+    export class TextureBase64 extends Texture {
         image: HTMLImageElement;
         constructor(_name: string, _base64: string, _mipmap?: MIPMAP);
         get texImageSource(): TexImageSource;
@@ -5475,7 +5630,8 @@ declare namespace FudgeCore {
     /**
      * Texture created from a canvas
      */
-    class TextureCanvas extends Texture {
+    type OffscreenCanvasRenderingContext2D = General;
+    export class TextureCanvas extends Texture {
         crc2: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D;
         constructor(_name: string, _crc2: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D);
         get texImageSource(): TexImageSource;
@@ -5483,15 +5639,16 @@ declare namespace FudgeCore {
     /**
      * Texture created from a FUDGE-Sketch
      */
-    class TextureSketch extends TextureCanvas {
+    export class TextureSketch extends TextureCanvas {
         get texImageSource(): TexImageSource;
     }
     /**
      * Texture created from an HTML-page
      */
-    class TextureHTML extends TextureCanvas {
+    export class TextureHTML extends TextureCanvas {
         get texImageSource(): TexImageSource;
     }
+    export {};
 }
 declare namespace FudgeCore {
     class TextureDefault extends TextureBase64 {
@@ -5553,10 +5710,10 @@ declare namespace FudgeCore {
         /** The number of frames triggered so far */
         static get frames(): number;
         /**
-         * Starts the loop with the given mode and fps
-         * @param _mode
-         * @param _fps Is only applicable in TIME-modes
-         * @param _syncWithAnimationFrame Experimental and only applicable in TIME-modes. Should defer the loop-cycle until the next possible animation frame.
+         * Starts the loop with the given mode and fps.
+         * The default for _mode is FRAME_REQUEST, see {@link LOOP_MODE}, hooking the loop to the browser's animation frame.
+         * Is only applicable in TIME-modes.
+         * _syncWithAnimationFrame is experimental and only applicable in TIME-modes, deferring the loop-cycle until the next possible animation frame.
          */
         static start(_mode?: LOOP_MODE, _fps?: number, _syncWithAnimationFrame?: boolean): void;
         /**

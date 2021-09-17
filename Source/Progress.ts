@@ -190,11 +190,13 @@ namespace FudgeStory {
       html += `<p>${_text}</p>`;
       html += `</div>`;
       splash.innerHTML = html;
+      //@ts-ignore
       splash.showModal();
 
       return new Promise<void>(_resolve => {
         function hndClick(_event: Event): void {
           splash.removeEventListener("click", hndClick);
+          //@ts-ignore
           splash.close();
           document.body.removeChild(splash);
           _resolve();
