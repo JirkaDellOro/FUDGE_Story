@@ -122,7 +122,7 @@ namespace Tutorial {
     started: false,
     ended: false,
     pickedText: false,
-    goToInventory: false,
+    goToInventory: false
   };
 
 
@@ -296,7 +296,7 @@ namespace Tutorial {
       // { scene: GameMenu, name: "How To Make A Game Menu" },
       // { scene: Meter, name: "How To Make a Progress bar" },
 
-      { id: "End", scene: End, name: "This is an ending" },
+      { id: "End", scene: End, name: "This is an ending" }
 
     ];
 
