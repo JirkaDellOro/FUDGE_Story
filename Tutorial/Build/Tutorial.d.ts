@@ -107,6 +107,8 @@ declare namespace Tutorial {
         scoreForRyu: string;
         started: boolean;
         ended: boolean;
+        pickedText: boolean;
+        goToInventory: boolean;
     };
     function incrementSound(): void;
     function decrementSound(): void;

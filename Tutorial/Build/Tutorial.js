@@ -61,6 +61,9 @@ var Tutorial;
         // console.log(dataForSave.Protagonist.name);
         // await signalDelay2();
         Tutorial.ƒS.Speech.set(Tutorial.characters.Aoi, text.Aoi.T0002);
+        // if (!dataForSave.goToInventory) {
+        //   return Inventory();
+        // }
         Tutorial.ƒS.Sound.play(Tutorial.sound.click, 1);
         let firstDialogueElementAnswers = {
             iSayOk: "Okay.",
@@ -76,16 +79,16 @@ var Tutorial;
                 await Tutorial.ƒS.Speech.tell(Tutorial.characters.Aoi, "Okay");
                 Tutorial.ƒS.Sound.fade(Tutorial.sound.backgroundTheme, 0, 1);
                 Tutorial.ƒS.Sound.play(Tutorial.sound.dystopian, 0.5);
-                await Tutorial.ƒS.Speech.tell(Tutorial.characters.Aoi, "Okay");
-                await Tutorial.ƒS.Speech.tell(Tutorial.characters.Aoi, "Okay");
-                await Tutorial.ƒS.Speech.tell(Tutorial.characters.Aoi, "Okay");
-                await Tutorial.ƒS.Speech.tell(Tutorial.characters.Aoi, "Okay");
-                await Tutorial.ƒS.Speech.tell(Tutorial.characters.Aoi, "Okay");
+                await Tutorial.ƒS.Speech.tell(Tutorial.characters.Aoi, "1");
+                await Tutorial.ƒS.Speech.tell(Tutorial.characters.Aoi, "2");
+                await Tutorial.ƒS.Speech.tell(Tutorial.characters.Aoi, "3");
+                await Tutorial.ƒS.Speech.tell(Tutorial.characters.Aoi, "4");
                 Tutorial.ƒS.Character.hide(Tutorial.characters.Aoi);
                 Tutorial.ƒS.Speech.clear();
                 Tutorial.ƒS.Sound.fade(Tutorial.sound.dystopian, 0, 0.5);
                 await Tutorial.ƒS.update(1);
-                Tutorial.dataForSave.ended = true;
+                // dataForSave.goToInventory = false;
+                return "NovelPages";
                 break;
             case firstDialogueElementAnswers.iSayYes:
                 Tutorial.dataForSave.score -= 10;
@@ -95,6 +98,8 @@ var Tutorial;
                 await Tutorial.ƒS.Speech.tell(Tutorial.characters.Aoi, "Ja.");
                 Tutorial.ƒS.Speech.clear();
                 await Tutorial.ƒS.update(1);
+                return "Inventory";
+                // dataForSave.goToInventory = true;
                 break;
             case firstDialogueElementAnswers.iSayNo:
                 Tutorial.ƒS.Sound.play(Tutorial.sound.click, 1);
@@ -107,17 +112,18 @@ var Tutorial;
                 await Tutorial.ƒS.Character.hide(Tutorial.characters.Ryu);
                 Tutorial.ƒS.Speech.clear();
                 await Tutorial.ƒS.update(1);
+                Tutorial.dataForSave.goToInventory = false;
                 break;
         }
-        Tutorial.ƒS.Sound.fade(Tutorial.sound.backgroundTheme, 0.2, 0.1, true);
-        await Tutorial.ƒS.Character.show(Tutorial.characters.Aoi, Tutorial.characters.Aoi.pose.normal, Tutorial.ƒS.positions.bottomcenter);
-        await Tutorial.ƒS.update();
-        await Tutorial.ƒS.Speech.tell(Tutorial.characters.Aoi, text.Aoi.T0001);
-        await Tutorial.ƒS.Character.hide(Tutorial.characters.Aoi);
-        Tutorial.ƒS.Speech.hide();
-        await Tutorial.ƒS.update(1);
-        // Musik ausblenden
-        Tutorial.ƒS.Sound.fade(Tutorial.sound.backgroundTheme, 0, 1);
+        // ƒS.Sound.fade(sound.backgroundTheme, 0.2, 0.1, true);
+        // await ƒS.Character.show(characters.Aoi, characters.Aoi.pose.normal, ƒS.positions.bottomcenter);
+        // await ƒS.update();
+        // await ƒS.Speech.tell(characters.Aoi, text.Aoi.T0001);
+        // await ƒS.Character.hide(characters.Aoi);
+        // ƒS.Speech.hide();
+        // await ƒS.update(1);
+        // // Musik ausblenden
+        // ƒS.Sound.fade(sound.backgroundTheme, 0, 1);
     }
     Tutorial.Decision = Decision;
 })(Tutorial || (Tutorial = {}));
@@ -223,6 +229,11 @@ var Tutorial;
             alpha: "FreeTransitions/WipesAndOther/circlewipe-ccw.jpg",
             edge: 1
         }
+        // wipe: {
+        //   duration: 1,
+        //   alpha: "",
+        //   edge: 2
+        // }
     };
     // define sound
     Tutorial.sound = {
@@ -314,7 +325,9 @@ var Tutorial;
         scoreRyu: 0,
         scoreForRyu: "",
         started: false,
-        ended: false
+        ended: false,
+        pickedText: false,
+        goToInventory: false,
     };
     //  MENU - Audio functions
     let volume = 1.0;
@@ -322,19 +335,19 @@ var Tutorial;
         if (volume >= 100)
             return;
         volume += 0.5;
-        Tutorial.ƒS.Sound.setMasterVolume(volume);
+        Tutorial.ƒS.Sound.setMasterVolume(1.3);
     }
     Tutorial.incrementSound = incrementSound;
     function decrementSound() {
         if (volume <= 0)
             return;
         volume -= 0.5;
-        Tutorial.ƒS.Sound.setMasterVolume(volume);
+        Tutorial.ƒS.Sound.setMasterVolume(0.7);
     }
     Tutorial.decrementSound = decrementSound;
     function showCredits() {
         Tutorial.ƒS.Text.addClass("credits");
-        Tutorial.ƒS.Text.print("Hello Test Test");
+        Tutorial.ƒS.Text.print("Hier könnten jetzt Credits stehen.");
         // showCredits();
     }
     Tutorial.showCredits = showCredits;
@@ -447,15 +460,20 @@ var Tutorial;
             Tutorial.ƒS.Menu.create(inGameMenu, buttonFunctionalities, "gameMenu");
         // define the sequence of scenes, each scene as an object with a reference to the scene-function, a name and optionally an id and an id to continue the story with
         let scenes = [
-            // { scene: Text, name: "How To Text"},
+            // linear path
+            { scene: Tutorial.Text, name: "How To Text" },
             { scene: Tutorial.Decision, name: "How To Decide" },
-            // { scene: End, name: "End" },
-            // { id: "Endo", scene: End, name: "This is an ending", next: "Endo" },
-            // { scene: Inventory, name: "How To Make An Inventory" },
+            // Gabelung
+            // Pfad 1
+            { id: "NovelPages", scene: Tutorial.NovelPages, name: "Different uses of novel pages", next: "Animation" },
+            { id: "Animation", scene: Tutorial.Animation, name: "How To Animate", next: "End" },
+            // Pfad 2
+            { id: "Inventory", scene: Tutorial.Inventory, name: "How To Make An Inventory", next: "Meter" },
+            { id: "Meter", scene: Tutorial.Meter, name: "How To Make a Progress bar", next: "End" },
             // { scene: Animation, name: "How To Animate" },
             // { scene: GameMenu, name: "How To Make A Game Menu" },
             // { scene: Meter, name: "How To Make a Progress bar" },
-            { scene: Tutorial.NovelPages, name: "Different uses of novel pages" }
+            { id: "End", scene: Tutorial.End, name: "This is an ending" },
         ];
         let uiElement = document.querySelector("[type=interface]");
         Tutorial.dataForSave = Tutorial.ƒS.Progress.setData(Tutorial.dataForSave, uiElement);
@@ -590,11 +608,13 @@ var Tutorial;
                 T0001: ""
             }
         };
+        // dataForSave.pickedText = true;
         document.getElementsByName("scoreRyu").forEach(meterStuff => meterStuff.hidden = true);
         document.getElementsByName("scoreForRyu").forEach(meterStuff => meterStuff.hidden = true);
         Tutorial.ƒS.Speech.hide();
         await Tutorial.ƒS.Location.show(Tutorial.locations.city);
         await Tutorial.ƒS.update(Tutorial.transition.clock.duration, Tutorial.transition.clock.alpha, Tutorial.transition.clock.edge);
+        // await ƒS.update(transition.clock.duration, transition.wipe.alpha, transition.clock.edge);
         // await ƒS.Character.show(characters.Ryu, characters.Ryu.pose.normal, ƒS.positions.bottomcenter);
         await Tutorial.ƒS.Character.show(Tutorial.characters.Ryu, Tutorial.characters.Ryu.pose.normal, Tutorial.ƒS.positionPercent(30, 100));
         await Tutorial.ƒS.update(1);
@@ -603,6 +623,9 @@ var Tutorial;
         await Tutorial.ƒS.Speech.tell(Tutorial.characters.Ryu, "Fremder.");
         await Tutorial.ƒS.Character.hide(Tutorial.characters.Ryu);
         await Tutorial.ƒS.update(1);
+        // if (dataForSave.pickedText) {
+        //   return Text();
+        // }
     }
     Tutorial.Text = Text;
 })(Tutorial || (Tutorial = {}));

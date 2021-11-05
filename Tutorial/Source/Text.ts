@@ -18,6 +18,8 @@ namespace Tutorial {
     };
 
 
+    // dataForSave.pickedText = true;
+
     document.getElementsByName("scoreRyu").forEach(meterStuff => meterStuff.hidden = true);
     document.getElementsByName("scoreForRyu").forEach(meterStuff => meterStuff.hidden = true);
 
@@ -25,6 +27,7 @@ namespace Tutorial {
     ƒS.Speech.hide();
     await ƒS.Location.show(locations.city);
     await ƒS.update(transition.clock.duration, transition.clock.alpha, transition.clock.edge);
+    // await ƒS.update(transition.clock.duration, transition.wipe.alpha, transition.clock.edge);
     // await ƒS.Character.show(characters.Ryu, characters.Ryu.pose.normal, ƒS.positions.bottomcenter);
     await ƒS.Character.show(characters.Ryu, characters.Ryu.pose.normal, ƒS.positionPercent(30, 100));
     await ƒS.update(1);
@@ -35,7 +38,9 @@ namespace Tutorial {
     await ƒS.update(1);
 
 
-
+    // if (dataForSave.pickedText) {
+    //   return Text();
+    // }
 
 
   }

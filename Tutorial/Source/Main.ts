@@ -16,13 +16,18 @@ namespace Tutorial {
       alpha: "FreeTransitions/WipesAndOther/circlewipe-ccw.jpg",
       edge: 1
     }
+    // wipe: {
+    //   duration: 1,
+    //   alpha: "",
+    //   edge: 2
+    // }
   };
 
   // define sound
   export let sound = {
     // Music
     backgroundTheme: "Audio/Nightclub.ogg",
-    dystopian: "Audio/Dystopian.ogg", 
+    dystopian: "Audio/Dystopian.ogg",
 
     // Sound
     click: ""
@@ -115,7 +120,9 @@ namespace Tutorial {
     scoreRyu: 0,
     scoreForRyu: "",
     started: false,
-    ended: false
+    ended: false,
+    pickedText: false,
+    goToInventory: false,
   };
 
 
@@ -127,19 +134,19 @@ namespace Tutorial {
     if (volume >= 100)
       return;
     volume += 0.5;
-    ƒS.Sound.setMasterVolume(volume);
+    ƒS.Sound.setMasterVolume(1.3);
   }
 
   export function decrementSound(): void {
     if (volume <= 0)
       return;
     volume -= 0.5;
-    ƒS.Sound.setMasterVolume(volume);
+    ƒS.Sound.setMasterVolume(0.7);
   }
 
   export function showCredits(): void {
     ƒS.Text.addClass("credits");
-    ƒS.Text.print("Hello Test Test");
+    ƒS.Text.print("Hier könnten jetzt Credits stehen.");
 
     // showCredits();
   }
@@ -191,9 +198,6 @@ namespace Tutorial {
 
   // true heißt hier offen und false geschlossen
   export let menu: boolean = true;
-
-
-
 
   // shortcuts to save and load game progress
   // && doesn't work in a switch
@@ -274,16 +278,25 @@ namespace Tutorial {
 
     // define the sequence of scenes, each scene as an object with a reference to the scene-function, a name and optionally an id and an id to continue the story with
     let scenes: ƒS.Scenes = [
-      // { scene: Text, name: "How To Text"},
+      // linear path
+      { scene: Text, name: "How To Text" },
       { scene: Decision, name: "How To Decide" },
-      // { scene: End, name: "End" },
-      // { id: "Endo", scene: End, name: "This is an ending", next: "Endo" },
-      // { scene: Inventory, name: "How To Make An Inventory" },
+
+
+      // Gabelung
+      // Pfad 1
+      { id: "NovelPages", scene: NovelPages, name: "Different uses of novel pages", next: "Animation" },
+      { id: "Animation", scene: Animation, name: "How To Animate", next: "End" },
+
+      // Pfad 2
+      { id: "Inventory", scene: Inventory, name: "How To Make An Inventory", next: "Meter" },
+      { id: "Meter", scene: Meter, name: "How To Make a Progress bar", next: "End" },
+
       // { scene: Animation, name: "How To Animate" },
       // { scene: GameMenu, name: "How To Make A Game Menu" },
       // { scene: Meter, name: "How To Make a Progress bar" },
-      { scene: NovelPages, name: "Different uses of novel pages" }
 
+      { id: "End", scene: End, name: "This is an ending" },
 
     ];
 

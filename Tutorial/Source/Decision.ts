@@ -42,6 +42,10 @@ namespace Tutorial {
     ƒS.Speech.set(characters.Aoi, text.Aoi.T0002);
 
 
+    // if (!dataForSave.goToInventory) {
+    //   return Inventory();
+    // }
+
 
     ƒS.Sound.play(sound.click, 1);
 
@@ -62,16 +66,16 @@ namespace Tutorial {
         await ƒS.Speech.tell(characters.Aoi, "Okay");
         ƒS.Sound.fade(sound.backgroundTheme, 0, 1);
         ƒS.Sound.play(sound.dystopian, 0.5);
-        await ƒS.Speech.tell(characters.Aoi, "Okay");
-        await ƒS.Speech.tell(characters.Aoi, "Okay");
-        await ƒS.Speech.tell(characters.Aoi, "Okay");
-        await ƒS.Speech.tell(characters.Aoi, "Okay");
-        await ƒS.Speech.tell(characters.Aoi, "Okay");
+        await ƒS.Speech.tell(characters.Aoi, "1");
+        await ƒS.Speech.tell(characters.Aoi, "2");
+        await ƒS.Speech.tell(characters.Aoi, "3");
+        await ƒS.Speech.tell(characters.Aoi, "4");
         ƒS.Character.hide(characters.Aoi);
         ƒS.Speech.clear();
         ƒS.Sound.fade(sound.dystopian, 0, 0.5);
         await ƒS.update(1);
-        dataForSave.ended = true;
+        // dataForSave.goToInventory = false;
+        return "NovelPages";
         break;
       case firstDialogueElementAnswers.iSayYes:
         dataForSave.score -= 10;
@@ -81,6 +85,8 @@ namespace Tutorial {
         await ƒS.Speech.tell(characters.Aoi, "Ja.");
         ƒS.Speech.clear();
         await ƒS.update(1);
+        return "Inventory";
+        // dataForSave.goToInventory = true;
         break;
       case firstDialogueElementAnswers.iSayNo:
         ƒS.Sound.play(sound.click, 1);
@@ -93,22 +99,23 @@ namespace Tutorial {
         await ƒS.Character.hide(characters.Ryu);
         ƒS.Speech.clear();
         await ƒS.update(1);
+        dataForSave.goToInventory = false;
         break;
     }
 
 
-    ƒS.Sound.fade(sound.backgroundTheme, 0.2, 0.1, true);
-    await ƒS.Character.show(characters.Aoi, characters.Aoi.pose.normal, ƒS.positions.bottomcenter);
-    await ƒS.update();
-    await ƒS.Speech.tell(characters.Aoi, text.Aoi.T0001);
+    // ƒS.Sound.fade(sound.backgroundTheme, 0.2, 0.1, true);
+    // await ƒS.Character.show(characters.Aoi, characters.Aoi.pose.normal, ƒS.positions.bottomcenter);
+    // await ƒS.update();
+    // await ƒS.Speech.tell(characters.Aoi, text.Aoi.T0001);
 
-    await ƒS.Character.hide(characters.Aoi);
-    ƒS.Speech.hide();
-    await ƒS.update(1);
+    // await ƒS.Character.hide(characters.Aoi);
+    // ƒS.Speech.hide();
+    // await ƒS.update(1);
 
     
-    // Musik ausblenden
-    ƒS.Sound.fade(sound.backgroundTheme, 0, 1);
+    // // Musik ausblenden
+    // ƒS.Sound.fade(sound.backgroundTheme, 0, 1);
 
 
 

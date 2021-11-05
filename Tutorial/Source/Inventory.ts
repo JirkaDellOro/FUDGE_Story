@@ -17,6 +17,8 @@ namespace Tutorial {
       }
     };
 
+
+    
     document.getElementsByName("scoreRyu").forEach(meterStuff => meterStuff.hidden = true);
     document.getElementsByName("scoreForRyu").forEach(meterStuff => meterStuff.hidden = true);
 
