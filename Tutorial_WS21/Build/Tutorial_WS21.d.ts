@@ -34,6 +34,15 @@ declare namespace Tutorial_WS21 {
                 upset: string;
             };
         };
+        kohana: {
+            name: string;
+            origin: ƒ.ORIGIN2D;
+            pose: {
+                angry: string;
+                happy: string;
+                upset: string;
+            };
+        };
     };
     let dataForSave: {};
 }

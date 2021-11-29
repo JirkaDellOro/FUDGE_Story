@@ -31,7 +31,7 @@ namespace Tutorial_WS21 {
     }
   };
 
-
+// Stilfrage - Eigenen Styleguide für FS veröffentlichen? 
   export let characters = {
     narrator: {
       name: ""
@@ -40,9 +40,18 @@ namespace Tutorial_WS21 {
       name: "Aisaka",
       origin: ƒS.ORIGIN.BOTTOMCENTER,
       pose: {
-        angry: "",
-        happy: "",
-        upset: ""
+        angry: "./Images/Characters/aisaka_angry.png",
+        happy: "./Images/Characters/aisaka_happy.png",
+        upset: "./Images/Characters/aisaka_upset.png"
+      }
+    },
+    kohana: {
+      name: "Kohana",
+      origin: ƒS.ORIGIN.BOTTOMCENTER,
+      pose: {
+        angry: "./Images/Characters/kohana_angry.png",
+        happy: "./Images/Characters/kohana_happy.png",
+        upset: "./Images/Characters/kohana_upset.png"
       }
     }
   };
