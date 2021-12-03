@@ -31,7 +31,7 @@ namespace Tutorial_WS21 {
     }
   };
 
-// Stilfrage - Eigenen Styleguide für FS veröffentlichen? 
+  // Stilfrage - Eigenen Styleguide für FS veröffentlichen? 
   export let characters = {
     narrator: {
       name: ""
@@ -56,6 +56,33 @@ namespace Tutorial_WS21 {
     }
   };
 
+  // Animations
+  // export function jirkaAnimation(): ƒS.AnimationDefinition {
+  //   return {
+  //     start: { translation: ƒS.positions.bottomleft, rotation: -20, scaling: new ƒS.Position(0.5, 1.5), color: ƒS.Color.CSS("white", 0) },
+  //     end: { translation: ƒS.positions.bottomright, rotation: 20, scaling: new ƒS.Position(1.5, 0.5), color: ƒS.Color.CSS("red") },
+  //     duration: 1,
+  //     playmode: ƒS.ANIMATION_PLAYMODE.LOOP
+  //   };
+  // }
+
+  export function fromRightToOutOfCanvas(): ƒS.AnimationDefinition {
+    return {
+      start: { translation: ƒS.positionPercent(30, 100) },
+      end: { translation: ƒS.positionPercent(120, 100) },
+      duration: 1,
+      playmode: ƒS.ANIMATION_PLAYMODE.PLAYONCE
+    };
+  }
+
+  export function fromRightToLeft(): ƒS.AnimationDefinition {
+    return {
+      start: { translation: ƒS.positions.bottomright },
+      end: { translation: ƒS.positions.bottomleft },
+      duration: 1,
+      playmode: ƒS.ANIMATION_PLAYMODE.PLAYONCE
+    };
+  }
 
   export let dataForSave = {
 
@@ -66,7 +93,7 @@ namespace Tutorial_WS21 {
   window.addEventListener("load", start);
   function start(_event: Event): void {
     let scenes: ƒS.Scenes = [
-      { scene: Introduction, name: "Introduction to FS" } 
+      { scene: Introduction, name: "Introduction to FS" }
     ];
 
 
@@ -78,4 +105,6 @@ namespace Tutorial_WS21 {
     // start the sequence
     ƒS.Progress.go(scenes);
   }
+
+
 }

@@ -44,5 +44,7 @@ declare namespace Tutorial_WS21 {
             };
         };
     };
+    function fromRightToOutOfCanvas(): ƒS.AnimationDefinition;
+    function fromRightToLeft(): ƒS.AnimationDefinition;
     let dataForSave: {};
 }

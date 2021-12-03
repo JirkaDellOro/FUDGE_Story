@@ -21,6 +21,7 @@ var Tutorial_WS21;
         await Tutorial_WS21.ƒS.Character.show(Tutorial_WS21.characters.aisaka, Tutorial_WS21.characters.aisaka.pose.happy, Tutorial_WS21.ƒS.positionPercent(30, 100));
         await Tutorial_WS21.ƒS.update(1);
         await Tutorial_WS21.ƒS.Speech.tell(Tutorial_WS21.characters.aisaka, text.aisaka.T0000);
+        await Tutorial_WS21.ƒS.Character.animate(Tutorial_WS21.characters.aisaka, Tutorial_WS21.characters.aisaka.pose.happy, Tutorial_WS21.fromRightToLeft());
         await Tutorial_WS21.ƒS.Speech.tell(Tutorial_WS21.characters.aisaka, "Hi2.");
         await Tutorial_WS21.ƒS.Character.hide(Tutorial_WS21.characters.aisaka);
         let firstDialogueElementOptions = {
@@ -93,6 +94,33 @@ var Tutorial_WS21;
             }
         }
     };
+    // Animations
+    // export function jirkaAnimation(): ƒS.AnimationDefinition {
+    //   return {
+    //     start: { translation: ƒS.positions.bottomleft, rotation: -20, scaling: new ƒS.Position(0.5, 1.5), color: ƒS.Color.CSS("white", 0) },
+    //     end: { translation: ƒS.positions.bottomright, rotation: 20, scaling: new ƒS.Position(1.5, 0.5), color: ƒS.Color.CSS("red") },
+    //     duration: 1,
+    //     playmode: ƒS.ANIMATION_PLAYMODE.LOOP
+    //   };
+    // }
+    function fromRightToOutOfCanvas() {
+        return {
+            start: { translation: Tutorial_WS21.ƒS.positionPercent(30, 100) },
+            end: { translation: Tutorial_WS21.ƒS.positionPercent(120, 100) },
+            duration: 1,
+            playmode: Tutorial_WS21.ƒS.ANIMATION_PLAYMODE.PLAYONCE
+        };
+    }
+    Tutorial_WS21.fromRightToOutOfCanvas = fromRightToOutOfCanvas;
+    function fromRightToLeft() {
+        return {
+            start: { translation: Tutorial_WS21.ƒS.positions.bottomright },
+            end: { translation: Tutorial_WS21.ƒS.positions.bottomleft },
+            duration: 1,
+            playmode: Tutorial_WS21.ƒS.ANIMATION_PLAYMODE.PLAYONCE
+        };
+    }
+    Tutorial_WS21.fromRightToLeft = fromRightToLeft;
     Tutorial_WS21.dataForSave = {};
     window.addEventListener("load", start);
     function start(_event) {

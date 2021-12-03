@@ -25,6 +25,7 @@ namespace Tutorial_WS21 {
     await ƒS.Character.show(characters.aisaka, characters.aisaka.pose.happy, ƒS.positionPercent(30, 100));
     await ƒS.update(1);
     await ƒS.Speech.tell(characters.aisaka, text.aisaka.T0000);
+    await ƒS.Character.animate(characters.aisaka, characters.aisaka.pose.happy, fromRightToLeft());
     await ƒS.Speech.tell(characters.aisaka, "Hi2.");
     await ƒS.Character.hide(characters.aisaka);
 
