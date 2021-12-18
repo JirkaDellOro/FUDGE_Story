@@ -2,6 +2,15 @@ declare namespace Tutorial_WS21 {
     function Introduction(): ƒS.SceneReturn;
 }
 declare namespace Tutorial_WS21 {
+    function Scene2(): ƒS.SceneReturn;
+}
+declare namespace Tutorial_WS21 {
+    function Scene3(): ƒS.SceneReturn;
+}
+declare namespace Tutorial_WS21 {
+    function End(): ƒS.SceneReturn;
+}
+declare namespace Tutorial_WS21 {
     export import ƒ = FudgeCore;
     export import ƒS = FudgeStory;
     let transitions: {
@@ -17,6 +26,10 @@ declare namespace Tutorial_WS21 {
     };
     let locations: {
         bedroom: {
+            name: string;
+            background: string;
+        };
+        kitchen: {
             name: string;
             background: string;
         };
@@ -46,5 +59,8 @@ declare namespace Tutorial_WS21 {
     };
     function fromRightToOutOfCanvas(): ƒS.AnimationDefinition;
     function fromRightToLeft(): ƒS.AnimationDefinition;
-    let dataForSave: {};
+    let dataForSave: {
+        nameProtagonist: string;
+        points: number;
+    };
 }

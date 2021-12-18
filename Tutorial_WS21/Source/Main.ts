@@ -17,17 +17,30 @@ namespace Tutorial_WS21 {
 
   export let sound = {
     // music
-    backgroundTheme: "",
+    backgroundTheme: "./Audio/Dystopian.ogg",
 
     // sound
     click: ""
   };
+
+  // Items
+  // export let items = {
+  //   pen: {
+  //     name: "Roter Buntstift",
+  //     description: "A red pen",
+  //     image: "./Images/Items/redPen.png"
+  //   }
+  // };
 
 
   export let locations = {
     bedroom: {
       name: "Bedroom",
       background: "./Images/Backgrounds/Bedroom.png"
+    },
+    kitchen: {
+      name: "BedroomNight",
+      background: "./Images/Backgrounds/Bedroom_Night.png"
     }
   };
 
@@ -66,6 +79,7 @@ namespace Tutorial_WS21 {
   //   };
   // }
 
+  // Animationen
   export function fromRightToOutOfCanvas(): ƒS.AnimationDefinition {
     return {
       start: { translation: ƒS.positionPercent(30, 100) },
@@ -85,15 +99,90 @@ namespace Tutorial_WS21 {
   }
 
   export let dataForSave = {
+    nameProtagonist: "",
+    points: 0
+    // started: false,
+    // ended: false
+  };
 
+  // Menü 
+
+  let inGameMenu = {
+    save: "Save",
+    load: "Load",
+    close: "Close"
+    // open: "Open"
   };
 
 
+  let gameMenu: ƒS.Menu;
 
+  // true = offen; false = geschlossen
+  let menu: boolean = true;
+
+  async function buttonFunctionalities(_option: string): Promise<void> {
+    console.log(_option);
+    switch (_option) {
+      case inGameMenu.save:
+        await ƒS.Progress.save();
+        break;
+      case inGameMenu.load:
+        await ƒS.Progress.load();
+        break;
+      case inGameMenu.close:
+        gameMenu.close();
+        menu = false;
+        break;
+      // case inGameMenu.open:
+      //   gameMenu.open();
+      //   menu = true;
+      //   break;
+    }
+  }
+
+
+  // Shortcuts für's Menü
+  document.addEventListener("keydown", hndKeyPress);
+  async function hndKeyPress(_event: KeyboardEvent): Promise<void> {
+    switch (_event.code) {
+      case ƒ.KEYBOARD_CODE.F8:
+        console.log("Save");
+        await ƒS.Progress.save();
+        break;
+      case ƒ.KEYBOARD_CODE.F9:
+        console.log("Load");
+        await ƒS.Progress.load();
+        break;
+      case ƒ.KEYBOARD_CODE.M:
+        if (menu) {
+          console.log("Close");
+          gameMenu.close();
+          menu = false;
+        }
+        else {
+          console.log("Open");
+          gameMenu.open();
+          menu = true;
+        }
+        break;
+    }
+  }
+
+
+
+
+  // Branching path zeigen, wie's geht; Szenenstruktur erklären
   window.addEventListener("load", start);
   function start(_event: Event): void {
+    // Menü
+    gameMenu = ƒS.Menu.create(inGameMenu, buttonFunctionalities, "gameMenu");
     let scenes: ƒS.Scenes = [
-      { scene: Introduction, name: "Introduction to FS" }
+      // Linear
+      // { id: "Einführung", scene: Introduction, name: "Introduction to FS", next: "Ende"},
+      { scene: Scene2, name: "Scene Two" }
+      // { id: "Ende", scene: End, name: "The End" }
+
+
     ];
 
 
