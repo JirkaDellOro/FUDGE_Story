@@ -55,7 +55,7 @@ var FudgeStory;
         static serialize() {
             let serialization = { characters: [] };
             for (let pose of Base.middle.getChildren()) {
-                let poseUrl = pose.getComponent(ƒ.ComponentMaterial).material.getCoat().texture.url;
+                let poseUrl = pose.getComponent(ƒ.ComponentMaterial).material.coat.texture.url;
                 let origin = Reflect.get(pose, "origin");
                 serialization.characters.push({ name: pose.name, pose: poseUrl, origin: origin, position: pose.mtxLocal.translation.toVector2().serialize() });
             }
@@ -201,8 +201,6 @@ var FudgeStory;
             // _pose.cmpTransform.addEventListener(ƒ.EVENT.MUTATE, () => Base.viewport.draw());
             // ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, () => Base.viewport.draw());
             let cmpAnimator = new ƒ.ComponentAnimator(_animation, _playmode);
-            for (let cmpOldAnimator of _pose.getComponents(ƒ.ComponentAnimator))
-                _pose.removeComponent(cmpOldAnimator);
             _pose.addComponent(cmpAnimator);
             cmpAnimator.addEventListener("componentActivate" /* COMPONENT_ACTIVATE */, Animation.trackComponents);
             cmpAnimator.addEventListener("componentDeactivate" /* COMPONENT_DEACTIVATE */, Animation.trackComponents);
@@ -285,6 +283,10 @@ var FudgeStory;
         static async animate(_character, _pose, _animation) {
             let character = Character.get(_character);
             let pose = await character.getPose(_pose);
+            for (let cmpOldAnimator of pose.getComponents(ƒ.ComponentAnimator))
+                pose.removeComponent(cmpOldAnimator);
+            if (!_animation)
+                return;
             let animation = FudgeStory.Animation.create(_animation);
             FudgeStory.Base.middle.appendChild(pose);
             return FudgeStory.Animation.attach(pose, animation, _animation.playmode);
@@ -411,7 +413,7 @@ var FudgeStory;
      * Pass values in percent relative to the upper left corner.
      */
     function positionPercent(_x, _y) {
-        let size = Reflect.get(FudgeStory.Base, "size").copy;
+        let size = Reflect.get(FudgeStory.Base, "size").clone;
         let position = new FudgeStory.Position(-size.x / 2, size.y / 2);
         size.x *= _x / 100;
         size.y *= -_y / 100;
@@ -426,7 +428,8 @@ var FudgeStory;
     /**
      * Manages the inventory
      */
-    class Inventory extends HTMLDialogElement {
+    //@ts-ignore
+    class Inventory extends (HTMLDialogElement) {
         static ƒDialog;
         static ƒused;
         static get dialog() {
@@ -473,11 +476,13 @@ var FudgeStory;
          */
         static async open() {
             let dialog = Inventory.dialog;
+            //@ts-ignore
             dialog.showModal();
             Inventory.ƒused = [];
             return new Promise((_resolve) => {
                 let hndClose = (_event) => {
                     dialog.querySelector("button").removeEventListener(FudgeStory.EVENT.POINTERDOWN, hndClose);
+                    //@ts-ignore
                     dialog.close();
                     _resolve(Inventory.ƒused);
                 };
@@ -488,6 +493,7 @@ var FudgeStory;
          * Closes the inventory
          */
         static close() {
+            //@ts-ignore
             Inventory.dialog.close();
         }
         static hndUseItem = (_event) => {
@@ -559,6 +565,7 @@ var FudgeStory;
         constructor(_options, _callback, _cssClass) {
             this.dialog = Menu.createDialog(_options, _cssClass);
             this.callback = _callback;
+            //@ts-ignore
             this.dialog.show();
             this.dialog.addEventListener(FudgeStory.EVENT.POINTERDOWN, this.hndSelect);
         }
@@ -569,6 +576,7 @@ var FudgeStory;
          */
         static async getInput(_options, _cssClass) {
             let dialog = Menu.createDialog(_options, _cssClass);
+            //@ts-ignore
             dialog.showModal();
             dialog.addEventListener("cancel", (_event) => {
                 _event.preventDefault();
@@ -580,6 +588,7 @@ var FudgeStory;
                     if (_event.target == dialog)
                         return;
                     dialog.removeEventListener(FudgeStory.EVENT.POINTERDOWN, hndSelect);
+                    //@ts-ignore
                     dialog.close();
                     _resolve(Reflect.get(_event.target, "innerHTML"));
                 };
@@ -788,10 +797,12 @@ var FudgeStory;
             html += `<p>${_text}</p>`;
             html += `</div>`;
             splash.innerHTML = html;
+            //@ts-ignore
             splash.showModal();
             return new Promise(_resolve => {
                 function hndClick(_event) {
                     splash.removeEventListener("click", hndClick);
+                    //@ts-ignore
                     splash.close();
                     document.body.removeChild(splash);
                     _resolve();
@@ -1057,7 +1068,8 @@ var FudgeStory;
     /**
      * Displays a longer narrative text to convey larger parts of the story not told by a character
      */
-    class Text extends HTMLDialogElement {
+    //@ts-ignore
+    class Text extends (HTMLDialogElement) {
         static get dialog() {
             return document.querySelector("dialog[type=text]");
         }
@@ -1066,14 +1078,17 @@ var FudgeStory;
          */
         static async print(_text) {
             let dialog = Text.dialog;
+            //@ts-ignore
             dialog.close();
             dialog.innerHTML = _text;
+            //@ts-ignore
             dialog.showModal();
             return new Promise((_resolve) => {
                 let hndSelect = (_event) => {
                     if (_event.target != dialog)
                         return;
                     dialog.removeEventListener(FudgeStory.EVENT.POINTERDOWN, hndSelect);
+                    //@ts-ignore
                     dialog.close();
                     _resolve();
                 };
@@ -1096,6 +1111,7 @@ var FudgeStory;
          * closes the text-dialog
          */
         static close() {
+            //@ts-ignore
             Text.dialog.close();
         }
     }

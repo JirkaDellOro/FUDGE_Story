@@ -275,17 +275,18 @@ declare namespace FudgeStory {
      * }
      * ```
      */
-    interface ItemDefinition {
+    export interface ItemDefinition {
         name: string;
         description: string;
         image: RequestInfo;
         static?: boolean;
         handler?: (_event: CustomEvent) => void;
     }
+    const Inventory_base: any;
     /**
      * Manages the inventory
      */
-    class Inventory extends HTMLDialogElement {
+    export class Inventory extends Inventory_base {
         private static ƒDialog;
         private static ƒused;
         private static get dialog();
@@ -309,6 +310,7 @@ declare namespace FudgeStory {
         private static replaceWhitespace;
         private static getItemElement;
     }
+    export {};
 }
 declare namespace FudgeStory {
     /**
@@ -535,10 +537,11 @@ declare namespace FudgeStory {
     }
 }
 declare namespace FudgeStory {
+    const Text_base: any;
     /**
      * Displays a longer narrative text to convey larger parts of the story not told by a character
      */
-    class Text extends HTMLDialogElement {
+    export class Text extends Text_base {
         private static get dialog();
         /**
          * Prints the text in a modal dialog stylable with css
@@ -557,6 +560,7 @@ declare namespace FudgeStory {
          */
         static close(): void;
     }
+    export {};
 }
 declare namespace FudgeStory {
     /**
