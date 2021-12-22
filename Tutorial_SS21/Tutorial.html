@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="Tutorial.css">
+  <script src="../Fudge/FudgeCore.js"></script>
+  <script src="./../Build/FudgeStory.js"></script>
+  <script src="./Build/Tutorial.js"></script>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=KoHo:ital@1&display=swap" rel="stylesheet">
+  <title>Tutorial</title>
+  <!-- Individuellen Splashscreen hier einfügen -->
+  <splash src="Images/BubblyGirl.png" />
+  </splash>
+</head>
+
+<body>
+  <scene>
+    <canvas></canvas>
+
+    <speech>
+      <name>
+        <!-- The name of the character speaking -->
+      </name>
+      <content>
+        <!-- The text the character says -->
+      </content>
+    </speech>
+    <!-- <dialog class="splash"></dialog> -->
+    <dialog type="text">
+      <!-- The content of a page of text for reading -->
+    </dialog>
+
+    <dialog type="inventory">
+      <button type="button">close</button>
+      <ul>
+        <!-- <li>Fishy fish</li>
+        <li>b</li>
+        <li>c</li>
+        <li>d</li>
+        <li>e</li> -->
+      </ul>
+    </dialog>
+
+    <dialog id="gameMenu">
+      <!-- Options for the recipient to choose from -->
+    </dialog>
+
+    <div type="interface">
+      <!-- Ryu Meter -->
+      <input name="scoreForRyu" type="text" disabled>
+      <meter id="ryu" name="scoreRyu" min="0" max="100" disabled></meter>
+      <!-- Aoi Meter -->
+      <!-- <input name="scoreForAoi" type="text" disabled />
+      <meter id="aoi" name="scoreAoi" min="0" max="100" disabled></meter> -->
+    </div>
+
+  </scene>
+</body>
+
+</html>
