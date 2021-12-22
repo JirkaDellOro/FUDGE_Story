@@ -30,7 +30,9 @@ var Tutorial_WS21;
         await Tutorial_WS21.ƒS.Character.show(Tutorial_WS21.characters.aisaka, Tutorial_WS21.characters.aisaka.pose.happy, Tutorial_WS21.ƒS.positionPercent(30, 100));
         await Tutorial_WS21.ƒS.update(1);
         // Animationen parallel abspielen
-        await Tutorial_WS21.ƒS.Speech.tell(Tutorial_WS21.characters.aisaka, text.aisaka.T0000);
+        await Tutorial_WS21.ƒS.Speech.tell(Tutorial_WS21.characters.aisaka, text.aisaka.T0000, false);
+        Tutorial_WS21.dataForSave.nameProtagonist = await Tutorial_WS21.ƒS.Speech.getInput();
+        console.log(Tutorial_WS21.dataForSave.nameProtagonist);
         await Tutorial_WS21.ƒS.Speech.tell(Tutorial_WS21.characters.aisaka, text.aisaka.T0000 + Tutorial_WS21.dataForSave.nameProtagonist);
         // LOOP Animations
         // await ƒS.Character.animate(characters.aisaka, characters.aisaka.pose.happy, fromRightToLeft());
@@ -65,9 +67,9 @@ var Tutorial_WS21;
         Tutorial_WS21.ƒS.Sound.fade(Tutorial_WS21.sound.backgroundTheme, 0, 1);
         Tutorial_WS21.ƒS.Character.hideAll();
         await Tutorial_WS21.ƒS.update(1);
-        if (Tutorial_WS21.dataForSave.points === 100) {
-            return Tutorial_WS21.End();
-        }
+        // if (dataForSave.points === 100) {
+        //   return End();
+        // }
         // return "Ende";
         // return End();
     }
@@ -104,10 +106,10 @@ var Tutorial_WS21;
         await Tutorial_WS21.ƒS.Character.hide(Tutorial_WS21.characters.aisaka);
         await Tutorial_WS21.ƒS.update(1);
         // return "";
-        if (Tutorial_WS21.dataForSave.points == 50) {
-            return "";
-            // return SzenenFunktionsname();
-        }
+        // if (dataForSave.points == 50) {
+        //   return "";
+        // return SzenenFunktionsname();
+        // }
     }
     Tutorial_WS21.Scene2 = Scene2;
 })(Tutorial_WS21 || (Tutorial_WS21 = {}));
@@ -325,7 +327,8 @@ var Tutorial_WS21;
         let scenes = [
             // Linear
             // { id: "Einführung", scene: Introduction, name: "Introduction to FS", next: "Ende"},
-            { scene: Tutorial_WS21.Scene2, name: "Scene Two" }
+            { scene: Tutorial_WS21.Introduction, name: "Introduction to FS" },
+            // { scene: Scene2, name: "Scene Two" }
             // { id: "Ende", scene: End, name: "The End" }
         ];
         let uiElement = document.querySelector("[type=interface]");
