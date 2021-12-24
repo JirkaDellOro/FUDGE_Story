@@ -129,48 +129,6 @@ var Tutorial;
 })(Tutorial || (Tutorial = {}));
 var Tutorial;
 (function (Tutorial) {
-    async function End() {
-        console.log("End");
-    }
-    Tutorial.End = End;
-})(Tutorial || (Tutorial = {}));
-var Tutorial;
-(function (Tutorial) {
-    async function GameMenu() {
-        console.log("Text");
-        let text = {
-            Narrator: {
-                T0000: "",
-                T0001: ""
-            },
-            Protagonist: {
-                T0000: "",
-                T0001: ""
-            },
-            Ryu: {
-                T0000: "Willkommen.",
-                T0001: ""
-            }
-        };
-        Tutorial.ƒS.Sound.play(Tutorial.sound.backgroundTheme, 1);
-        document.getElementsByName("scoreRyu").forEach(meterStuff => meterStuff.hidden = true);
-        document.getElementsByName("scoreForRyu").forEach(meterStuff => meterStuff.hidden = true);
-        Tutorial.ƒS.Speech.hide();
-        await Tutorial.ƒS.Location.show(Tutorial.locations.city);
-        await Tutorial.ƒS.update(Tutorial.transition.clock.duration, Tutorial.transition.clock.alpha, Tutorial.transition.clock.edge);
-        // await ƒS.Character.show(characters.Ryu, characters.Ryu.pose.normal, ƒS.positions.bottomcenter);
-        await Tutorial.ƒS.Character.show(Tutorial.characters.Ryu, Tutorial.characters.Ryu.pose.normal, Tutorial.ƒS.positionPercent(30, 100));
-        await Tutorial.ƒS.update(1);
-        Tutorial.ƒS.Speech.show();
-        await Tutorial.ƒS.Speech.tell(Tutorial.characters.Ryu, text.Ryu.T0000);
-        await Tutorial.ƒS.Speech.tell(Tutorial.characters.Ryu, "Fremder.");
-        await Tutorial.ƒS.Character.hide(Tutorial.characters.Ryu);
-        await Tutorial.ƒS.update(1);
-    }
-    Tutorial.GameMenu = GameMenu;
-})(Tutorial || (Tutorial = {}));
-var Tutorial;
-(function (Tutorial) {
     async function Inventory() {
         console.log("Inventory");
         let text = {
@@ -327,7 +285,7 @@ var Tutorial;
         started: false,
         ended: false,
         pickedText: false,
-        goToInventory: false,
+        goToInventory: false
     };
     //  MENU - Audio functions
     let volume = 1.0;
@@ -473,7 +431,7 @@ var Tutorial;
             // { scene: Animation, name: "How To Animate" },
             // { scene: GameMenu, name: "How To Make A Game Menu" },
             // { scene: Meter, name: "How To Make a Progress bar" },
-            { id: "End", scene: Tutorial.End, name: "This is an ending" },
+            { id: "End", scene: End, name: "This is an ending" }
         ];
         let uiElement = document.querySelector("[type=interface]");
         Tutorial.dataForSave = Tutorial.ƒS.Progress.setData(Tutorial.dataForSave, uiElement);

@@ -5,12 +5,6 @@ declare namespace Tutorial {
     function Decision(): ƒS.SceneReturn;
 }
 declare namespace Tutorial {
-    function End(): ƒS.SceneReturn;
-}
-declare namespace Tutorial {
-    function GameMenu(): ƒS.SceneReturn;
-}
-declare namespace Tutorial {
     function Inventory(): ƒS.SceneReturn;
 }
 declare namespace Tutorial {

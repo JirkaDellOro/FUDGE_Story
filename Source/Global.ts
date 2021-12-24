@@ -104,7 +104,7 @@ namespace FudgeStory {
    * Pass values in percent relative to the upper left corner.
    */
   export function positionPercent(_x: number, _y: number): Position {
-    let size: Position = (<ƒ.Vector2>Reflect.get(Base, "size")).copy;
+    let size: Position = (<ƒ.Vector2>Reflect.get(Base, "size")).clone;
     let position: Position = new Position(-size.x / 2, size.y / 2);
     size.x *= _x / 100;
     size.y *= -_y / 100;

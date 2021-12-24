@@ -121,6 +121,12 @@ namespace FudgeStory {
       let character: Character = Character.get(_character);
       let pose: ƒ.Node = await character.getPose(_pose);
 
+      for (let cmpOldAnimator of pose.getComponents(ƒ.ComponentAnimator))
+        pose.removeComponent(cmpOldAnimator);
+
+      if (!_animation)
+        return;
+
       let animation: ƒ.Animation = Animation.create(_animation);
       Base.middle.appendChild(pose);
       return Animation.attach(pose, animation, _animation.playmode);
