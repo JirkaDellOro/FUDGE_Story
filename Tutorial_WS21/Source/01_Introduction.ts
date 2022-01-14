@@ -31,12 +31,15 @@ namespace Tutorial_WS21 {
     // dataForSave.nameProtagonist = await ƒS.Speech.getInput();
     // console.log(dataForSave.nameProtagonist);
 
+
     await ƒS.Location.show(locations.bedroom);
     await ƒS.update(transitions.clock.duration, transitions.clock.alpha, transitions.clock.edge);
     await ƒS.Character.show(characters.aisaka, characters.aisaka.pose.happy, ƒS.positionPercent(30, 100));
     await ƒS.update(1);
     // Animationen parallel abspielen
-    await ƒS.Speech.tell(characters.aisaka, text.aisaka.T0000);
+    await ƒS.Speech.tell(characters.aisaka, text.aisaka.T0000, false);
+    dataForSave.nameProtagonist = await ƒS.Speech.getInput();
+    console.log(dataForSave.nameProtagonist);
     await ƒS.Speech.tell(characters.aisaka, text.aisaka.T0000 + dataForSave.nameProtagonist);
     // LOOP Animations
     // await ƒS.Character.animate(characters.aisaka, characters.aisaka.pose.happy, fromRightToLeft());
@@ -87,9 +90,9 @@ namespace Tutorial_WS21 {
     await ƒS.update(1);
 
 
-    if (dataForSave.points === 100) {
-      return End();
-    }
+    // if (dataForSave.points === 100) {
+    //   return End();
+    // }
 
     // return "Ende";
     // return End();

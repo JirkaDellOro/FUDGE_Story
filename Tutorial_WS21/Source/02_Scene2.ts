@@ -38,10 +38,10 @@ namespace Tutorial_WS21 {
 
     // return "";
 
-    if (dataForSave.points == 50) {
-      return "";
+    // if (dataForSave.points == 50) {
+    //   return "";
       // return SzenenFunktionsname();
-    }
+    // }
 
 
   }

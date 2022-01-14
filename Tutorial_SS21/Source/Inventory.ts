@@ -44,7 +44,7 @@ namespace Tutorial {
     // console.log(await ƒS.Inventory.open());
 
     await ƒS.Inventory.open();
-
+    // ƒS.Inventory.close();
   
 
 

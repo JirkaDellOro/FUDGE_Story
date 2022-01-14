@@ -168,36 +168,55 @@ namespace Tutorial {
 
 
   // MENU - create Menu with buttons
-  export let gameMenu: ƒS.Menu;
+  let gameMenu: ƒS.Menu;
 
   async function buttonFunctionalities(_option: string): Promise<void> {
     console.log(_option);
-    if (_option == inGameMenu.save) {
-      await ƒS.Progress.save();
+    switch (_option) {
+      case inGameMenu.save:
+        await ƒS.Progress.save();
+        break;
+      case inGameMenu.load:
+        await ƒS.Progress.load();
+        break;
+      case inGameMenu.close:
+        gameMenu.close();
+        break;
+      case inGameMenu.open:
+        gameMenu.open();
+        break;
+      case inGameMenu.credits:
+        showCredits();
+        break;
     }
-    else if (_option == inGameMenu.load) {
-      await ƒS.Progress.load();
-    }
-    else if (_option == inGameMenu.turnUpVolume) {
-      incrementSound();
-    }
-    else if (_option == inGameMenu.turndownVolume) {
-      decrementSound();
-    }
-    if (_option == inGameMenu.close) {
-      gameMenu.close();
-    }
-    if (_option == inGameMenu.open) {
-      gameMenu.open();
-    }
-    if (_option == inGameMenu.credits) {
-      showCredits();
-    }
+
+
+    // if (_option == inGameMenu.save) {
+    //   await ƒS.Progress.save();
+    // }
+    // else if (_option == inGameMenu.load) {
+    //   await ƒS.Progress.load();
+    // }
+    // else if (_option == inGameMenu.turnUpVolume) {
+    //   incrementSound();
+    // }
+    // else if (_option == inGameMenu.turndownVolume) {
+    //   decrementSound();
+    // }
+    // if (_option == inGameMenu.close) {
+    //   gameMenu.close();
+    // }
+    // if (_option == inGameMenu.open) {
+    //   gameMenu.open();
+    // }
+    // if (_option == inGameMenu.credits) {
+    //   showCredits();
+    // }
   }
 
 
   // true heißt hier offen und false geschlossen
-  export let menu: boolean = true;
+  let menu: boolean = true;
 
   // shortcuts to save and load game progress
   // && doesn't work in a switch
@@ -290,13 +309,13 @@ namespace Tutorial {
 
       // Pfad 2
       { id: "Inventory", scene: Inventory, name: "How To Make An Inventory", next: "Meter" },
-      { id: "Meter", scene: Meter, name: "How To Make a Progress bar", next: "End" },
+      { id: "Meter", scene: Meter, name: "How To Make a Progress bar", next: "End" }
 
       // { scene: Animation, name: "How To Animate" },
       // { scene: GameMenu, name: "How To Make A Game Menu" },
       // { scene: Meter, name: "How To Make a Progress bar" },
 
-      { id: "End", scene: End, name: "This is an ending" }
+      // { id: "End", scene: End, name: "This is an ending" }
 
     ];
 

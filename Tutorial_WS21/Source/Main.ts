@@ -179,7 +179,8 @@ namespace Tutorial_WS21 {
     let scenes: ƒS.Scenes = [
       // Linear
       // { id: "Einführung", scene: Introduction, name: "Introduction to FS", next: "Ende"},
-      { scene: Scene2, name: "Scene Two" }
+      { scene: Introduction, name: "Introduction to FS"},
+      // { scene: Scene2, name: "Scene Two" }
       // { id: "Ende", scene: End, name: "The End" }
 
 
