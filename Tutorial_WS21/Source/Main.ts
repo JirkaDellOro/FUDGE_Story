@@ -69,15 +69,6 @@ namespace Tutorial_WS21 {
     }
   };
 
-  // Animations
-  // export function jirkaAnimation(): ƒS.AnimationDefinition {
-  //   return {
-  //     start: { translation: ƒS.positions.bottomleft, rotation: -20, scaling: new ƒS.Position(0.5, 1.5), color: ƒS.Color.CSS("white", 0) },
-  //     end: { translation: ƒS.positions.bottomright, rotation: 20, scaling: new ƒS.Position(1.5, 0.5), color: ƒS.Color.CSS("red") },
-  //     duration: 1,
-  //     playmode: ƒS.ANIMATION_PLAYMODE.LOOP
-  //   };
-  // }
 
   // Animationen
   export function fromRightToOutOfCanvas(): ƒS.AnimationDefinition {
@@ -171,11 +162,13 @@ namespace Tutorial_WS21 {
 
 
 
-  // Branching path zeigen, wie's geht; Szenenstruktur erklären
+  // Szenenstruktur
   window.addEventListener("load", start);
   function start(_event: Event): void {
     // Menü
     gameMenu = ƒS.Menu.create(inGameMenu, buttonFunctionalities, "gameMenu");
+    // Menü zu Beginn geschlossen halten
+    buttonFunctionalities("Close");
     let scenes: ƒS.Scenes = [
       // Linear
       // { id: "Einführung", scene: Introduction, name: "Introduction to FS", next: "Ende"},
