@@ -84,7 +84,8 @@ namespace FudgeStory {
       if (_event.target == this.dialog)
         return;
 
-      this.callback(Reflect.get(_event.target, "innerHTML"));
+      if (this.callback)
+        this.callback(Reflect.get(_event.target, "innerHTML"));
     }
   }
 }

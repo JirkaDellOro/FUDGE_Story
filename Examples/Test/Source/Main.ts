@@ -7,9 +7,9 @@ namespace Test {
     await ƒS.update(3);
     // ƒS.Text.setClass("blue");
 
-    ƒS.Menu.create({a: "Opt1", b: "Opt2"}, null);
+    let menu: ƒS.Menu = ƒS.Menu.create({a: "Opt1", b: "Opt2"}, null);
     await ƒS.Speech.tell("characters.Sue", "Dies ist nur ein langer Text um zu prüfen, ob das Menü nun das Click-Event frisst", false);
-
+    menu.close();
     // await ƒS.Text.print("Achtung, gleich geht's los!");
     ƒS.Inventory.add(items.Fudge);
     ƒS.Inventory.add(items.Fudge);
