@@ -255,11 +255,29 @@ var Tutorial_WS21;
         // started: false,
         // ended: false
     };
+    //  MENU - Audio functions
+    let volume = 1.0;
+    function incrementSound() {
+        if (volume >= 100)
+            return;
+        volume += 0.5;
+        Tutorial_WS21.ƒS.Sound.setMasterVolume(volume);
+    }
+    Tutorial_WS21.incrementSound = incrementSound;
+    function decrementSound() {
+        if (volume <= 0)
+            return;
+        volume -= 0.5;
+        Tutorial_WS21.ƒS.Sound.setMasterVolume(volume);
+    }
+    Tutorial_WS21.decrementSound = decrementSound;
     // Menü 
     let inGameMenu = {
         save: "Save",
         load: "Load",
-        close: "Close"
+        close: "Close",
+        turnUpVolume: "+",
+        turnDownVolume: "-"
         // open: "Open"
     };
     let gameMenu;
@@ -278,6 +296,11 @@ var Tutorial_WS21;
                 gameMenu.close();
                 menu = false;
                 break;
+            case inGameMenu.turnUpVolume:
+                incrementSound();
+                break;
+            case inGameMenu.turnDownVolume:
+                decrementSound();
             // case inGameMenu.open:
             //   gameMenu.open();
             //   menu = true;
@@ -320,7 +343,7 @@ var Tutorial_WS21;
         let scenes = [
             // Linear
             // { id: "Einführung", scene: Introduction, name: "Introduction to FS", next: "Ende"},
-            { scene: Tutorial_WS21.Introduction, name: "Introduction to FS" },
+            { scene: Tutorial_WS21.Introduction, name: "Introduction to FS" }
             // { scene: Scene2, name: "Scene Two" }
             // { id: "Ende", scene: End, name: "The End" }
         ];

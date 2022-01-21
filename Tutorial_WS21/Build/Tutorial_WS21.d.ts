@@ -63,4 +63,6 @@ declare namespace Tutorial_WS21 {
         nameProtagonist: string;
         points: number;
     };
+    function incrementSound(): void;
+    function decrementSound(): void;
 }

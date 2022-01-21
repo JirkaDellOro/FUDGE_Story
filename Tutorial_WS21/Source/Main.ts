@@ -96,12 +96,34 @@ namespace Tutorial_WS21 {
     // ended: false
   };
 
+
+  //  MENU - Audio functions
+
+  let volume: number = 1.0;
+
+  export function incrementSound(): void {
+    if (volume >= 100)
+      return;
+    volume += 0.5;
+    ƒS.Sound.setMasterVolume(volume);
+  }
+
+  export function decrementSound(): void {
+    if (volume <= 0)
+      return;
+    volume -= 0.5;
+    ƒS.Sound.setMasterVolume(volume);
+  }
+
+
   // Menü 
 
   let inGameMenu = {
     save: "Save",
     load: "Load",
-    close: "Close"
+    close: "Close",
+    turnUpVolume: "+",
+    turnDownVolume: "-"
     // open: "Open"
   };
 
@@ -124,6 +146,11 @@ namespace Tutorial_WS21 {
         gameMenu.close();
         menu = false;
         break;
+      case inGameMenu.turnUpVolume:
+        incrementSound();
+        break;
+      case inGameMenu.turnDownVolume:
+        decrementSound();
       // case inGameMenu.open:
       //   gameMenu.open();
       //   menu = true;
@@ -172,7 +199,7 @@ namespace Tutorial_WS21 {
     let scenes: ƒS.Scenes = [
       // Linear
       // { id: "Einführung", scene: Introduction, name: "Introduction to FS", next: "Ende"},
-      { scene: Introduction, name: "Introduction to FS"},
+      { scene: Introduction, name: "Introduction to FS" }
       // { scene: Scene2, name: "Scene Two" }
       // { id: "Ende", scene: End, name: "The End" }
 
