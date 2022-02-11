@@ -1016,6 +1016,7 @@ var FudgeStory;
                     _resolve(input.value);
                 };
                 input.addEventListener("change", hndEvent);
+                input.addEventListener("keydown", (_event) => _event.stopPropagation());
                 input.focus();
             });
         }

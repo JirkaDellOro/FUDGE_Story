@@ -117,6 +117,7 @@ namespace FudgeStory {
         };
 
         input.addEventListener("change", hndEvent);
+        input.addEventListener("keydown", (_event: KeyboardEvent) => _event.stopPropagation());
         input.focus();
       });
     }
