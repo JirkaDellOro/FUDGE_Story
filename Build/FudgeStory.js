@@ -81,7 +81,7 @@ var FudgeStory;
             let texture = new ƒ.TextureImage();
             await texture.load(_request);
             let coat = new ƒ.CoatTextured(ƒ.Color.CSS("white"), texture);
-            let material = new ƒ.Material(_name, ƒ.ShaderTexture, coat);
+            let material = new ƒ.Material(_name, ƒ.ShaderLitTextured, coat);
             if (!_size)
                 this.adjustMesh(cmpMesh, _origin, new ƒ.Vector2(texture.image.width, texture.image.height));
             let cmpMaterial = new ƒ.ComponentMaterial(material);
@@ -463,7 +463,7 @@ var FudgeStory;
             Inventory.dialog.querySelector("ul").appendChild(item);
         }
         /**
-         * Adds an item to the inventory
+         * Retrieves the number of items specified by the parameter currently available in the inventory
          */
         static getAmount(_item) {
             let item = Inventory.getItemElement(_item);

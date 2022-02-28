@@ -62,7 +62,7 @@ namespace FudgeStory {
     }
 
     /**
-     * Adds an item to the inventory
+     * Retrieves the number of items specified by the parameter currently available in the inventory 
      */
     static getAmount(_item: ItemDefinition): number {
       let item: HTMLLIElement = Inventory.getItemElement(_item);

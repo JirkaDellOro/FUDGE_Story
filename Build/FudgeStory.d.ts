@@ -295,7 +295,7 @@ declare namespace FudgeStory {
          */
         static add(_item: ItemDefinition): void;
         /**
-         * Adds an item to the inventory
+         * Retrieves the number of items specified by the parameter currently available in the inventory
          */
         static getAmount(_item: ItemDefinition): number;
         /**

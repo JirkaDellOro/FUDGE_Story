@@ -106,7 +106,7 @@ namespace FudgeStory {
       let texture: ƒ.TextureImage = new ƒ.TextureImage();
       await texture.load(_request);
       let coat: ƒ.CoatTextured = new ƒ.CoatTextured(ƒ.Color.CSS("white"), texture);
-      let material: ƒ.Material = new ƒ.Material(_name, ƒ.ShaderTexture, coat);
+      let material: ƒ.Material = new ƒ.Material(_name, ƒ.ShaderLitTextured, coat);
 
       if (!_size)
         this.adjustMesh(cmpMesh, _origin, new ƒ.Vector2(texture.image.width, texture.image.height));
