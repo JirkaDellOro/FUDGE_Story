@@ -14,6 +14,9 @@ var FudgeStory;
         static aspectRatio;
         static graph;
         static size;
+        static getGraph() {
+            return Base.graph;
+        }
         /**
          * Will be called once by {@link Progress} before anything else may happen.
          */
@@ -1087,6 +1090,7 @@ var FudgeStory;
             dialog.showModal();
             return new Promise((_resolve) => {
                 let hndSelect = (_event) => {
+                    _event.stopPropagation();
                     if (_event.target != dialog)
                         return;
                     dialog.removeEventListener(FudgeStory.EVENT.POINTERDOWN, hndSelect);

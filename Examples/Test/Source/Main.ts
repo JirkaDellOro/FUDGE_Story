@@ -4,10 +4,28 @@ namespace Test {
 
     await ƒS.Location.show(locations.city);
     console.log("Startupdate");
-    await ƒS.update(3, "Images/jigsaw_06.jpg");
+    await ƒS.update(1, "Images/jigsaw_06.jpg");
     // ƒS.Text.setClass("blue");
 
-    let menu: ƒS.Menu = ƒS.Menu.create({a: "Opt1", b: "Opt2"}, null);
+    let graph: ƒ.Node = ƒS.Base.getGraph();
+    ƒ.Debug.branch(graph);
+    // let city: ƒ.Node = graph.getChildrenByName("Back")[0].getChildren()[0];
+    // let cmpMesh: ƒ.ComponentMesh = city.getComponent(ƒ.ComponentMesh);
+
+    graph.addComponent(new ƒ.ComponentTransform());
+    console.log(graph);
+
+    function jitter(): void {
+      // graph.mtxLocal.translateX(ƒ.Random.default.getRangeFloored(-2, 3));
+      // graph.mtxLocal.translateY(ƒ.Random.default.getRangeFloored(-2, 3));
+      // cmpMesh.mtxPivot.translateX(Math.sin(performance.now() / 100) / 100);
+      graph.mtxLocal.rotateZ(1);
+      ƒS.update();
+    }
+    ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, jitter);
+
+
+    let menu: ƒS.Menu = ƒS.Menu.create({ a: "Opt1", b: "Opt2" }, null);
     await ƒS.Speech.tell("characters.Sue", "Dies ist nur ein langer Text um zu prüfen, ob das Menü nun das Click-Event frisst", false);
     menu.close();
     // await ƒS.Text.print("Achtung, gleich geht's los!");

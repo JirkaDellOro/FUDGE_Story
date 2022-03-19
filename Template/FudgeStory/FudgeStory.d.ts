@@ -12,6 +12,7 @@ declare namespace FudgeStory {
         private static aspectRatio;
         private static graph;
         private static size;
+        static getGraph(): ƒ.Node;
         /**
          * Will be called once by {@link Progress} before anything else may happen.
          */

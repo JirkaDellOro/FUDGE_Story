@@ -16,6 +16,10 @@ namespace FudgeStory {
     private static graph: ƒ.Node;
     private static size: ƒ.Vector2;
 
+    public static getGraph(): ƒ.Node {
+      return Base.graph;
+    }
+
     /**
      * Will be called once by {@link Progress} before anything else may happen.
      */
