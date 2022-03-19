@@ -107,8 +107,6 @@ declare namespace Tutorial {
     function incrementSound(): void;
     function decrementSound(): void;
     function showCredits(): void;
-    let gameMenu: ƒS.Menu;
-    let menu: boolean;
     function leftToRight(): ƒS.AnimationDefinition;
     function fromRightToOutOfCanvas(): ƒS.AnimationDefinition;
 }
