@@ -4,7 +4,7 @@ namespace Test {
 
     await ƒS.Location.show(locations.city);
     console.log("Startupdate");
-    await ƒS.update(3);
+    await ƒS.update(3, "Images/jigsaw_06.jpg");
     // ƒS.Text.setClass("blue");
 
     let menu: ƒS.Menu = ƒS.Menu.create({a: "Opt1", b: "Opt2"}, null);

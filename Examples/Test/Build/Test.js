@@ -5,7 +5,7 @@ var Test;
         console.log("Main Menu");
         await Test.ƒS.Location.show(Test.locations.city);
         console.log("Startupdate");
-        await Test.ƒS.update(3);
+        await Test.ƒS.update(3, "Images/jigsaw_06.jpg");
         // ƒS.Text.setClass("blue");
         let menu = Test.ƒS.Menu.create({ a: "Opt1", b: "Opt2" }, null);
         await Test.ƒS.Speech.tell("characters.Sue", "Dies ist nur ein langer Text um zu prüfen, ob das Menü nun das Click-Event frisst", false);

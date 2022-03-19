@@ -1171,8 +1171,8 @@ var FudgeStory;
             canvasTransition.height = FudgeStory.Base.viewport.getCanvas().height;
             let crcTransition = canvasTransition.getContext("2d");
             crcTransition.imageSmoothingEnabled = false;
-            crcTransition.drawImage(txtTransition.image, 0, 0, txtTransition.image.width, txtTransition.image.height, 0, 0, 1280, 720);
-            transition = crcTransition.getImageData(0, 0, 1280, 720).data;
+            crcTransition.drawImage(txtTransition.image, 0, 0, txtTransition.image.width, txtTransition.image.height, 0, 0, canvasTransition.width, canvasTransition.height);
+            transition = crcTransition.getImageData(0, 0, canvasTransition.width, canvasTransition.height).data;
             Transition.transitions.set(_url, transition);
             return transition;
         }
