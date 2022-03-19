@@ -9,11 +9,19 @@
   <script src="../../Build/FudgeStory.js"></script>
   <script src="./Build/Test.js"></script>
   <title>Test</title>
-  <splash src="Images/Splash.png"/>
+  <!-- <splash src="Images/Splash.png"/> -->
 </head>
 
 <body>
+
   <scene>
+    <dialog type="splash" open>
+      <img id="FudgeStoryLogo" theme="dark" /> <!-- use "light" or "dark" -->
+      <p>
+        Design your splash screen here. Position and scale but do not remove the logo above...
+      </p>
+    </dialog>
+
     <canvas></canvas>
 
     <speech>
@@ -21,7 +29,7 @@
       <content>The text the character says</content>
     </speech>
 
-    <dialog type="text">
+    <dialog type=" text">
       The content of a page of text for reading
     </dialog>
 
@@ -31,8 +39,8 @@
     </dialog>
 
     <div type="interface">
-      <input name="a" type="text" disabled/>
-      <input name="b" type="text" disabled/>
+      <input name="a" type="text" disabled />
+      <input name="b" type="text" disabled />
       <meter name="a" min="0" max="100" disabled></meter>
       <meter name="c" min="0" max="100" disabled></meter>
     </div>

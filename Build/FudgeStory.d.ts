@@ -446,7 +446,8 @@ declare namespace FudgeStory {
         private static storeData;
         private static updateInterface;
         private static splash;
-        private static splashBlob;
+        private static splashBlobDark;
+        private static splashBlobLight;
     }
 }
 declare namespace FudgeStory {
