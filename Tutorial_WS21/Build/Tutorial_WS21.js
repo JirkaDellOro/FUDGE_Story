@@ -30,16 +30,24 @@ var Tutorial_WS21;
         await Tutorial_WS21.ƒS.Character.show(Tutorial_WS21.characters.aisaka, Tutorial_WS21.characters.aisaka.pose.happy, Tutorial_WS21.ƒS.positionPercent(30, 100));
         await Tutorial_WS21.ƒS.update(1);
         // Animationen parallel abspielen
-        await Tutorial_WS21.ƒS.Speech.tell(Tutorial_WS21.characters.aisaka, text.aisaka.T0000, false);
-        Tutorial_WS21.dataForSave.nameProtagonist = await Tutorial_WS21.ƒS.Speech.getInput();
-        console.log(Tutorial_WS21.dataForSave.nameProtagonist);
-        await Tutorial_WS21.ƒS.Speech.tell(Tutorial_WS21.characters.aisaka, text.aisaka.T0000 + Tutorial_WS21.dataForSave.nameProtagonist);
+        // await ƒS.Speech.tell(characters.aisaka, text.aisaka.T0000, false);
+        // dataForSave.nameProtagonist = await ƒS.Speech.getInput();
+        // console.log(dataForSave.nameProtagonist);
+        // await ƒS.Speech.tell(characters.aisaka, text.aisaka.T0000 + dataForSave.nameProtagonist);
         // LOOP Animations
         // await ƒS.Character.animate(characters.aisaka, characters.aisaka.pose.happy, fromRightToLeft());
         // await ƒS.Character.animate(characters.aisaka, characters.aisaka.pose.happy, fromRightToOutOfCanvas());
         // Inventar
         // ƒS.Inventory.add(items.pen);
         // await ƒS.Inventory.open(); 
+        await Tutorial_WS21.ƒS.Speech.tell(Tutorial_WS21.characters.aisaka, "edtsfewrdsg");
+        await Tutorial_WS21.ƒS.Speech.tell(Tutorial_WS21.characters.aisaka, "asrfdwqed");
+        await Tutorial_WS21.ƒS.Speech.tell(Tutorial_WS21.characters.aisaka, "asaaaaaaaaaaa");
+        await Tutorial_WS21.ƒS.Speech.tell(Tutorial_WS21.characters.aisaka, "asasasasasas");
+        await Tutorial_WS21.ƒS.Speech.tell(Tutorial_WS21.characters.aisaka, "vvvvvvvvv");
+        await Tutorial_WS21.ƒS.Speech.tell(Tutorial_WS21.characters.aisaka, "iiiiiiiiiiiiiii");
+        await Tutorial_WS21.ƒS.Speech.tell(Tutorial_WS21.characters.aisaka, "ccccccccc");
+        await Tutorial_WS21.ƒS.Speech.tell(Tutorial_WS21.characters.aisaka, "eeeeeeeeeeee");
         await Tutorial_WS21.ƒS.Speech.tell(Tutorial_WS21.characters.aisaka, "Hi2.");
         // await animationDone;
         // await animationDone2;
@@ -255,7 +263,7 @@ var Tutorial_WS21;
         // started: false,
         // ended: false
     };
-    //  MENU - Audio functions
+    //  Gesamtlautstärke manipulieren
     let volume = 1.0;
     function incrementSound() {
         if (volume >= 100)
@@ -271,13 +279,20 @@ var Tutorial_WS21;
         Tutorial_WS21.ƒS.Sound.setMasterVolume(volume);
     }
     Tutorial_WS21.decrementSound = decrementSound;
+    function showCredits() {
+        Tutorial_WS21.ƒS.Text.addClass("credits");
+        Tutorial_WS21.ƒS.Text.print("Hier könnten jetzt Credits stehen.");
+        // showCredits();
+    }
+    Tutorial_WS21.showCredits = showCredits;
     // Menü 
     let inGameMenu = {
         save: "Save",
         load: "Load",
         close: "Close",
         turnUpVolume: "+",
-        turnDownVolume: "-"
+        turnDownVolume: "-",
+        credits: "Credits"
         // open: "Open"
     };
     let gameMenu;
@@ -301,6 +316,9 @@ var Tutorial_WS21;
                 break;
             case inGameMenu.turnDownVolume:
                 decrementSound();
+                break;
+            case inGameMenu.credits:
+                showCredits();
             // case inGameMenu.open:
             //   gameMenu.open();
             //   menu = true;

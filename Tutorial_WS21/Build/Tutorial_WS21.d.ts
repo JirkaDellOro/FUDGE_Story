@@ -65,4 +65,5 @@ declare namespace Tutorial_WS21 {
     };
     function incrementSound(): void;
     function decrementSound(): void;
+    function showCredits(): void;
 }

@@ -97,7 +97,7 @@ namespace Tutorial_WS21 {
   };
 
 
-  //  MENU - Audio functions
+  //  Gesamtlautstärke manipulieren
 
   let volume: number = 1.0;
 
@@ -115,6 +115,13 @@ namespace Tutorial_WS21 {
     ƒS.Sound.setMasterVolume(volume);
   }
 
+  export function showCredits(): void {
+    ƒS.Text.addClass("credits");
+    ƒS.Text.print("Hier könnten jetzt Credits stehen.");
+
+    // showCredits();
+  }
+
 
   // Menü 
 
@@ -123,7 +130,8 @@ namespace Tutorial_WS21 {
     load: "Load",
     close: "Close",
     turnUpVolume: "+",
-    turnDownVolume: "-"
+    turnDownVolume: "-",
+    credits: "Credits"
     // open: "Open"
   };
 
@@ -151,6 +159,9 @@ namespace Tutorial_WS21 {
         break;
       case inGameMenu.turnDownVolume:
         decrementSound();
+        break;
+      case inGameMenu.credits:
+        showCredits();
       // case inGameMenu.open:
       //   gameMenu.open();
       //   menu = true;
@@ -183,6 +194,7 @@ namespace Tutorial_WS21 {
           menu = true;
         }
         break;
+        
     }
   }
 
