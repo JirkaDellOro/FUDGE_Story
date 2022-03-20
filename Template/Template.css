@@ -3,3 +3,18 @@ scene {
   height: 720px;
   display: inline-block;
 }
+
+dialog[type=splash] {
+  margin: 0px;
+  padding: 0px;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(0, 0, 0);
+  color: white;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+}
+dialog[type=splash]>img#FudgeStoryLogo {
+  width: 100%;
+}

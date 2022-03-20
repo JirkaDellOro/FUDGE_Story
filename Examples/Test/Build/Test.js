@@ -5,8 +5,22 @@ var Test;
         console.log("Main Menu");
         await Test.ƒS.Location.show(Test.locations.city);
         console.log("Startupdate");
-        await Test.ƒS.update(3);
+        await Test.ƒS.update(1, "Images/jigsaw_06.jpg");
         // ƒS.Text.setClass("blue");
+        let graph = Test.ƒS.Base.getGraph();
+        Test.ƒ.Debug.branch(graph);
+        // let city: ƒ.Node = graph.getChildrenByName("Back")[0].getChildren()[0];
+        // let cmpMesh: ƒ.ComponentMesh = city.getComponent(ƒ.ComponentMesh);
+        graph.addComponent(new Test.ƒ.ComponentTransform());
+        console.log(graph);
+        function jitter() {
+            // graph.mtxLocal.translateX(ƒ.Random.default.getRangeFloored(-2, 3));
+            // graph.mtxLocal.translateY(ƒ.Random.default.getRangeFloored(-2, 3));
+            // cmpMesh.mtxPivot.translateX(Math.sin(performance.now() / 100) / 100);
+            graph.mtxLocal.rotateZ(1);
+            Test.ƒS.update();
+        }
+        Test.ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, jitter);
         let menu = Test.ƒS.Menu.create({ a: "Opt1", b: "Opt2" }, null);
         await Test.ƒS.Speech.tell("characters.Sue", "Dies ist nur ein langer Text um zu prüfen, ob das Menü nun das Click-Event frisst", false);
         menu.close();
