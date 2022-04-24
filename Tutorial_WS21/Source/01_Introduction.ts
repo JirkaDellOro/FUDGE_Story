@@ -38,10 +38,11 @@ namespace Tutorial_WS21 {
     await ƒS.Character.show(characters.aisaka, characters.aisaka.pose.happy, ƒS.positionPercent(30, 100));
     await ƒS.update(1);
     // Animationen parallel abspielen
-    await ƒS.Speech.tell(characters.aisaka, text.aisaka.T0000, false);
-    dataForSave.nameProtagonist = await ƒS.Speech.getInput();
-    console.log(dataForSave.nameProtagonist);
-    await ƒS.Speech.tell(characters.aisaka, text.aisaka.T0000 + dataForSave.nameProtagonist);
+    // await ƒS.Speech.tell(characters.aisaka, text.aisaka.T0000, false);
+    // dataForSave.nameProtagonist = await ƒS.Speech.getInput();
+    // console.log(dataForSave.nameProtagonist);
+    // await ƒS.Speech.tell(characters.aisaka, text.aisaka.T0000 + dataForSave.nameProtagonist);
+
     // LOOP Animations
     // await ƒS.Character.animate(characters.aisaka, characters.aisaka.pose.happy, fromRightToLeft());
     // await ƒS.Character.animate(characters.aisaka, characters.aisaka.pose.happy, fromRightToOutOfCanvas());
@@ -49,6 +50,15 @@ namespace Tutorial_WS21 {
     // Inventar
     // ƒS.Inventory.add(items.pen);
     // await ƒS.Inventory.open(); 
+
+    await ƒS.Speech.tell(characters.aisaka, "edtsfewrdsg");
+    await ƒS.Speech.tell(characters.aisaka, "asrfdwqed");
+    await ƒS.Speech.tell(characters.aisaka, "asaaaaaaaaaaa");
+    await ƒS.Speech.tell(characters.aisaka, "asasasasasas");
+    await ƒS.Speech.tell(characters.aisaka, "vvvvvvvvv");
+    await ƒS.Speech.tell(characters.aisaka, "iiiiiiiiiiiiiii");
+    await ƒS.Speech.tell(characters.aisaka, "ccccccccc");
+    await ƒS.Speech.tell(characters.aisaka, "eeeeeeeeeeee");
 
 
     await ƒS.Speech.tell(characters.aisaka, "Hi2.");

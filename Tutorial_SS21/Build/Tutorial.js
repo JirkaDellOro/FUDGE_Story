@@ -15,8 +15,8 @@ var Tutorial;
         // };
         document.getElementsByName("scoreRyu").forEach(meterStuff => meterStuff.hidden = true);
         document.getElementsByName("scoreForRyu").forEach(meterStuff => meterStuff.hidden = true);
-        Tutorial.gameMenu.close();
-        Tutorial.menu = false;
+        gameMenu.close();
+        menu = false;
         Tutorial.ƒS.Speech.hide();
         await Tutorial.ƒS.Location.show(Tutorial.locations.bench);
         // await ƒS.Character.animate(characters.Aoi, characters.Aoi.pose.normal, animation);
@@ -163,6 +163,7 @@ var Tutorial;
         Tutorial.ƒS.Inventory.add(Tutorial.items.BlobOG);
         // console.log(await ƒS.Inventory.open());
         await Tutorial.ƒS.Inventory.open();
+        // ƒS.Inventory.close();
         Tutorial.ƒS.Speech.hide();
         // await ƒS.Character.show(characters.Ryu, characters.Ryu.pose.normal, ƒS.positions.bottomcenter);
         await Tutorial.ƒS.Character.show(Tutorial.characters.Ryu, Tutorial.characters.Ryu.pose.normal, Tutorial.ƒS.positionPercent(30, 100));
@@ -320,32 +321,51 @@ var Tutorial;
         about: "About",
         open: "Open"
     };
+    // MENU - create Menu with buttons
+    let gameMenu;
     async function buttonFunctionalities(_option) {
         console.log(_option);
-        if (_option == inGameMenu.save) {
-            await Tutorial.ƒS.Progress.save();
+        switch (_option) {
+            case inGameMenu.save:
+                await Tutorial.ƒS.Progress.save();
+                break;
+            case inGameMenu.load:
+                await Tutorial.ƒS.Progress.load();
+                break;
+            case inGameMenu.close:
+                gameMenu.close();
+                break;
+            case inGameMenu.open:
+                gameMenu.open();
+                break;
+            case inGameMenu.credits:
+                showCredits();
+                break;
         }
-        else if (_option == inGameMenu.load) {
-            await Tutorial.ƒS.Progress.load();
-        }
-        else if (_option == inGameMenu.turnUpVolume) {
-            incrementSound();
-        }
-        else if (_option == inGameMenu.turndownVolume) {
-            decrementSound();
-        }
-        if (_option == inGameMenu.close) {
-            Tutorial.gameMenu.close();
-        }
-        if (_option == inGameMenu.open) {
-            Tutorial.gameMenu.open();
-        }
-        if (_option == inGameMenu.credits) {
-            showCredits();
-        }
+        // if (_option == inGameMenu.save) {
+        //   await ƒS.Progress.save();
+        // }
+        // else if (_option == inGameMenu.load) {
+        //   await ƒS.Progress.load();
+        // }
+        // else if (_option == inGameMenu.turnUpVolume) {
+        //   incrementSound();
+        // }
+        // else if (_option == inGameMenu.turndownVolume) {
+        //   decrementSound();
+        // }
+        // if (_option == inGameMenu.close) {
+        //   gameMenu.close();
+        // }
+        // if (_option == inGameMenu.open) {
+        //   gameMenu.open();
+        // }
+        // if (_option == inGameMenu.credits) {
+        //   showCredits();
+        // }
     }
     // true heißt hier offen und false geschlossen
-    Tutorial.menu = true;
+    let menu = true;
     // shortcuts to save and load game progress
     // && doesn't work in a switch
     document.addEventListener("keydown", hndKeypress);
@@ -365,15 +385,15 @@ var Tutorial;
             //   break;
             // Englische Tastatur beachten, Öffnen und Schließen des Inventars mit derselben Taste
             case Tutorial.ƒ.KEYBOARD_CODE.M:
-                if (Tutorial.menu) {
+                if (menu) {
                     console.log("Close");
-                    Tutorial.gameMenu.close();
-                    Tutorial.menu = false;
+                    gameMenu.close();
+                    menu = false;
                 }
                 else {
                     console.log("Open");
-                    Tutorial.gameMenu.open();
-                    Tutorial.menu = true;
+                    gameMenu.open();
+                    menu = true;
                 }
                 break;
         }
@@ -414,7 +434,7 @@ var Tutorial;
     window.addEventListener("load", start);
     function start(_event) {
         // MENU
-        Tutorial.gameMenu =
+        gameMenu =
             Tutorial.ƒS.Menu.create(inGameMenu, buttonFunctionalities, "gameMenu");
         // define the sequence of scenes, each scene as an object with a reference to the scene-function, a name and optionally an id and an id to continue the story with
         let scenes = [
@@ -427,11 +447,11 @@ var Tutorial;
             { id: "Animation", scene: Tutorial.Animation, name: "How To Animate", next: "End" },
             // Pfad 2
             { id: "Inventory", scene: Tutorial.Inventory, name: "How To Make An Inventory", next: "Meter" },
-            { id: "Meter", scene: Tutorial.Meter, name: "How To Make a Progress bar", next: "End" },
+            { id: "Meter", scene: Tutorial.Meter, name: "How To Make a Progress bar", next: "End" }
             // { scene: Animation, name: "How To Animate" },
             // { scene: GameMenu, name: "How To Make A Game Menu" },
             // { scene: Meter, name: "How To Make a Progress bar" },
-            { id: "End", scene: End, name: "This is an ending" }
+            // { id: "End", scene: End, name: "This is an ending" }
         ];
         let uiElement = document.querySelector("[type=interface]");
         Tutorial.dataForSave = Tutorial.ƒS.Progress.setData(Tutorial.dataForSave, uiElement);
@@ -502,8 +522,8 @@ var Tutorial;
         };
         document.getElementsByName("scoreRyu").forEach(meterStuff => meterStuff.hidden = true);
         document.getElementsByName("scoreForRyu").forEach(meterStuff => meterStuff.hidden = true);
-        Tutorial.gameMenu.close();
-        Tutorial.menu = false;
+        gameMenu.close();
+        menu = false;
         Tutorial.ƒS.Speech.hide();
         await Tutorial.ƒS.Location.show(Tutorial.locations.bench);
         // await ƒS.update(transition.clock.duration, transition.clock.alpha, transition.clock.edge);
