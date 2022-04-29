@@ -44,6 +44,7 @@ declare namespace Tutorial_SS22 {
         nameProtaginst: string;
         score: number;
     };
+    function showCredits(): void;
 }
 declare namespace Tutorial_SS22 {
     function HowToMakeChoices(): ƒS.SceneReturn;

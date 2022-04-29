@@ -19,8 +19,8 @@ namespace Tutorial_SS22 {
     ƒS.Speech.hide();
     await ƒS.Location.show(locations.nightpark);
     await ƒS.update(transitions.puzzle.duration, transitions.puzzle.alpha, transitions.puzzle.edge);
-    // await ƒS.Character.show(characters.aisaka, characters.aisaka.pose.happy, ƒS.positions.bottomcenter);
-    // await ƒS.Character.show(characters.aisaka, characters.aisaka.pose.happy, ƒS.positionPercent(70, 100));
+    await ƒS.Character.show(characters.aisaka, characters.aisaka.pose.happy, ƒS.positions.bottomcenter);
+    await ƒS.Character.show(characters.aisaka, characters.aisaka.pose.happy, ƒS.positionPercent(70, 100));
     // ƒS.Character.hide(characters.aisaka);
     // ƒS.Character.hideAll();
     await ƒS.Speech.tell(characters.aisaka, text.Aisaka.T0000);
