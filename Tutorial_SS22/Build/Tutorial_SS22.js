@@ -397,9 +397,9 @@ var Tutorial_SS22;
         await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, text.Aisaka.T0001);
         if (Tutorial_SS22.dataForSave.score.scoreOne === 50) {
             let firstDialogueElementAnswers = {
-                iSayOk: "Okay.",
-                iSayYes: "Ja.",
-                iSayNo: "Nein."
+                iSayOk: "Ich habe über 50 Punkte.",
+                iSayYes: "...Deshalb siehst du diese Auswahlmöglichkeit",
+                iSayNo: "Spektakulär!"
             };
             let firstDialogueElement = await Tutorial_SS22.ƒS.Menu.getInput(firstDialogueElementAnswers, "choicesCSSclass");
             switch (firstDialogueElement) {
@@ -407,17 +407,17 @@ var Tutorial_SS22;
                     // continue path here
                     Tutorial_SS22.dataForSave.score.scoreOne += 50;
                     console.log(Tutorial_SS22.dataForSave.score.scoreOne);
-                    await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, "Okay");
+                    await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, "Okay, cool.");
                     Tutorial_SS22.ƒS.Speech.clear();
                     break;
                 case firstDialogueElementAnswers.iSayYes:
                     // continue path here
-                    await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, "Ja");
+                    await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, "ja, das wusste ich.");
                     Tutorial_SS22.ƒS.Character.hide(Tutorial_SS22.characters.aisaka);
                     break;
                 case firstDialogueElementAnswers.iSayNo:
                     // continue path here
-                    await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, "Nein");
+                    await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, "find' ich auch!");
                     Tutorial_SS22.ƒS.Speech.clear();
                     break;
             }
