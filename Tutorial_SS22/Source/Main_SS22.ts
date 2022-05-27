@@ -59,18 +59,85 @@ namespace Tutorial_SS22 {
     }
   };
 
+  // items wird hier deklariert und initialisiert
+  export let items = {
+    BlobRED: {
+      name: "Blob Red",
+      description: "A reddish something",
+      image: "/Tutorial_SS22/Images/Items/blobRED.png",
+      static: true
+    },
+    BlobBU: {
+      name: "Blob Blue",
+      description: "A blueish something",
+      image: "Images/Items/blobBU.png"
+    },
+    BlobDKBU: {
+      name: "Blob DK Blue",
+      description: "A dark blueish something",
+      image: "Images/Items/blobDKBU.png"
+    },
+    BlobGN: {
+      name: "Blob Green",
+      description: "A greenish something",
+      image: "Images/Items/blobGN.png"
+    },
+    BlobPK: {
+      name: "Blob Pink",
+      description: "A pinkish something",
+      image: "Images/Items/blobPK.png"
+    },
+    BlobYL: {
+      name: "Blob Yellow",
+      description: "A yellowish something",
+      image: "Images/Items/blobYL.png"
+    },
+    BlobOG: {
+      name: "Blob Orange",
+      description: "An orangeish something",
+      image: "Images/Items/blobOG.png"
+    },
+    Stick: {
+      name: "Stick",
+      description: "Just a stick",
+      image: "Images/Items/blobOG.png"
+    }
+  };
+
   // **** DATEN DIE GESPEICHERT WERDEN SOLLEN ****
   export let dataForSave = {
-    nameProtaginst: "",
-    score: 0
+    nameProtagonist: "",
+    score: 0,
+    pickedThisScene: false
   };
 
 
-// **** CREDITS ****
+  // **** CREDITS ****
   export function showCredits(): void {
-    ƒS.Text.setClass("class2");
+    ƒS.Text.setClass("credits");
     ƒS.Text.print("Halleluja");
   }
+
+
+  // **** ANIMATIONEN ****
+
+  export function leftToRight(): ƒS.AnimationDefinition {
+    return {
+      start: { translation: ƒS.positionPercent(70, 100), color: ƒS.Color.CSS("lightblue", 1) },
+      end: { translation: ƒS.positionPercent(80, 100), color: ƒS.Color.CSS("lightblue", 0) },
+      duration: 3,
+      playmode: ƒS.ANIMATION_PLAYMODE.PLAYONCE
+    };
+  }
+
+  // export function getAnimation(): ƒS.AnimationDefinition {
+  //   return {
+  //     start: { translation: ƒS.positions.bottomleft, rotation: -20, scaling: new ƒS.Position(0.5, 1.5), color: ƒS.Color.CSS("white", 0.3) },
+  //     end: { translation: ƒS.positions.bottomright, rotation: 20, scaling: new ƒS.Position(1.5, 0.5), color: ƒS.Color.CSS("red") },
+  //     duration: 1,
+  //     playmode: ƒS.ANIMATION_PLAYMODE.PLAYONCE
+  //   };
+  // }
 
 
   // **** MENÜ ****
@@ -132,6 +199,16 @@ namespace Tutorial_SS22 {
           menuIsOpen = true;
         }
         break;
+      // Shortcut Inventar
+      case ƒ.KEYBOARD_CODE.I:
+        console.log("open inventory");
+        await ƒS.Inventory.open();
+        break;
+      case ƒ.KEYBOARD_CODE.ESC:
+        console.log("close inventory");
+        await ƒS.Inventory.open();
+        ƒS.Inventory.close();
+        break;
     }
   }
 
@@ -143,7 +220,31 @@ namespace Tutorial_SS22 {
     buttonFunctionalities("Close");
     let scenes: ƒS.Scenes = [
       // { scene: HowToText, name: "Text Scene" },
-      { scene: HowToMakeChoices, name: "Choice Scene" }
+      { scene: HowToMakeChoices, name: "Choices" },
+      
+      { id: "Animation Scene", scene: HowToAnimate, name: "Animations", next: "EndingOne" },
+      { id: "EndingOne", scene: EndingOne, name: "GoodEnding", next: "EndingOne"},
+
+
+      { id: "Inventory Scene", scene: HowToMakeAnInventory, name: "Inventory", next: "EndingTwo" },
+      { id: "EndingTwo", scene: EndingTwo, name: "BadEnding", next: ""}
+
+
+
+
+
+
+
+      // { scene: MessengerMeeting, name: "Messenger Collab" },
+
+      // // GreenPath
+      // { scene: ElucidationGreenPath, name: "Green Messenger", next: "GreenOne" },
+      // { id: "GreenOne", scene: GreenOne, name: "Green Path goes on", next: "" },
+
+      // // BlackPath
+      // { scene: ElucidationBlackPath, name: "Black Messenger", next: "BlackOne" },
+      // { id: "BlackOne", scene: BlackOne, name: "Black path goes on", next: "" }
+
     ];
 
     // start the sequence

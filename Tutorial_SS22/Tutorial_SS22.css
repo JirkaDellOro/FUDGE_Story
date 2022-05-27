@@ -63,6 +63,9 @@ speech {
 speech content {
   color: rgb(255, 203, 237);
   font-size: 1.7vmin;
+  position: absolute;
+  left: 10px;
+  
 }
 
 name {
@@ -72,5 +75,27 @@ name {
   margin-bottom: 10px;
 }
 
+dialog[type="inventory"] {
+  color: rgb(203, 253, 255);
+  width: 50%;
+  border: 2px solid;
+  background-color: rgb(51, 51, 51);
+  font-family: 'KoHo', sans-serif;
+}
+
+dialog[type="inventory"]>ul {
+  display: grid;
+  grid-template-columns: 1fr 0.8fr;
+}
+
+dialog[type="inventory"]>ul>li {
+  width: 15vw;
+  height: 10vw;
+  border: solid rgb(199, 199, 199);
+  border-radius: 10px;
+  /* border-: ; */
+  list-style-type: none;
+  margin-bottom: 10px;
+}
 
 

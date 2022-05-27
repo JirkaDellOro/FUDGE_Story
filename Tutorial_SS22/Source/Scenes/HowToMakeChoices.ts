@@ -3,11 +3,6 @@ namespace Tutorial_SS22 {
     console.log("Let's make some choices!");
 
     let text = {
-      Narrator: {
-        T0000: "",
-        T0001: "",
-        T0002: ""
-      },
       Aisaka: {
         T0000: "Heute wird sich alles um Auswahlmöglichkeiten drehen.",
         T0001: "Schön, dass du dabei warst!"
@@ -19,14 +14,15 @@ namespace Tutorial_SS22 {
     ƒS.Speech.hide();
     await ƒS.Location.show(locations.nightpark);
     await ƒS.update(transitions.puzzle.duration, transitions.puzzle.alpha, transitions.puzzle.edge);
-    await ƒS.Character.show(characters.aisaka, characters.aisaka.pose.happy, ƒS.positions.bottomcenter);
+    // await ƒS.Character.show(characters.aisaka, characters.aisaka.pose.happy, ƒS.positions.bottomcenter);
     await ƒS.Character.show(characters.aisaka, characters.aisaka.pose.happy, ƒS.positionPercent(70, 100));
+    await ƒS.update();
     // ƒS.Character.hide(characters.aisaka);
     // ƒS.Character.hideAll();
     await ƒS.Speech.tell(characters.aisaka, text.Aisaka.T0000);
     ƒS.Speech.clear();
     ƒS.Speech.hide();
-    await ƒS.update(3);
+    await ƒS.update(1.5);
 
 
    
@@ -42,17 +38,17 @@ namespace Tutorial_SS22 {
     switch (firstDialogueElement) {
       case firstDialogueElementAnswers.iSayOk:
         // continue path here
-        await ƒS.Speech.tell(characters.aisaka, "Hi");
+        await ƒS.Speech.tell(characters.aisaka, "Okay");
         ƒS.Speech.clear();
         break;
       case firstDialogueElementAnswers.iSayYes:
         // continue path here
-        await ƒS.Character.show(characters.aisaka, characters.aisaka.pose.happy, ƒS.positions.bottomcenter);
+        await ƒS.Speech.tell(characters.aisaka, "Ja");
         ƒS.Character.hide(characters.aisaka);
         break;
       case firstDialogueElementAnswers.iSayNo:
         // continue path here
-        await ƒS.Speech.tell(characters.aisaka, "Hi");
+        await ƒS.Speech.tell(characters.aisaka, "Nein");
         ƒS.Speech.clear();
         break;
     }

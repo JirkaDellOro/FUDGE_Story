@@ -1,5 +1,12 @@
+# Compiler Stuff
 FudgeStory.tsbuildinfo
 Template/FudgeStory/FudgeStory.js.map
+
+# Folders
+Old
+
+# Scenes
 End.ts
 GameMenu.ts
-Old
+Notes.ts
+

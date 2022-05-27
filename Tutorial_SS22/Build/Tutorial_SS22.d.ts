@@ -40,11 +40,68 @@ declare namespace Tutorial_SS22 {
             };
         };
     };
+    let items: {
+        BlobRED: {
+            name: string;
+            description: string;
+            image: string;
+            static: boolean;
+        };
+        BlobBU: {
+            name: string;
+            description: string;
+            image: string;
+        };
+        BlobDKBU: {
+            name: string;
+            description: string;
+            image: string;
+        };
+        BlobGN: {
+            name: string;
+            description: string;
+            image: string;
+        };
+        BlobPK: {
+            name: string;
+            description: string;
+            image: string;
+        };
+        BlobYL: {
+            name: string;
+            description: string;
+            image: string;
+        };
+        BlobOG: {
+            name: string;
+            description: string;
+            image: string;
+        };
+        Stick: {
+            name: string;
+            description: string;
+            image: string;
+        };
+    };
     let dataForSave: {
-        nameProtaginst: string;
+        nameProtagonist: string;
         score: number;
+        pickedThisScene: boolean;
     };
     function showCredits(): void;
+    function leftToRight(): ƒS.AnimationDefinition;
+}
+declare namespace Tutorial_SS22 {
+    function EndingOne(): ƒS.SceneReturn;
+}
+declare namespace Tutorial_SS22 {
+    function EndingTwo(): ƒS.SceneReturn;
+}
+declare namespace Tutorial_SS22 {
+    function HowToAnimate(): ƒS.SceneReturn;
+}
+declare namespace Tutorial_SS22 {
+    function HowToMakeAnInventory(): ƒS.SceneReturn;
 }
 declare namespace Tutorial_SS22 {
     function HowToMakeChoices(): ƒS.SceneReturn;
