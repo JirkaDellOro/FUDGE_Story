@@ -60,28 +60,28 @@ namespace Tutorial_SS22 {
 
 
     if (dataForSave.score.scoreOne === 50) {
-      let firstDialogueElementAnswers = {
+      let secondDialogueElementAnswers = {
         iSayOk: "Ich habe über 50 Punkte.",
-        iSayYes: "...Deshalb siehst du diese Auswahlmöglichkeit",
+        iSayYes: "...deshalb siehst du diese Auswahlmöglichkeit",
         iSayNo: "Spektakulär!"
       };
   
-      let firstDialogueElement = await ƒS.Menu.getInput(firstDialogueElementAnswers, "choicesCSSclass");
+      let secondDialogueElement = await ƒS.Menu.getInput(secondDialogueElementAnswers, "choicesCSSclass");
   
-      switch (firstDialogueElement) {
-        case firstDialogueElementAnswers.iSayOk:
+      switch (secondDialogueElement) {
+        case secondDialogueElementAnswers.iSayOk:
           // continue path here
           dataForSave.score.scoreOne += 50;
           console.log(dataForSave.score.scoreOne);
           await ƒS.Speech.tell(characters.aisaka, "Okay, cool.");
           ƒS.Speech.clear();
           break;
-        case firstDialogueElementAnswers.iSayYes:
+        case secondDialogueElementAnswers.iSayYes:
           // continue path here
           await ƒS.Speech.tell(characters.aisaka, "ja, das wusste ich.");
           ƒS.Character.hide(characters.aisaka);
           break;
-        case firstDialogueElementAnswers.iSayNo:
+        case secondDialogueElementAnswers.iSayNo:
           // continue path here
           await ƒS.Speech.tell(characters.aisaka, "find' ich auch!");
           ƒS.Speech.clear();

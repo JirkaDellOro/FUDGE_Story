@@ -396,26 +396,26 @@ var Tutorial_SS22;
         // You can continue your story right after the choice definitions
         await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, text.Aisaka.T0001);
         if (Tutorial_SS22.dataForSave.score.scoreOne === 50) {
-            let firstDialogueElementAnswers = {
+            let secondDialogueElementAnswers = {
                 iSayOk: "Ich habe über 50 Punkte.",
-                iSayYes: "...Deshalb siehst du diese Auswahlmöglichkeit",
+                iSayYes: "...deshalb siehst du diese Auswahlmöglichkeit",
                 iSayNo: "Spektakulär!"
             };
-            let firstDialogueElement = await Tutorial_SS22.ƒS.Menu.getInput(firstDialogueElementAnswers, "choicesCSSclass");
-            switch (firstDialogueElement) {
-                case firstDialogueElementAnswers.iSayOk:
+            let secondDialogueElement = await Tutorial_SS22.ƒS.Menu.getInput(secondDialogueElementAnswers, "choicesCSSclass");
+            switch (secondDialogueElement) {
+                case secondDialogueElementAnswers.iSayOk:
                     // continue path here
                     Tutorial_SS22.dataForSave.score.scoreOne += 50;
                     console.log(Tutorial_SS22.dataForSave.score.scoreOne);
                     await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, "Okay, cool.");
                     Tutorial_SS22.ƒS.Speech.clear();
                     break;
-                case firstDialogueElementAnswers.iSayYes:
+                case secondDialogueElementAnswers.iSayYes:
                     // continue path here
                     await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, "ja, das wusste ich.");
                     Tutorial_SS22.ƒS.Character.hide(Tutorial_SS22.characters.aisaka);
                     break;
-                case firstDialogueElementAnswers.iSayNo:
+                case secondDialogueElementAnswers.iSayNo:
                     // continue path here
                     await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, "find' ich auch!");
                     Tutorial_SS22.ƒS.Speech.clear();
