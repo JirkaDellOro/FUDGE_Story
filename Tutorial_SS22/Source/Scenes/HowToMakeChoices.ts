@@ -25,8 +25,8 @@ namespace Tutorial_SS22 {
     await ƒS.update(1.5);
 
 
-   
-    
+
+
     let firstDialogueElementAnswers = {
       iSayOk: "Okay.",
       iSayYes: "Ja.",
@@ -38,6 +38,8 @@ namespace Tutorial_SS22 {
     switch (firstDialogueElement) {
       case firstDialogueElementAnswers.iSayOk:
         // continue path here
+        dataForSave.score.scoreOne += 50;
+        console.log(dataForSave.score.scoreOne);
         await ƒS.Speech.tell(characters.aisaka, "Okay");
         ƒS.Speech.clear();
         break;
@@ -56,6 +58,36 @@ namespace Tutorial_SS22 {
     // You can continue your story right after the choice definitions
     await ƒS.Speech.tell(characters.aisaka, text.Aisaka.T0001);
 
+
+    if (dataForSave.score.scoreOne === 50) {
+      let firstDialogueElementAnswers = {
+        iSayOk: "Okay.",
+        iSayYes: "Ja.",
+        iSayNo: "Nein."
+      };
+
+      let firstDialogueElement = await ƒS.Menu.getInput(firstDialogueElementAnswers, "choicesCSSclass");
+
+      switch (firstDialogueElement) {
+        case firstDialogueElementAnswers.iSayOk:
+          // continue path here
+          dataForSave.score.scoreOne += 50;
+          console.log(dataForSave.score.scoreOne);
+          await ƒS.Speech.tell(characters.aisaka, "Okay");
+          ƒS.Speech.clear();
+          break;
+        case firstDialogueElementAnswers.iSayYes:
+          // continue path here
+          await ƒS.Speech.tell(characters.aisaka, "Ja");
+          ƒS.Character.hide(characters.aisaka);
+          break;
+        case firstDialogueElementAnswers.iSayNo:
+          // continue path here
+          await ƒS.Speech.tell(characters.aisaka, "Nein");
+          ƒS.Speech.clear();
+          break;
+      }
+    }
 
 
   }

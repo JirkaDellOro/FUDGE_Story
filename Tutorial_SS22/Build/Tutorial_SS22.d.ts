@@ -85,17 +85,37 @@ declare namespace Tutorial_SS22 {
     };
     let dataForSave: {
         nameProtagonist: string;
-        score: number;
-        pickedThisScene: boolean;
+        score: {
+            scoreOne: number;
+            scoreTwo: number;
+            scoreThree: number;
+        };
+        pickedAnimationScene: boolean;
     };
     function showCredits(): void;
     function leftToRight(): ƒS.AnimationDefinition;
+}
+declare namespace Tutorial_SS22 {
+    let textAusgelagert: {
+        Narrator: {
+            T0000: string;
+            T0001: string;
+            T0002: string;
+        };
+        Aisaka: {
+            T0000: string;
+            T0001: string;
+        };
+    };
 }
 declare namespace Tutorial_SS22 {
     function EndingOne(): ƒS.SceneReturn;
 }
 declare namespace Tutorial_SS22 {
     function EndingTwo(): ƒS.SceneReturn;
+}
+declare namespace Tutorial_SS22 {
+    function GameOver(): ƒS.SceneReturn;
 }
 declare namespace Tutorial_SS22 {
     function HowToAnimate(): ƒS.SceneReturn;

@@ -14,7 +14,8 @@ namespace Tutorial_SS22 {
       }
     };
 
-    // dataForSave.pickedThisScene = true;
+    // dataForSave.pickedAnimationScene = true;
+    
     // Jeglicher Textinhalt des Narrators wird wiedergegeben
     for (let narratorText of Object.values(text.Narrator)) {
       await ƒS.Speech.tell(text.Aisaka, narratorText);
@@ -35,10 +36,7 @@ namespace Tutorial_SS22 {
     return EndingOne();
 
 
-
-    // if (dataForSave.pickedThisScene) {
-    //   return HowToText();
-    // }
+  
 
 
 

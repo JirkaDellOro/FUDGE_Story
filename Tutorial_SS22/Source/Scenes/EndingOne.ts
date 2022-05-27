@@ -12,6 +12,7 @@ namespace Tutorial_SS22 {
     await ƒS.Speech.tell(characters.aisaka, text.Aisaka.T0000);
 
 
+    return "GameOver";
 
 
 

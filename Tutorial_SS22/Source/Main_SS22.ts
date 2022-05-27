@@ -107,8 +107,12 @@ namespace Tutorial_SS22 {
   // **** DATEN DIE GESPEICHERT WERDEN SOLLEN ****
   export let dataForSave = {
     nameProtagonist: "",
-    score: 0,
-    pickedThisScene: false
+    score: {
+      scoreOne: 0,
+      scoreTwo: 0,
+      scoreThree: 0
+    },
+    pickedAnimationScene: false
   };
 
 
@@ -223,11 +227,22 @@ namespace Tutorial_SS22 {
       { scene: HowToMakeChoices, name: "Choices" },
       
       { id: "Animation Scene", scene: HowToAnimate, name: "Animations", next: "EndingOne" },
-      { id: "EndingOne", scene: EndingOne, name: "GoodEnding", next: "EndingOne"},
-
-
       { id: "Inventory Scene", scene: HowToMakeAnInventory, name: "Inventory", next: "EndingTwo" },
-      { id: "EndingTwo", scene: EndingTwo, name: "BadEnding", next: ""}
+
+      { id: "EndingOne", scene: EndingOne, name: "GoodEnding", next: "GameOver"},
+      { id: "EndingTwo", scene: EndingTwo, name: "BadEnding", next: "GameOver"},
+
+
+      { id: "GameOver", scene: GameOver, name: "ENDE", next: ""}
+
+
+
+
+
+
+
+
+
 
 
 

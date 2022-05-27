@@ -100,8 +100,12 @@ var Tutorial_SS22;
     // **** DATEN DIE GESPEICHERT WERDEN SOLLEN ****
     Tutorial_SS22.dataForSave = {
         nameProtagonist: "",
-        score: 0,
-        pickedThisScene: false
+        score: {
+            scoreOne: 0,
+            scoreTwo: 0,
+            scoreThree: 0
+        },
+        pickedAnimationScene: false
     };
     // **** CREDITS ****
     function showCredits() {
@@ -200,9 +204,10 @@ var Tutorial_SS22;
             // { scene: HowToText, name: "Text Scene" },
             { scene: Tutorial_SS22.HowToMakeChoices, name: "Choices" },
             { id: "Animation Scene", scene: Tutorial_SS22.HowToAnimate, name: "Animations", next: "EndingOne" },
-            { id: "EndingOne", scene: Tutorial_SS22.EndingOne, name: "GoodEnding", next: "EndingOne" },
             { id: "Inventory Scene", scene: Tutorial_SS22.HowToMakeAnInventory, name: "Inventory", next: "EndingTwo" },
-            { id: "EndingTwo", scene: Tutorial_SS22.EndingTwo, name: "BadEnding", next: "" }
+            { id: "EndingOne", scene: Tutorial_SS22.EndingOne, name: "GoodEnding", next: "GameOver" },
+            { id: "EndingTwo", scene: Tutorial_SS22.EndingTwo, name: "BadEnding", next: "GameOver" },
+            { id: "GameOver", scene: Tutorial_SS22.GameOver, name: "ENDE", next: "" }
             // { scene: MessengerMeeting, name: "Messenger Collab" },
             // // GreenPath
             // { scene: ElucidationGreenPath, name: "Green Messenger", next: "GreenOne" },
@@ -219,6 +224,20 @@ var Tutorial_SS22;
 })(Tutorial_SS22 || (Tutorial_SS22 = {}));
 var Tutorial_SS22;
 (function (Tutorial_SS22) {
+    Tutorial_SS22.textAusgelagert = {
+        Narrator: {
+            T0000: "Wenn du in den Szenen-Code schaust, wirst du bemerken,...",
+            T0001: "dass dieser Text nicht manuell,...",
+            T0002: "sondern mit einer for of-Schleife wiedergegeben wird."
+        },
+        Aisaka: {
+            T0000: "Dieser Text wurde ausgelagert.",
+            T0001: "Spick' in den Code!"
+        }
+    };
+})(Tutorial_SS22 || (Tutorial_SS22 = {}));
+var Tutorial_SS22;
+(function (Tutorial_SS22) {
     async function EndingOne() {
         console.log("GOOD ENDING");
         let text = {
@@ -227,6 +246,7 @@ var Tutorial_SS22;
             }
         };
         await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, text.Aisaka.T0000);
+        return "GameOver";
     }
     Tutorial_SS22.EndingOne = EndingOne;
 })(Tutorial_SS22 || (Tutorial_SS22 = {}));
@@ -245,6 +265,13 @@ var Tutorial_SS22;
 })(Tutorial_SS22 || (Tutorial_SS22 = {}));
 var Tutorial_SS22;
 (function (Tutorial_SS22) {
+    async function GameOver() {
+        console.log("GAME OVER");
+    }
+    Tutorial_SS22.GameOver = GameOver;
+})(Tutorial_SS22 || (Tutorial_SS22 = {}));
+var Tutorial_SS22;
+(function (Tutorial_SS22) {
     async function HowToAnimate() {
         console.log("Let's animate!");
         let text = {
@@ -258,7 +285,7 @@ var Tutorial_SS22;
                 T0001: "Muhahaha"
             }
         };
-        // dataForSave.pickedThisScene = true;
+        // dataForSave.pickedAnimationScene = true;
         // Jeglicher Textinhalt des Narrators wird wiedergegeben
         for (let narratorText of Object.values(text.Narrator)) {
             await Tutorial_SS22.ƒS.Speech.tell(text.Aisaka, narratorText);
@@ -273,9 +300,6 @@ var Tutorial_SS22;
         await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, text.Aisaka.T0001);
         await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, "Mich wirst du niemals finden!");
         return Tutorial_SS22.EndingOne();
-        // if (dataForSave.pickedThisScene) {
-        //   return HowToText();
-        // }
     }
     Tutorial_SS22.HowToAnimate = HowToAnimate;
 })(Tutorial_SS22 || (Tutorial_SS22 = {}));
@@ -353,6 +377,8 @@ var Tutorial_SS22;
         switch (firstDialogueElement) {
             case firstDialogueElementAnswers.iSayOk:
                 // continue path here
+                Tutorial_SS22.dataForSave.score.scoreOne += 50;
+                console.log(Tutorial_SS22.dataForSave.score.scoreOne);
                 await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, "Okay");
                 Tutorial_SS22.ƒS.Speech.clear();
                 break;
@@ -369,6 +395,33 @@ var Tutorial_SS22;
         }
         // You can continue your story right after the choice definitions
         await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, text.Aisaka.T0001);
+        if (Tutorial_SS22.dataForSave.score.scoreOne === 50) {
+            let firstDialogueElementAnswers = {
+                iSayOk: "Okay.",
+                iSayYes: "Ja.",
+                iSayNo: "Nein."
+            };
+            let firstDialogueElement = await Tutorial_SS22.ƒS.Menu.getInput(firstDialogueElementAnswers, "choicesCSSclass");
+            switch (firstDialogueElement) {
+                case firstDialogueElementAnswers.iSayOk:
+                    // continue path here
+                    Tutorial_SS22.dataForSave.score.scoreOne += 50;
+                    console.log(Tutorial_SS22.dataForSave.score.scoreOne);
+                    await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, "Okay");
+                    Tutorial_SS22.ƒS.Speech.clear();
+                    break;
+                case firstDialogueElementAnswers.iSayYes:
+                    // continue path here
+                    await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, "Ja");
+                    Tutorial_SS22.ƒS.Character.hide(Tutorial_SS22.characters.aisaka);
+                    break;
+                case firstDialogueElementAnswers.iSayNo:
+                    // continue path here
+                    await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, "Nein");
+                    Tutorial_SS22.ƒS.Speech.clear();
+                    break;
+            }
+        }
     }
     Tutorial_SS22.HowToMakeChoices = HowToMakeChoices;
 })(Tutorial_SS22 || (Tutorial_SS22 = {}));
@@ -376,19 +429,19 @@ var Tutorial_SS22;
 (function (Tutorial_SS22) {
     async function HowToText() {
         console.log("Let's text!");
-        let text = {
-            Aisaka: {
-                T0000: "Sei gegrüßt, Erdling.",
-                T0001: "Kleiner Scherz, willkommen zum Tutorial!"
-            }
-        };
+        // let text = {
+        //   Aisaka: {
+        //     T0000: "Sei gegrüßt, Erdling.",
+        //     T0001: "Kleiner Scherz, willkommen zum Tutorial!"
+        //   }
+        // };
         Tutorial_SS22.ƒS.Speech.hide();
         await Tutorial_SS22.ƒS.Location.show(Tutorial_SS22.locations.nightpark);
         await Tutorial_SS22.ƒS.update(Tutorial_SS22.transitions.puzzle.duration, Tutorial_SS22.transitions.puzzle.alpha, Tutorial_SS22.transitions.puzzle.edge);
         await Tutorial_SS22.ƒS.Character.show(Tutorial_SS22.characters.aisaka, Tutorial_SS22.characters.aisaka.pose.happy, Tutorial_SS22.ƒS.positionPercent(70, 100));
         Tutorial_SS22.ƒS.update();
-        await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, text.Aisaka.T0000);
-        await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, text.Aisaka.T0001);
+        await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, Tutorial_SS22.textAusgelagert.Aisaka.T0000);
+        await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, Tutorial_SS22.textAusgelagert.Aisaka.T0001);
         await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, "Dieser Text wird als direkter String in der tell-Methode ausgegeben.");
         await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, "Hierfür wird lediglich nach Angabe des Charakters, bei dem dieser Text erscheinen soll, der Text in Anführungsstrichen dahinter geschrieben.");
     }
@@ -411,5 +464,9 @@ var Tutorial_SS22;
 // }
 // else {
 //   return HowToAnimate();
+// }
+// Keine Veränderung/Umkehrung des Werts; nur ABFRAGE!!
+// if (dataForSave.pickedAnimationScene) {
+//   return HowToText();
 // }
 //# sourceMappingURL=Tutorial_SS22.js.map
