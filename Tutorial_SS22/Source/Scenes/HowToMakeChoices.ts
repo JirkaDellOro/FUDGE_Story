@@ -12,7 +12,7 @@ namespace Tutorial_SS22 {
 
     // ƒS.Sound.fade(sound.nightclub, 1, 2, true);
     ƒS.Speech.hide();
-    await ƒS.Location.show(locations.nightpark);
+    await ƒS.Location.show(locations.bedroomAtNight);
     await ƒS.update(transitions.puzzle.duration, transitions.puzzle.alpha, transitions.puzzle.edge);
     // await ƒS.Character.show(characters.aisaka, characters.aisaka.pose.happy, ƒS.positions.bottomcenter);
     await ƒS.Character.show(characters.aisaka, characters.aisaka.pose.happy, ƒS.positionPercent(70, 100));
@@ -61,7 +61,7 @@ namespace Tutorial_SS22 {
 
     if (dataForSave.score.scoreOne === 50) {
       let secondDialogueElementAnswers = {
-        iSayOk: "Ich habe über 50 Punkte.",
+        iSayOk: "Du hast 50 Punkte bei deiner letzten Auswahl gesammelt.",
         iSayYes: "...deshalb siehst du diese Auswahlmöglichkeit",
         iSayNo: "Spektakulär!"
       };

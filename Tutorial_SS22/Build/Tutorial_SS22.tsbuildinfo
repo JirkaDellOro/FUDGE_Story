@@ -4,9 +4,9 @@
     "sourceFiles": [
       "../Source/Main_SS22.ts",
       "../Source/Definitions/Dialog.ts",
-      "../Source/Scenes/EndingOne.ts",
-      "../Source/Scenes/EndingTwo.ts",
-      "../Source/Scenes/GameOver.ts",
+      "../Source/Scenes/BadEnding.ts",
+      "../Source/Scenes/Empty.ts",
+      "../Source/Scenes/GoodEnding.ts",
       "../Source/Scenes/HowToAnimate.ts",
       "../Source/Scenes/HowToMakeAnInventory.ts",
       "../Source/Scenes/HowToMakeChoices.ts",
@@ -23,7 +23,7 @@
         },
         {
           "pos": 15,
-          "end": 21488,
+          "end": 22060,
           "kind": "text"
         }
       ],
@@ -51,7 +51,7 @@
       "sections": [
         {
           "pos": 0,
-          "end": 3176,
+          "end": 3219,
           "kind": "text"
         }
       ]

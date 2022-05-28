@@ -12,13 +12,16 @@ declare namespace Tutorial_SS22 {
         nightclub: string;
     };
     let locations: {
-        nightpark: {
+        bedroomAtNight: {
             name: string;
             background: string;
         };
     };
     let characters: {
         narrator: {
+            name: string;
+        };
+        protagonist: {
             name: string;
         };
         aisaka: {
@@ -41,43 +44,38 @@ declare namespace Tutorial_SS22 {
         };
     };
     let items: {
-        BlobRED: {
+        blobRED: {
             name: string;
             description: string;
             image: string;
             static: boolean;
         };
-        BlobBU: {
+        blobBU: {
             name: string;
             description: string;
             image: string;
         };
-        BlobDKBU: {
+        blobDKBU: {
             name: string;
             description: string;
             image: string;
         };
-        BlobGN: {
+        blobGN: {
             name: string;
             description: string;
             image: string;
         };
-        BlobPK: {
+        blobPK: {
             name: string;
             description: string;
             image: string;
         };
-        BlobYL: {
+        blobYL: {
             name: string;
             description: string;
             image: string;
         };
-        BlobOG: {
-            name: string;
-            description: string;
-            image: string;
-        };
-        Stick: {
+        blobOG: {
             name: string;
             description: string;
             image: string;
@@ -91,8 +89,10 @@ declare namespace Tutorial_SS22 {
             scoreThree: number;
         };
         pickedAnimationScene: boolean;
+        pickedInventoryScene: boolean;
     };
     function showCredits(): void;
+    function ghostAnimation(): ƒS.AnimationDefinition;
     function leftToRight(): ƒS.AnimationDefinition;
 }
 declare namespace Tutorial_SS22 {
@@ -109,13 +109,13 @@ declare namespace Tutorial_SS22 {
     };
 }
 declare namespace Tutorial_SS22 {
-    function EndingOne(): ƒS.SceneReturn;
+    function BadEnding(): ƒS.SceneReturn;
 }
 declare namespace Tutorial_SS22 {
-    function EndingTwo(): ƒS.SceneReturn;
+    function Empty(): ƒS.SceneReturn;
 }
 declare namespace Tutorial_SS22 {
-    function GameOver(): ƒS.SceneReturn;
+    function GoodEnding(): ƒS.SceneReturn;
 }
 declare namespace Tutorial_SS22 {
     function HowToAnimate(): ƒS.SceneReturn;

@@ -1,5 +1,5 @@
 namespace Tutorial_SS22 {
-  export async function EndingTwo(): ƒS.SceneReturn {
+  export async function BadEnding(): ƒS.SceneReturn {
     console.log("BAD ENDING");
 
     let text = {

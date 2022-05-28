@@ -1,12 +1,11 @@
 namespace Tutorial_SS22 {
   export import ƒ = FudgeCore;
   export import ƒS = FudgeStory;
-
   console.log("Tutorial SS22 starting");
 
 
-  // **** DEFINITIONEN ****
-  // define transitions
+  // **** TRANSITIONS ****
+  // transitions is declared here as well as initialized
   export let transitions = {
     puzzle: {
       duration: 1,
@@ -15,6 +14,8 @@ namespace Tutorial_SS22 {
     }
   };
 
+  // **** SOUND ****
+  // sound is declared here as well as initialized
   export let sound = {
     // themes
     nightclub: "/Tutorial_SS22/Audio/Nightclub.ogg"
@@ -23,20 +24,21 @@ namespace Tutorial_SS22 {
     // click: "Pfad"
   };
 
+  // **** LOCATIONS ****
   export let locations = {
-    nightpark: {
-      name: "Nightpark",
-      // background: "/Tutorial_SS22/Images/Backgrounds/starry.gif"
+    bedroomAtNight: {
+      name: "Bedroom in night mode",
       background: "/Tutorial_SS22/Images/Backgrounds/Bedroom_Night.png"
     }
-    // starry: {
-    //   name: "Starry",
-    //   background: "Pfad"
-    // }
   };
 
+  // **** CHARACTERS ****
+  // characters is declared here as well as initialized
   export let characters = {
     narrator: {
+      name: ""
+    },
+    protagonist: {
       name: ""
     },
     aisaka: {
@@ -59,52 +61,48 @@ namespace Tutorial_SS22 {
     }
   };
 
-  // items wird hier deklariert und initialisiert
+  // **** ITEMS ****
+  // items is declared here as well as initialized
   export let items = {
-    BlobRED: {
+    blobRED: {
       name: "Blob Red",
       description: "A reddish something",
       image: "/Tutorial_SS22/Images/Items/blobRED.png",
       static: true
     },
-    BlobBU: {
+    blobBU: {
       name: "Blob Blue",
       description: "A blueish something",
       image: "Images/Items/blobBU.png"
     },
-    BlobDKBU: {
+    blobDKBU: {
       name: "Blob DK Blue",
       description: "A dark blueish something",
       image: "Images/Items/blobDKBU.png"
     },
-    BlobGN: {
+    blobGN: {
       name: "Blob Green",
       description: "A greenish something",
       image: "Images/Items/blobGN.png"
     },
-    BlobPK: {
+    blobPK: {
       name: "Blob Pink",
       description: "A pinkish something",
       image: "Images/Items/blobPK.png"
     },
-    BlobYL: {
+    blobYL: {
       name: "Blob Yellow",
       description: "A yellowish something",
       image: "Images/Items/blobYL.png"
     },
-    BlobOG: {
+    blobOG: {
       name: "Blob Orange",
       description: "An orangeish something",
-      image: "Images/Items/blobOG.png"
-    },
-    Stick: {
-      name: "Stick",
-      description: "Just a stick",
       image: "Images/Items/blobOG.png"
     }
   };
 
-  // **** DATEN DIE GESPEICHERT WERDEN SOLLEN ****
+  // **** DATA THAT WILL BE SAVED (GAME PROGRESS) ****
   export let dataForSave = {
     nameProtagonist: "",
     score: {
@@ -112,7 +110,8 @@ namespace Tutorial_SS22 {
       scoreTwo: 0,
       scoreThree: 0
     },
-    pickedAnimationScene: false
+    pickedAnimationScene: false,
+    pickedInventoryScene: false
   };
 
 
@@ -124,12 +123,20 @@ namespace Tutorial_SS22 {
 
 
   // **** ANIMATIONEN ****
-
-  export function leftToRight(): ƒS.AnimationDefinition {
+  export function ghostAnimation(): ƒS.AnimationDefinition {
     return {
       start: { translation: ƒS.positionPercent(70, 100), color: ƒS.Color.CSS("lightblue", 1) },
       end: { translation: ƒS.positionPercent(80, 100), color: ƒS.Color.CSS("lightblue", 0) },
       duration: 3,
+      playmode: ƒS.ANIMATION_PLAYMODE.PLAYONCE
+    };
+  }
+
+  export function leftToRight(): ƒS.AnimationDefinition {
+    return {
+      start: { translation: ƒS.positionPercent(70, 100) },
+      end: { translation: ƒS.positionPercent(80, 100) },
+      duration: 2,
       playmode: ƒS.ANIMATION_PLAYMODE.PLAYONCE
     };
   }
@@ -145,7 +152,6 @@ namespace Tutorial_SS22 {
 
 
   // **** MENÜ ****
-
   // Buttons
   let inGameMenuButtons = {
     save: "Save",
@@ -178,8 +184,7 @@ namespace Tutorial_SS22 {
     }
   }
 
-
-  // Shortcuts für's Menü
+  // Menu shortcuts
   document.addEventListener("keydown", hndKeyPress);
   async function hndKeyPress(_event: KeyboardEvent): Promise<void> {
     switch (_event.code) {
@@ -203,7 +208,7 @@ namespace Tutorial_SS22 {
           menuIsOpen = true;
         }
         break;
-      // Shortcut Inventar
+      // Inventory shortcuts
       case ƒ.KEYBOARD_CODE.I:
         console.log("open inventory");
         await ƒS.Inventory.open();
@@ -218,47 +223,24 @@ namespace Tutorial_SS22 {
 
 
   window.addEventListener("load", start);
-  // **** SZENENHIERARCHIE ****
   function start(_event: Event): void {
     gameMenu = ƒS.Menu.create(inGameMenuButtons, buttonFunctionalities, "gameMenuCSSclass");
     buttonFunctionalities("Close");
+    // **** SCENE HIERARCHY ****
     let scenes: ƒS.Scenes = [
-      // { scene: HowToText, name: "Text Scene" },
+      { scene: HowToText, name: "Text Scene" },
       { scene: HowToMakeChoices, name: "Choices" },
-      
-      { id: "Animation Scene", scene: HowToAnimate, name: "Animations", next: "EndingOne" },
-      { id: "Inventory Scene", scene: HowToMakeAnInventory, name: "Inventory", next: "EndingTwo" },
 
-      { id: "EndingOne", scene: EndingOne, name: "GoodEnding", next: "GameOver"},
-      { id: "EndingTwo", scene: EndingTwo, name: "BadEnding", next: "GameOver"},
+      // The id field of "next" must be filled with the id of the next wished scene to play
+      { id: "Animation Scene", scene: HowToAnimate, name: "Animations", next: "Good Ending" },
+      { id: "Inventory Scene", scene: HowToMakeAnInventory, name: "Inventory", next: "Bad Ending" },
 
+      // Branching paths
+      { id: "Good Ending", scene: GoodEnding, name: "This is a good ending", next: "Empty Scene" },
+      { id: "Bad Ending", scene: BadEnding, name: "This is a bad ending", next: "Empty Scene" },
 
-      { id: "GameOver", scene: GameOver, name: "ENDE", next: ""}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      // { scene: MessengerMeeting, name: "Messenger Collab" },
-
-      // // GreenPath
-      // { scene: ElucidationGreenPath, name: "Green Messenger", next: "GreenOne" },
-      // { id: "GreenOne", scene: GreenOne, name: "Green Path goes on", next: "" },
-
-      // // BlackPath
-      // { scene: ElucidationBlackPath, name: "Black Messenger", next: "BlackOne" },
-      // { id: "BlackOne", scene: BlackOne, name: "Black path goes on", next: "" }
+      // Empty ending scene to stop the program
+      { id: "Empty Scene", scene: Empty, name: "END" }
 
     ];
 

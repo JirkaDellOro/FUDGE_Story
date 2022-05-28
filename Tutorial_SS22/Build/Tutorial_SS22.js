@@ -4,8 +4,8 @@ var Tutorial_SS22;
     Tutorial_SS22.ƒ = FudgeCore;
     Tutorial_SS22.ƒS = FudgeStory;
     console.log("Tutorial SS22 starting");
-    // **** DEFINITIONEN ****
-    // define transitions
+    // **** TRANSITIONS ****
+    // transitions is declared here as well as initialized
     Tutorial_SS22.transitions = {
         puzzle: {
             duration: 1,
@@ -13,25 +13,28 @@ var Tutorial_SS22;
             edge: 1
         }
     };
+    // **** SOUND ****
+    // sound is declared here as well as initialized
     Tutorial_SS22.sound = {
         // themes
         nightclub: "/Tutorial_SS22/Audio/Nightclub.ogg"
         // SFX
         // click: "Pfad"
     };
+    // **** LOCATIONS ****
     Tutorial_SS22.locations = {
-        nightpark: {
-            name: "Nightpark",
-            // background: "/Tutorial_SS22/Images/Backgrounds/starry.gif"
+        bedroomAtNight: {
+            name: "Bedroom in night mode",
             background: "/Tutorial_SS22/Images/Backgrounds/Bedroom_Night.png"
         }
-        // starry: {
-        //   name: "Starry",
-        //   background: "Pfad"
-        // }
     };
+    // **** CHARACTERS ****
+    // characters is declared here as well as initialized
     Tutorial_SS22.characters = {
         narrator: {
+            name: ""
+        },
+        protagonist: {
             name: ""
         },
         aisaka: {
@@ -53,51 +56,47 @@ var Tutorial_SS22;
             }
         }
     };
-    // items wird hier deklariert und initialisiert
+    // **** ITEMS ****
+    // items is declared here as well as initialized
     Tutorial_SS22.items = {
-        BlobRED: {
+        blobRED: {
             name: "Blob Red",
             description: "A reddish something",
             image: "/Tutorial_SS22/Images/Items/blobRED.png",
             static: true
         },
-        BlobBU: {
+        blobBU: {
             name: "Blob Blue",
             description: "A blueish something",
             image: "Images/Items/blobBU.png"
         },
-        BlobDKBU: {
+        blobDKBU: {
             name: "Blob DK Blue",
             description: "A dark blueish something",
             image: "Images/Items/blobDKBU.png"
         },
-        BlobGN: {
+        blobGN: {
             name: "Blob Green",
             description: "A greenish something",
             image: "Images/Items/blobGN.png"
         },
-        BlobPK: {
+        blobPK: {
             name: "Blob Pink",
             description: "A pinkish something",
             image: "Images/Items/blobPK.png"
         },
-        BlobYL: {
+        blobYL: {
             name: "Blob Yellow",
             description: "A yellowish something",
             image: "Images/Items/blobYL.png"
         },
-        BlobOG: {
+        blobOG: {
             name: "Blob Orange",
             description: "An orangeish something",
             image: "Images/Items/blobOG.png"
-        },
-        Stick: {
-            name: "Stick",
-            description: "Just a stick",
-            image: "Images/Items/blobOG.png"
         }
     };
-    // **** DATEN DIE GESPEICHERT WERDEN SOLLEN ****
+    // **** DATA THAT WILL BE SAVED (GAME PROGRESS) ****
     Tutorial_SS22.dataForSave = {
         nameProtagonist: "",
         score: {
@@ -105,7 +104,8 @@ var Tutorial_SS22;
             scoreTwo: 0,
             scoreThree: 0
         },
-        pickedAnimationScene: false
+        pickedAnimationScene: false,
+        pickedInventoryScene: false
     };
     // **** CREDITS ****
     function showCredits() {
@@ -114,11 +114,20 @@ var Tutorial_SS22;
     }
     Tutorial_SS22.showCredits = showCredits;
     // **** ANIMATIONEN ****
-    function leftToRight() {
+    function ghostAnimation() {
         return {
             start: { translation: Tutorial_SS22.ƒS.positionPercent(70, 100), color: Tutorial_SS22.ƒS.Color.CSS("lightblue", 1) },
             end: { translation: Tutorial_SS22.ƒS.positionPercent(80, 100), color: Tutorial_SS22.ƒS.Color.CSS("lightblue", 0) },
             duration: 3,
+            playmode: Tutorial_SS22.ƒS.ANIMATION_PLAYMODE.PLAYONCE
+        };
+    }
+    Tutorial_SS22.ghostAnimation = ghostAnimation;
+    function leftToRight() {
+        return {
+            start: { translation: Tutorial_SS22.ƒS.positionPercent(70, 100) },
+            end: { translation: Tutorial_SS22.ƒS.positionPercent(80, 100) },
+            duration: 2,
             playmode: Tutorial_SS22.ƒS.ANIMATION_PLAYMODE.PLAYONCE
         };
     }
@@ -159,7 +168,7 @@ var Tutorial_SS22;
                 showCredits();
         }
     }
-    // Shortcuts für's Menü
+    // Menu shortcuts
     document.addEventListener("keydown", hndKeyPress);
     async function hndKeyPress(_event) {
         switch (_event.code) {
@@ -183,7 +192,7 @@ var Tutorial_SS22;
                     menuIsOpen = true;
                 }
                 break;
-            // Shortcut Inventar
+            // Inventory shortcuts
             case Tutorial_SS22.ƒ.KEYBOARD_CODE.I:
                 console.log("open inventory");
                 await Tutorial_SS22.ƒS.Inventory.open();
@@ -196,25 +205,21 @@ var Tutorial_SS22;
         }
     }
     window.addEventListener("load", start);
-    // **** SZENENHIERARCHIE ****
     function start(_event) {
         gameMenu = Tutorial_SS22.ƒS.Menu.create(inGameMenuButtons, buttonFunctionalities, "gameMenuCSSclass");
         buttonFunctionalities("Close");
+        // **** SCENE HIERARCHY ****
         let scenes = [
-            // { scene: HowToText, name: "Text Scene" },
+            { scene: Tutorial_SS22.HowToText, name: "Text Scene" },
             { scene: Tutorial_SS22.HowToMakeChoices, name: "Choices" },
-            { id: "Animation Scene", scene: Tutorial_SS22.HowToAnimate, name: "Animations", next: "EndingOne" },
-            { id: "Inventory Scene", scene: Tutorial_SS22.HowToMakeAnInventory, name: "Inventory", next: "EndingTwo" },
-            { id: "EndingOne", scene: Tutorial_SS22.EndingOne, name: "GoodEnding", next: "GameOver" },
-            { id: "EndingTwo", scene: Tutorial_SS22.EndingTwo, name: "BadEnding", next: "GameOver" },
-            { id: "GameOver", scene: Tutorial_SS22.GameOver, name: "ENDE", next: "" }
-            // { scene: MessengerMeeting, name: "Messenger Collab" },
-            // // GreenPath
-            // { scene: ElucidationGreenPath, name: "Green Messenger", next: "GreenOne" },
-            // { id: "GreenOne", scene: GreenOne, name: "Green Path goes on", next: "" },
-            // // BlackPath
-            // { scene: ElucidationBlackPath, name: "Black Messenger", next: "BlackOne" },
-            // { id: "BlackOne", scene: BlackOne, name: "Black path goes on", next: "" }
+            // The id field of "next" must be filled with the id of the next wished scene to play
+            { id: "Animation Scene", scene: Tutorial_SS22.HowToAnimate, name: "Animations", next: "Good Ending" },
+            { id: "Inventory Scene", scene: Tutorial_SS22.HowToMakeAnInventory, name: "Inventory", next: "Bad Ending" },
+            // Branching paths
+            { id: "Good Ending", scene: Tutorial_SS22.GoodEnding, name: "This is a good ending", next: "Empty Scene" },
+            { id: "Bad Ending", scene: Tutorial_SS22.BadEnding, name: "This is a bad ending", next: "Empty Scene" },
+            // Empty ending scene to stop the program
+            { id: "Empty Scene", scene: Tutorial_SS22.Empty, name: "END" }
         ];
         // start the sequence
         Tutorial_SS22.ƒS.Progress.go(scenes);
@@ -238,21 +243,7 @@ var Tutorial_SS22;
 })(Tutorial_SS22 || (Tutorial_SS22 = {}));
 var Tutorial_SS22;
 (function (Tutorial_SS22) {
-    async function EndingOne() {
-        console.log("GOOD ENDING");
-        let text = {
-            Aisaka: {
-                T0000: "GUTES ENDING"
-            }
-        };
-        await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, text.Aisaka.T0000);
-        return "GameOver";
-    }
-    Tutorial_SS22.EndingOne = EndingOne;
-})(Tutorial_SS22 || (Tutorial_SS22 = {}));
-var Tutorial_SS22;
-(function (Tutorial_SS22) {
-    async function EndingTwo() {
+    async function BadEnding() {
         console.log("BAD ENDING");
         let text = {
             Aisaka: {
@@ -261,14 +252,29 @@ var Tutorial_SS22;
         };
         await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, text.Aisaka.T0000);
     }
-    Tutorial_SS22.EndingTwo = EndingTwo;
+    Tutorial_SS22.BadEnding = BadEnding;
 })(Tutorial_SS22 || (Tutorial_SS22 = {}));
 var Tutorial_SS22;
 (function (Tutorial_SS22) {
-    async function GameOver() {
-        console.log("GAME OVER");
+    async function Empty() {
+        console.log("THE VISUAL NOVEL ENDS HERE");
     }
-    Tutorial_SS22.GameOver = GameOver;
+    Tutorial_SS22.Empty = Empty;
+})(Tutorial_SS22 || (Tutorial_SS22 = {}));
+var Tutorial_SS22;
+(function (Tutorial_SS22) {
+    async function GoodEnding() {
+        console.log("GOOD ENDING");
+        let text = {
+            Aisaka: {
+                T0000: "GUTES ENDE"
+            }
+        };
+        await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, text.Aisaka.T0000);
+        // Since you defined a next-scene in the scene hierarchy a return will not be needed
+        // return "GameOver";
+    }
+    Tutorial_SS22.GoodEnding = GoodEnding;
 })(Tutorial_SS22 || (Tutorial_SS22 = {}));
 var Tutorial_SS22;
 (function (Tutorial_SS22) {
@@ -286,20 +292,20 @@ var Tutorial_SS22;
             }
         };
         // dataForSave.pickedAnimationScene = true;
-        // Jeglicher Textinhalt des Narrators wird wiedergegeben
+        // Any text content within the above Narrator-key will be played one after another (as it should be) by this code
         for (let narratorText of Object.values(text.Narrator)) {
             await Tutorial_SS22.ƒS.Speech.tell(text.Aisaka, narratorText);
         }
         Tutorial_SS22.ƒS.Speech.hide();
-        await Tutorial_SS22.ƒS.Location.show(Tutorial_SS22.locations.nightpark);
+        await Tutorial_SS22.ƒS.Location.show(Tutorial_SS22.locations.bedroomAtNight);
         await Tutorial_SS22.ƒS.update(Tutorial_SS22.transitions.puzzle.duration, Tutorial_SS22.transitions.puzzle.alpha, Tutorial_SS22.transitions.puzzle.edge);
-        await Tutorial_SS22.ƒS.Character.show(Tutorial_SS22.characters.aisaka, Tutorial_SS22.characters.aisaka.pose.happy, Tutorial_SS22.ƒS.positions.bottomcenter);
-        Tutorial_SS22.ƒS.update();
-        await Tutorial_SS22.ƒS.Character.animate(Tutorial_SS22.characters.aisaka, Tutorial_SS22.characters.aisaka.pose.happy, Tutorial_SS22.leftToRight());
+        // await ƒS.Character.show(characters.aisaka, characters.aisaka.pose.happy, ƒS.positions.bottomcenter);
+        // ƒS.update();
+        await Tutorial_SS22.ƒS.Character.animate(Tutorial_SS22.characters.aisaka, Tutorial_SS22.characters.aisaka.pose.happy, Tutorial_SS22.ghostAnimation());
         await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, text.Aisaka.T0000);
         await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, text.Aisaka.T0001);
         await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, "Mich wirst du niemals finden!");
-        return Tutorial_SS22.EndingOne();
+        // return "Good Ending";
     }
     Tutorial_SS22.HowToAnimate = HowToAnimate;
 })(Tutorial_SS22 || (Tutorial_SS22 = {}));
@@ -311,29 +317,33 @@ var Tutorial_SS22;
             Aisaka: {
                 T0000: "Hallo nochmal",
                 T0001: "Hast du dein Inventar gesehen?!"
+            },
+            Protagonist: {
+                T0000: "Ich heiße "
             }
         };
         Tutorial_SS22.ƒS.Speech.hide();
-        await Tutorial_SS22.ƒS.Location.show(Tutorial_SS22.locations.nightpark);
+        await Tutorial_SS22.ƒS.Location.show(Tutorial_SS22.locations.bedroomAtNight);
         await Tutorial_SS22.ƒS.update(Tutorial_SS22.transitions.puzzle.duration, Tutorial_SS22.transitions.puzzle.alpha, Tutorial_SS22.transitions.puzzle.edge);
-        await Tutorial_SS22.ƒS.Character.show(Tutorial_SS22.characters.aisaka, Tutorial_SS22.characters.aisaka.pose.happy, Tutorial_SS22.ƒS.positions.bottomcenter);
-        await Tutorial_SS22.ƒS.update();
-        Tutorial_SS22.ƒS.Inventory.add(Tutorial_SS22.items.BlobBU);
-        Tutorial_SS22.ƒS.Inventory.add(Tutorial_SS22.items.BlobBU);
-        Tutorial_SS22.ƒS.Inventory.add(Tutorial_SS22.items.BlobRED);
-        Tutorial_SS22.ƒS.Inventory.add(Tutorial_SS22.items.BlobGN);
-        Tutorial_SS22.ƒS.Inventory.add(Tutorial_SS22.items.BlobGN);
-        Tutorial_SS22.ƒS.Inventory.add(Tutorial_SS22.items.BlobGN);
-        Tutorial_SS22.ƒS.Inventory.add(Tutorial_SS22.items.BlobGN);
+        // await ƒS.Character.show(characters.aisaka, characters.aisaka.pose.happy, ƒS.positions.bottomcenter);
+        // await ƒS.update();
+        Tutorial_SS22.ƒS.Inventory.add(Tutorial_SS22.items.blobBU);
+        Tutorial_SS22.ƒS.Inventory.add(Tutorial_SS22.items.blobBU);
+        Tutorial_SS22.ƒS.Inventory.add(Tutorial_SS22.items.blobRED);
+        Tutorial_SS22.ƒS.Inventory.add(Tutorial_SS22.items.blobGN);
+        Tutorial_SS22.ƒS.Inventory.add(Tutorial_SS22.items.blobGN);
+        Tutorial_SS22.ƒS.Inventory.add(Tutorial_SS22.items.blobGN);
+        Tutorial_SS22.ƒS.Inventory.add(Tutorial_SS22.items.blobGN);
         // ƒS.Inventory.add(items.BlobDKBU);
         // ƒS.Inventory.add(items.BlobDKBU);
         // ƒS.Inventory.add(items.BlobDKBU);
+        // Generate 20 items of BlobDKBU; Generate a big amount of items at once instead of spamming the Inventory.add-method
         for (let i = 0; i < 20; i++) {
-            Tutorial_SS22.ƒS.Inventory.add(Tutorial_SS22.items.BlobDKBU);
+            Tutorial_SS22.ƒS.Inventory.add(Tutorial_SS22.items.blobDKBU);
         }
-        // ƒS.Inventory.add(items.Stick);
         await Tutorial_SS22.ƒS.Inventory.open();
-        await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, " ");
+        Tutorial_SS22.ƒS.update();
+        await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.protagonist, text.Protagonist.T0000, false);
         // Name field - Player can type his name in here
         Tutorial_SS22.dataForSave.nameProtagonist = await Tutorial_SS22.ƒS.Speech.getInput();
         console.log(Tutorial_SS22.dataForSave.nameProtagonist);
@@ -357,7 +367,7 @@ var Tutorial_SS22;
         };
         // ƒS.Sound.fade(sound.nightclub, 1, 2, true);
         Tutorial_SS22.ƒS.Speech.hide();
-        await Tutorial_SS22.ƒS.Location.show(Tutorial_SS22.locations.nightpark);
+        await Tutorial_SS22.ƒS.Location.show(Tutorial_SS22.locations.bedroomAtNight);
         await Tutorial_SS22.ƒS.update(Tutorial_SS22.transitions.puzzle.duration, Tutorial_SS22.transitions.puzzle.alpha, Tutorial_SS22.transitions.puzzle.edge);
         // await ƒS.Character.show(characters.aisaka, characters.aisaka.pose.happy, ƒS.positions.bottomcenter);
         await Tutorial_SS22.ƒS.Character.show(Tutorial_SS22.characters.aisaka, Tutorial_SS22.characters.aisaka.pose.happy, Tutorial_SS22.ƒS.positionPercent(70, 100));
@@ -397,7 +407,7 @@ var Tutorial_SS22;
         await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, text.Aisaka.T0001);
         if (Tutorial_SS22.dataForSave.score.scoreOne === 50) {
             let secondDialogueElementAnswers = {
-                iSayOk: "Ich habe über 50 Punkte.",
+                iSayOk: "Du hast 50 Punkte bei deiner letzten Auswahl gesammelt.",
                 iSayYes: "...deshalb siehst du diese Auswahlmöglichkeit",
                 iSayNo: "Spektakulär!"
             };
@@ -429,6 +439,7 @@ var Tutorial_SS22;
 (function (Tutorial_SS22) {
     async function HowToText() {
         console.log("Let's text!");
+        // This text was moved to a separate dialogue file in the folder "Definitions"
         // let text = {
         //   Aisaka: {
         //     T0000: "Sei gegrüßt, Erdling.",
@@ -436,13 +447,13 @@ var Tutorial_SS22;
         //   }
         // };
         Tutorial_SS22.ƒS.Speech.hide();
-        await Tutorial_SS22.ƒS.Location.show(Tutorial_SS22.locations.nightpark);
+        await Tutorial_SS22.ƒS.Location.show(Tutorial_SS22.locations.bedroomAtNight);
         await Tutorial_SS22.ƒS.update(Tutorial_SS22.transitions.puzzle.duration, Tutorial_SS22.transitions.puzzle.alpha, Tutorial_SS22.transitions.puzzle.edge);
         await Tutorial_SS22.ƒS.Character.show(Tutorial_SS22.characters.aisaka, Tutorial_SS22.characters.aisaka.pose.happy, Tutorial_SS22.ƒS.positionPercent(70, 100));
         Tutorial_SS22.ƒS.update();
         await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, Tutorial_SS22.textAusgelagert.Aisaka.T0000);
         await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, Tutorial_SS22.textAusgelagert.Aisaka.T0001);
-        await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, "Dieser Text wird als direkter String in der tell-Methode ausgegeben.");
+        await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, "...und <strong>dieser</strong> Text wird als direkter String in der tell-Methode ausgegeben.");
         await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, "Hierfür wird lediglich nach Angabe des Charakters, bei dem dieser Text erscheinen soll, der Text in Anführungsstrichen dahinter geschrieben.");
     }
     Tutorial_SS22.HowToText = HowToText;
