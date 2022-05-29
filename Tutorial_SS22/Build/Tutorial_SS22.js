@@ -9,7 +9,7 @@ var Tutorial_SS22;
     Tutorial_SS22.transitions = {
         puzzle: {
             duration: 1,
-            alpha: "/Tutorial_SS22/FreeTransitions/jigsaw_06.jpg",
+            alpha: "FreeTransitions/jigsaw_06.jpg",
             edge: 1
         }
     };
@@ -17,7 +17,7 @@ var Tutorial_SS22;
     // sound is declared here as well as initialized
     Tutorial_SS22.sound = {
         // themes
-        nightclub: "/Tutorial_SS22/Audio/Nightclub.ogg"
+        nightclub: "Audio/Nightclub.ogg"
         // SFX
         // click: "Pfad"
     };
@@ -41,8 +41,8 @@ var Tutorial_SS22;
             name: "Aisaka",
             origin: Tutorial_SS22.ƒS.ORIGIN.BOTTOMCENTER,
             pose: {
-                angry: "/Tutorial_SS22/Images/Characters/aisaka_angry.png",
-                happy: "/Tutorial_SS22/Images/Characters/aisaka_happy.png",
+                angry: "Images/Characters/aisaka_angry.png",
+                happy: "Images/Characters/aisaka_happy.png",
                 upset: ""
             }
         },
@@ -51,8 +51,8 @@ var Tutorial_SS22;
             origin: Tutorial_SS22.ƒS.ORIGIN.BOTTOMCENTER,
             pose: {
                 angry: "",
-                happy: "/Tutorial_SS22/Images/Characters/kohana_happy.png",
-                upset: "/Tutorial_SS22/Images/Characters/kohana_upset.png"
+                happy: "Images/Characters/kohana_happy.png",
+                upset: "Images/Characters/kohana_upset.png"
             }
         }
     };
@@ -62,7 +62,7 @@ var Tutorial_SS22;
         blobRED: {
             name: "Blob Red",
             description: "A reddish something",
-            image: "/Tutorial_SS22/Images/Items/blobRED.png",
+            image: "Images/Items/blobRED.png",
             static: true
         },
         blobBU: {

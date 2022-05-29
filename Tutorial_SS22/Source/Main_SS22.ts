@@ -9,7 +9,7 @@ namespace Tutorial_SS22 {
   export let transitions = {
     puzzle: {
       duration: 1,
-      alpha: "/Tutorial_SS22/FreeTransitions/jigsaw_06.jpg",
+      alpha: "FreeTransitions/jigsaw_06.jpg",
       edge: 1
     }
   };
@@ -18,7 +18,7 @@ namespace Tutorial_SS22 {
   // sound is declared here as well as initialized
   export let sound = {
     // themes
-    nightclub: "/Tutorial_SS22/Audio/Nightclub.ogg"
+    nightclub: "Audio/Nightclub.ogg"
 
     // SFX
     // click: "Pfad"
@@ -45,8 +45,8 @@ namespace Tutorial_SS22 {
       name: "Aisaka",
       origin: ƒS.ORIGIN.BOTTOMCENTER,
       pose: {
-        angry: "/Tutorial_SS22/Images/Characters/aisaka_angry.png",
-        happy: "/Tutorial_SS22/Images/Characters/aisaka_happy.png",
+        angry: "Images/Characters/aisaka_angry.png",
+        happy: "Images/Characters/aisaka_happy.png",
         upset: ""
       }
     },
@@ -55,8 +55,8 @@ namespace Tutorial_SS22 {
       origin: ƒS.ORIGIN.BOTTOMCENTER,
       pose: {
         angry: "",
-        happy: "/Tutorial_SS22/Images/Characters/kohana_happy.png",
-        upset: "/Tutorial_SS22/Images/Characters/kohana_upset.png"
+        happy: "Images/Characters/kohana_happy.png",
+        upset: "Images/Characters/kohana_upset.png"
       }
     }
   };
@@ -67,7 +67,7 @@ namespace Tutorial_SS22 {
     blobRED: {
       name: "Blob Red",
       description: "A reddish something",
-      image: "/Tutorial_SS22/Images/Items/blobRED.png",
+      image: "Images/Items/blobRED.png",
       static: true
     },
     blobBU: {
