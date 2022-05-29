@@ -25,7 +25,7 @@ var Tutorial_SS22;
     Tutorial_SS22.locations = {
         bedroomAtNight: {
             name: "Bedroom in night mode",
-            background: "/Tutorial_SS22/Images/Backgrounds/Bedroom_Night.png"
+            background: "Tutorial_SS22/Images/Backgrounds/Bedroom_Night.png"
         }
     };
     // **** CHARACTERS ****

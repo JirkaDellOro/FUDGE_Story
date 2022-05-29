@@ -28,7 +28,7 @@ namespace Tutorial_SS22 {
   export let locations = {
     bedroomAtNight: {
       name: "Bedroom in night mode",
-      background: "/Tutorial_SS22/Images/Backgrounds/Bedroom_Night.png"
+      background: "Tutorial_SS22/Images/Backgrounds/Bedroom_Night.png"
     }
   };
 
