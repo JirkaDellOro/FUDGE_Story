@@ -21,7 +21,6 @@
       </p>
     </dialog>
     <canvas></canvas>
-
     <speech>
       <name>
         <!-- The name of the character speaking -->
@@ -30,21 +29,25 @@
         <!-- The text the character says -->
       </content>
     </speech>
-
     <dialog type="text">
       The content of a page of text for reading
     </dialog>
     <dialog type="inventory">
       <button type="button">close</button>
       <ul>
-        <!-- <li>Fishy fish</li>
+        <!-- <li>a description could be written in here</li>
         <li>b</li>
         <li>c</li>
         <li>d</li>
         <li>e</li> -->
       </ul>
     </dialog>
-
+    <!-- Aisaka Meter Bar -->
+    <div type="interface">
+      <input name="scoreForAisaka" type="text" disabled>
+      <!-- für value der Skala; Füllung -->
+      <meter id="aisakaMeter" name="aisakaScore" min="0" max="100" disabled></meter>
+    </div>
   </scene>
 </body>
 

@@ -38,8 +38,8 @@ namespace Tutorial_SS22 {
     switch (firstDialogueElement) {
       case firstDialogueElementAnswers.iSayOk:
         // continue path here
-        dataForSave.score.scoreOne += 50;
-        console.log(dataForSave.score.scoreOne);
+        dataForSave.score.aisakaScore += 50;
+        console.log(dataForSave.score.aisakaScore);
         await ƒS.Speech.tell(characters.aisaka, "Okay");
         ƒS.Speech.clear();
         break;
@@ -59,7 +59,7 @@ namespace Tutorial_SS22 {
     await ƒS.Speech.tell(characters.aisaka, text.Aisaka.T0001);
 
 
-    if (dataForSave.score.scoreOne === 50) {
+    if (dataForSave.score.aisakaScore === 50) {
       let secondDialogueElementAnswers = {
         iSayOk: "Du hast 50 Punkte bei deiner letzten Auswahl gesammelt.",
         iSayYes: "...deshalb siehst du diese Auswahlmöglichkeit",
@@ -71,8 +71,8 @@ namespace Tutorial_SS22 {
       switch (secondDialogueElement) {
         case secondDialogueElementAnswers.iSayOk:
           // continue path here
-          dataForSave.score.scoreOne += 50;
-          console.log(dataForSave.score.scoreOne);
+          dataForSave.score.aisakaScore += 50;
+          console.log(dataForSave.score.aisakaScore);
           await ƒS.Speech.tell(characters.aisaka, "Okay, cool.");
           ƒS.Speech.clear();
           break;

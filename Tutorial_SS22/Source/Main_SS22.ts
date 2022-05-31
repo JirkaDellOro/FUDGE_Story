@@ -29,6 +29,14 @@ namespace Tutorial_SS22 {
     bedroomAtNight: {
       name: "Bedroom in night mode",
       background: "Images/Backgrounds/Bedroom_Night.png"
+    },
+    bathroom: {
+      name: "Bathroom",
+      background: "Images/Backgrounds/Bathroom.png"
+    },
+    bathroomFoggy: {
+      name: "Bathroom foggy",
+      background: "Images/Backgrounds/Bathroom_Foggy.png"
     }
   };
 
@@ -106,12 +114,14 @@ namespace Tutorial_SS22 {
   export let dataForSave = {
     nameProtagonist: "",
     score: {
-      scoreOne: 0,
-      scoreTwo: 0,
-      scoreThree: 0
+      aisakaScore: 0,
+      scoreForAisaka: "",
+      kohanaScore: 0,
+      randomPoints: 0
     },
     pickedAnimationScene: false,
-    pickedInventoryScene: false
+    pickedInventoryScene: false,
+    pickedMeterScene: false
   };
 
 
@@ -122,7 +132,7 @@ namespace Tutorial_SS22 {
   }
 
 
-  // **** ANIMATIONEN ****
+  // **** ANIMATIONS ****
   export function ghostAnimation(): ƒS.AnimationDefinition {
     return {
       start: { translation: ƒS.positionPercent(70, 100), color: ƒS.Color.CSS("lightblue", 1) },
@@ -228,8 +238,9 @@ namespace Tutorial_SS22 {
     buttonFunctionalities("Close");
     // **** SCENE HIERARCHY ****
     let scenes: ƒS.Scenes = [
-      { scene: HowToText, name: "Text Scene" },
-      { scene: HowToMakeChoices, name: "Choices" },
+      // { scene: HowToText, name: "Text Scene" },
+      // { scene: HowToMakeChoices, name: "Choices" },
+      { scene: HowToMakeAMeterBar, name: "Meter bar" },
 
       // The id field of "next" must be filled with the id of the next wished scene to play
       { id: "Animation Scene", scene: HowToAnimate, name: "Animations", next: "Good Ending" },

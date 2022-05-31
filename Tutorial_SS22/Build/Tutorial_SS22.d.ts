@@ -16,6 +16,14 @@ declare namespace Tutorial_SS22 {
             name: string;
             background: string;
         };
+        bathroom: {
+            name: string;
+            background: string;
+        };
+        bathroomFoggy: {
+            name: string;
+            background: string;
+        };
     };
     let characters: {
         narrator: {
@@ -84,12 +92,14 @@ declare namespace Tutorial_SS22 {
     let dataForSave: {
         nameProtagonist: string;
         score: {
-            scoreOne: number;
-            scoreTwo: number;
-            scoreThree: number;
+            aisakaScore: number;
+            scoreForAisaka: string;
+            kohanaScore: number;
+            randomPoints: number;
         };
         pickedAnimationScene: boolean;
         pickedInventoryScene: boolean;
+        pickedMeterScene: boolean;
     };
     function showCredits(): void;
     function ghostAnimation(): ƒS.AnimationDefinition;
@@ -119,6 +129,9 @@ declare namespace Tutorial_SS22 {
 }
 declare namespace Tutorial_SS22 {
     function HowToAnimate(): ƒS.SceneReturn;
+}
+declare namespace Tutorial_SS22 {
+    function HowToMakeAMeterBar(): ƒS.SceneReturn;
 }
 declare namespace Tutorial_SS22 {
     function HowToMakeAnInventory(): ƒS.SceneReturn;

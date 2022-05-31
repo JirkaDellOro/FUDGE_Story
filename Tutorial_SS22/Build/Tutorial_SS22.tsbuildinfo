@@ -8,6 +8,7 @@
       "../Source/Scenes/Empty.ts",
       "../Source/Scenes/GoodEnding.ts",
       "../Source/Scenes/HowToAnimate.ts",
+      "../Source/Scenes/HowToMakeAMeterBar.ts",
       "../Source/Scenes/HowToMakeAnInventory.ts",
       "../Source/Scenes/HowToMakeChoices.ts",
       "../Source/Scenes/HowToText.ts",
@@ -23,7 +24,7 @@
         },
         {
           "pos": 15,
-          "end": 21940,
+          "end": 24094,
           "kind": "text"
         }
       ],
@@ -51,7 +52,7 @@
       "sections": [
         {
           "pos": 0,
-          "end": 3219,
+          "end": 3581,
           "kind": "text"
         }
       ]
