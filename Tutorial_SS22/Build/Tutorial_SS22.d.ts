@@ -25,6 +25,12 @@ declare namespace Tutorial_SS22 {
             background: string;
         };
     };
+    let radio: {
+        myRadio: {
+            name: string;
+            path: string;
+        };
+    };
     let characters: {
         narrator: {
             name: string;
@@ -91,15 +97,13 @@ declare namespace Tutorial_SS22 {
     };
     let dataForSave: {
         nameProtagonist: string;
-        score: {
-            aisakaScore: number;
-            scoreForAisaka: string;
-            kohanaScore: number;
-            randomPoints: number;
-        };
+        aisakaScore: number;
+        scoreForAisaka: string;
+        randomPoints: number;
         pickedAnimationScene: boolean;
         pickedInventoryScene: boolean;
         pickedMeterScene: boolean;
+        pickedChoice: boolean;
     };
     function showCredits(): void;
     function ghostAnimation(): ƒS.AnimationDefinition;
@@ -138,6 +142,9 @@ declare namespace Tutorial_SS22 {
 }
 declare namespace Tutorial_SS22 {
     function HowToMakeChoices(): ƒS.SceneReturn;
+}
+declare namespace Tutorial_SS22 {
+    function HowToMakeChoices2(): ƒS.SceneReturn;
 }
 declare namespace Tutorial_SS22 {
     function HowToText(): ƒS.SceneReturn;

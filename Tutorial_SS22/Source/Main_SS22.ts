@@ -40,6 +40,13 @@ namespace Tutorial_SS22 {
     }
   };
 
+  export let radio = {
+    myRadio: {
+      name: "",
+      path: "Images/Backgrounds/.png"
+    }
+  };
+
   // **** CHARACTERS ****
   // characters is declared here as well as initialized
   export let characters = {
@@ -113,15 +120,14 @@ namespace Tutorial_SS22 {
   // **** DATA THAT WILL BE SAVED (GAME PROGRESS) ****
   export let dataForSave = {
     nameProtagonist: "",
-    score: {
-      aisakaScore: 0,
-      scoreForAisaka: "",
-      kohanaScore: 0,
-      randomPoints: 0
-    },
+    aisakaScore: 0,
+    scoreForAisaka: "",
+    randomPoints: 0,
     pickedAnimationScene: false,
     pickedInventoryScene: false,
-    pickedMeterScene: false
+    pickedMeterScene: false,
+    pickedChoice: false
+   
   };
 
 
@@ -240,7 +246,8 @@ namespace Tutorial_SS22 {
     let scenes: ƒS.Scenes = [
       // { scene: HowToText, name: "Text Scene" },
       // { scene: HowToMakeChoices, name: "Choices" },
-      { scene: HowToMakeAMeterBar, name: "Meter bar" },
+      { scene: HowToMakeChoices2, name: "Choices" },
+      // { scene: HowToMakeAMeterBar, name: "Meter bar" },
 
       // The id field of "next" must be filled with the id of the next wished scene to play
       { id: "Animation Scene", scene: HowToAnimate, name: "Animations", next: "Good Ending" },
@@ -255,11 +262,13 @@ namespace Tutorial_SS22 {
 
     ];
 
+    let uiElement: HTMLElement = document.querySelector("[type=interface]");
+    dataForSave = ƒS.Progress.setData(dataForSave, uiElement);
+  
+
     // start the sequence
     ƒS.Progress.go(scenes);
   }
 
-  let uiElement: HTMLElement = document.querySelector("[type=interface]");
-  dataForSave = ƒS.Progress.setData(dataForSave, uiElement);
 
 }

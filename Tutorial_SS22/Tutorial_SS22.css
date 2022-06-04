@@ -133,13 +133,14 @@ meter[id="aisakaMeter"]::-webkit-meter-optimum-value {
   /* background-color: #719fd1; */
 }
 
-input[name="scoreForAisaka"] {
-  background-color:rgb(155, 42, 95);
+input[id="scoreForAisaka"] {
   color: rgb(255, 248, 253);
+  background-color:rgb(155, 42, 95);
+  font-size: 11pt;
   position: absolute;
-  left: 0.75%;
+  left: 1.2%;
   bottom: 19.5%;
-  width: 5%;
+  width: 4%;
 }
 
 

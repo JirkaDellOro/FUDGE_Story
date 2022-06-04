@@ -36,6 +36,12 @@ var Tutorial_SS22;
             background: "Images/Backgrounds/Bathroom_Foggy.png"
         }
     };
+    Tutorial_SS22.radio = {
+        myRadio: {
+            name: "",
+            path: "Images/Backgrounds/.png"
+        }
+    };
     // **** CHARACTERS ****
     // characters is declared here as well as initialized
     Tutorial_SS22.characters = {
@@ -107,15 +113,13 @@ var Tutorial_SS22;
     // **** DATA THAT WILL BE SAVED (GAME PROGRESS) ****
     Tutorial_SS22.dataForSave = {
         nameProtagonist: "",
-        score: {
-            aisakaScore: 0,
-            scoreForAisaka: "",
-            kohanaScore: 0,
-            randomPoints: 0
-        },
+        aisakaScore: 0,
+        scoreForAisaka: "",
+        randomPoints: 0,
         pickedAnimationScene: false,
         pickedInventoryScene: false,
-        pickedMeterScene: false
+        pickedMeterScene: false,
+        pickedChoice: false
     };
     // **** CREDITS ****
     function showCredits() {
@@ -222,7 +226,8 @@ var Tutorial_SS22;
         let scenes = [
             // { scene: HowToText, name: "Text Scene" },
             // { scene: HowToMakeChoices, name: "Choices" },
-            { scene: Tutorial_SS22.HowToMakeAMeterBar, name: "Meter bar" },
+            { scene: Tutorial_SS22.HowToMakeChoices2, name: "Choices" },
+            // { scene: HowToMakeAMeterBar, name: "Meter bar" },
             // The id field of "next" must be filled with the id of the next wished scene to play
             { id: "Animation Scene", scene: Tutorial_SS22.HowToAnimate, name: "Animations", next: "Good Ending" },
             { id: "Inventory Scene", scene: Tutorial_SS22.HowToMakeAnInventory, name: "Inventory", next: "Bad Ending" },
@@ -232,11 +237,11 @@ var Tutorial_SS22;
             // Empty ending scene to stop the program
             { id: "Empty Scene", scene: Tutorial_SS22.Empty, name: "END" }
         ];
+        let uiElement = document.querySelector("[type=interface]");
+        Tutorial_SS22.dataForSave = Tutorial_SS22.ƒS.Progress.setData(Tutorial_SS22.dataForSave, uiElement);
         // start the sequence
         Tutorial_SS22.ƒS.Progress.go(scenes);
     }
-    let uiElement = document.querySelector("[type=interface]");
-    Tutorial_SS22.dataForSave = Tutorial_SS22.ƒS.Progress.setData(Tutorial_SS22.dataForSave, uiElement);
 })(Tutorial_SS22 || (Tutorial_SS22 = {}));
 var Tutorial_SS22;
 (function (Tutorial_SS22) {
@@ -316,7 +321,7 @@ var Tutorial_SS22;
         await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, text.Aisaka.T0000);
         await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, text.Aisaka.T0001);
         await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, "Mich wirst du niemals finden!");
-        // return "Good Ending";
+        // return "GoodEnding";
     }
     Tutorial_SS22.HowToAnimate = HowToAnimate;
 })(Tutorial_SS22 || (Tutorial_SS22 = {}));
@@ -326,25 +331,26 @@ var Tutorial_SS22;
         console.log("Let's make a meter bar!");
         let text = {
             Aisaka: {
-                T0000: "Wie du vielleicht bemerkt hast, gibt es in Visual Novels häufig eine Skala oder eine Meter bar.",
+                T0000: "Wie du vielleicht bemerkt hast, gibt es in Visual Novels häufig eine Skala oder eine Meterbar.",
                 T0001: "Damit visualisieren Autoren dem Spieler zum Beispiel die Empathie-Punkte bei der jeweiligen Figur.",
                 T0002: ""
             }
         };
         // dataForSave.pickedMeterScene = true;
         // document.getElementsByName("aisakaScore").forEach(meterStuff => meterStuff.hidden = true);
-        // document.getElementsByName("aisakaScoreBar").forEach(meterStuff => meterStuff.hidden = true);
+        // document.getElementById("scoreForAisaka").style.display = "none";
         Tutorial_SS22.ƒS.Speech.hide();
-        Tutorial_SS22.dataForSave.score.aisakaScore += 50;
-        console.log(Tutorial_SS22.dataForSave.score.aisakaScore);
+        Tutorial_SS22.dataForSave.aisakaScore += 50;
+        console.log(Tutorial_SS22.dataForSave.aisakaScore);
         await Tutorial_SS22.ƒS.Location.show(Tutorial_SS22.locations.bathroom);
         Tutorial_SS22.ƒS.update(Tutorial_SS22.transitions.puzzle.duration, Tutorial_SS22.transitions.puzzle.alpha, Tutorial_SS22.transitions.puzzle.edge);
         await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, text.Aisaka.T0000);
+        Tutorial_SS22.dataForSave.aisakaScore -= 40;
         await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, text.Aisaka.T0001);
         await Tutorial_SS22.ƒS.Location.show(Tutorial_SS22.locations.bathroomFoggy);
         await Tutorial_SS22.ƒS.update(3);
-        Tutorial_SS22.dataForSave.score.aisakaScore += 50;
-        console.log(Tutorial_SS22.dataForSave.score.aisakaScore);
+        Tutorial_SS22.dataForSave.aisakaScore += 50;
+        console.log(Tutorial_SS22.dataForSave.aisakaScore);
         // return "Good Ending";
     }
     Tutorial_SS22.HowToMakeAMeterBar = HowToMakeAMeterBar;
@@ -427,8 +433,8 @@ var Tutorial_SS22;
         switch (firstDialogueElement) {
             case firstDialogueElementAnswers.iSayOk:
                 // continue path here
-                Tutorial_SS22.dataForSave.score.aisakaScore += 50;
-                console.log(Tutorial_SS22.dataForSave.score.aisakaScore);
+                Tutorial_SS22.dataForSave.aisakaScore += 50;
+                console.log(Tutorial_SS22.dataForSave.aisakaScore);
                 await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, "Okay");
                 Tutorial_SS22.ƒS.Speech.clear();
                 break;
@@ -445,7 +451,7 @@ var Tutorial_SS22;
         }
         // You can continue your story right after the choice definitions
         await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, text.Aisaka.T0001);
-        if (Tutorial_SS22.dataForSave.score.aisakaScore === 50) {
+        if (Tutorial_SS22.dataForSave.aisakaScore === 50) {
             let secondDialogueElementAnswers = {
                 iSayOk: "Du hast 50 Punkte bei deiner letzten Auswahl gesammelt.",
                 iSayYes: "...deshalb siehst du diese Auswahlmöglichkeit",
@@ -455,8 +461,8 @@ var Tutorial_SS22;
             switch (secondDialogueElement) {
                 case secondDialogueElementAnswers.iSayOk:
                     // continue path here
-                    Tutorial_SS22.dataForSave.score.aisakaScore += 50;
-                    console.log(Tutorial_SS22.dataForSave.score.aisakaScore);
+                    Tutorial_SS22.dataForSave.aisakaScore += 50;
+                    console.log(Tutorial_SS22.dataForSave.aisakaScore);
                     await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, "Okay, cool.");
                     Tutorial_SS22.ƒS.Speech.clear();
                     break;
@@ -474,6 +480,68 @@ var Tutorial_SS22;
         }
     }
     Tutorial_SS22.HowToMakeChoices = HowToMakeChoices;
+})(Tutorial_SS22 || (Tutorial_SS22 = {}));
+var Tutorial_SS22;
+(function (Tutorial_SS22) {
+    async function HowToMakeChoices2() {
+        console.log("Let's make some choices!");
+        let text = {
+            Aisaka: {
+                T0000: "Heute wird sich alles um Auswahlmöglichkeiten drehen.",
+                T0001: "Schön, dass du dabei warst!"
+            }
+        };
+        // ƒS.Sound.fade(sound.nightclub, 1, 2, true);
+        Tutorial_SS22.ƒS.Speech.hide();
+        await Tutorial_SS22.ƒS.Location.show(Tutorial_SS22.locations.bedroomAtNight);
+        await Tutorial_SS22.ƒS.update(Tutorial_SS22.transitions.puzzle.duration, Tutorial_SS22.transitions.puzzle.alpha, Tutorial_SS22.transitions.puzzle.edge);
+        // await ƒS.Character.show(characters.aisaka, characters.aisaka.pose.happy, ƒS.positions.bottomcenter);
+        await Tutorial_SS22.ƒS.Character.show(Tutorial_SS22.characters.aisaka, Tutorial_SS22.characters.aisaka.pose.happy, Tutorial_SS22.ƒS.positionPercent(70, 100));
+        await Tutorial_SS22.ƒS.update();
+        // ƒS.Character.hide(characters.aisaka);
+        // ƒS.Character.hideAll();
+        await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, text.Aisaka.T0000);
+        Tutorial_SS22.ƒS.Speech.clear();
+        Tutorial_SS22.ƒS.Speech.hide();
+        await Tutorial_SS22.ƒS.update(1.5);
+        let firstDialogueElementAnswers = {
+            iSayOk: "Okay.",
+            iSayYes: "Ja.",
+            iSayNo: "Nein.",
+            iSayBla: "Bla"
+        };
+        do {
+            let firstDialogueElement = await Tutorial_SS22.ƒS.Menu.getInput(firstDialogueElementAnswers, "choicesCSSclass");
+            switch (firstDialogueElement) {
+                case firstDialogueElementAnswers.iSayOk:
+                    // continue path here
+                    console.log(Tutorial_SS22.dataForSave.aisakaScore);
+                    await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, "Okay");
+                    Tutorial_SS22.ƒS.Speech.clear();
+                    break;
+                case firstDialogueElementAnswers.iSayYes:
+                    // continue path here
+                    await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, "Ja");
+                    Tutorial_SS22.ƒS.Character.hide(Tutorial_SS22.characters.aisaka);
+                    break;
+                case firstDialogueElementAnswers.iSayNo:
+                    // continue path here
+                    await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, "Nein");
+                    Tutorial_SS22.ƒS.Speech.clear();
+                    break;
+                case firstDialogueElementAnswers.iSayBla:
+                    // continue path here
+                    Tutorial_SS22.dataForSave.pickedChoice = true;
+                    await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, "Bla");
+                    Tutorial_SS22.ƒS.Speech.clear();
+                    break;
+            }
+        } while (!Tutorial_SS22.dataForSave.pickedChoice);
+        if (Tutorial_SS22.dataForSave.pickedChoice) {
+            return "Good Ending";
+        }
+    }
+    Tutorial_SS22.HowToMakeChoices2 = HowToMakeChoices2;
 })(Tutorial_SS22 || (Tutorial_SS22 = {}));
 var Tutorial_SS22;
 (function (Tutorial_SS22) {
@@ -520,4 +588,8 @@ var Tutorial_SS22;
 // if (dataForSave.pickedAnimationScene) {
 //   return HowToText();
 // }
+// Meter stuff
+// document.getElementsByName("aisakaScore").forEach(meterStuff => meterStuff.hidden = true);
+// document.getElementsByName("scoreForAisaka").forEach(meterStuff => meterStuff.hidden = true);
+// document.getElementById("scoreForAisaka").style.display = "none";
 //# sourceMappingURL=Tutorial_SS22.js.map

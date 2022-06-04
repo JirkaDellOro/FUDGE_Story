@@ -33,7 +33,7 @@ namespace Tutorial_SS22 {
     await ƒS.Speech.tell(characters.aisaka, "Mich wirst du niemals finden!");
 
 
-    // return "Good Ending";
+    // return "GoodEnding";
 
 
   

@@ -11,6 +11,7 @@
       "../Source/Scenes/HowToMakeAMeterBar.ts",
       "../Source/Scenes/HowToMakeAnInventory.ts",
       "../Source/Scenes/HowToMakeChoices.ts",
+      "../Source/Scenes/HowToMakeChoices2.ts",
       "../Source/Scenes/HowToText.ts",
       "../Source/Scenes/Notes.ts"
     ],
@@ -24,7 +25,7 @@
         },
         {
           "pos": 15,
-          "end": 24094,
+          "end": 27779,
           "kind": "text"
         }
       ],
@@ -52,7 +53,7 @@
       "sections": [
         {
           "pos": 0,
-          "end": 3581,
+          "end": 3738,
           "kind": "text"
         }
       ]
