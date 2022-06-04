@@ -163,6 +163,8 @@ declare namespace FudgeCore {
         NODE_DESERIALIZED = "nodeDeserialized",
         /** dispatched to {@link GraphInstance} when it's content is set according to a serialization of a {@link Graph}  */
         GRAPH_INSTANTIATED = "graphInstantiated",
+        /** dispatched to a {@link Graph} when it's finished deserializing  */
+        GRAPH_DESERIALIZED = "graphDeserialized",
         /** dispatched to {@link Time} when it's scaling changed  */
         TIME_SCALED = "timeScaled",
         /** dispatched to {@link FileIoBrowserLocal} when a list of files has been loaded  */
@@ -171,10 +173,16 @@ declare namespace FudgeCore {
         FILE_SAVED = "fileSaved",
         /** dispatched to {@link Node} when recalculating transforms for render */
         RENDER_PREPARE = "renderPrepare",
+        /** dispatched to {@link Viewport} and {@link Node} when recalculation of the branch to render starts. */
         RENDER_PREPARE_START = "renderPrepareStart",
+        /** dispatched to {@link Viewport} and {@link Node} when recalculation of the branch to render ends. The branch dispatches before the lights are transmitted to the shaders  */
         RENDER_PREPARE_END = "renderPrepareEnd",
-        /** dispatched to Joint-Components in order to disconnect */
-        DISCONNECT_JOINT = "disconnectJoint"
+        /** dispatched to {@link Joint}-Components in order to disconnect */
+        DISCONNECT_JOINT = "disconnectJoint",
+        /** dispatched to {@link Node} when it gets attached to a viewport for rendering */
+        ATTACH_BRANCH = "attachBranch",
+        /** dispatched to {@link Project} when it's done loading resources from a url */
+        RESOURCES_LOADED = "resourcesLoaded"
     }
     type EventListenerƒ = ((_event: EventPointer) => void) | ((_event: EventDragDrop) => void) | ((_event: EventWheel) => void) | ((_event: EventKeyboard) => void) | ((_event: Eventƒ) => void) | ((_event: EventPhysics) => void) | ((_event: CustomEvent) => void) | EventListenerOrEventListenerObject;
     type Eventƒ = EventPointer | EventDragDrop | EventWheel | EventKeyboard | Event | EventPhysics | CustomEvent;
@@ -1918,11 +1926,11 @@ declare namespace FudgeCore {
          */
         projectCentral(_aspect?: number, _fieldOfView?: number, _direction?: FIELD_OF_VIEW, _near?: number, _far?: number): void;
         /**
-         * Set the camera to orthographic projection. The origin is in the top left corner of the canvas.
-         * @param _left The positionvalue of the projectionspace's left border. (Default = 0)
-         * @param _right The positionvalue of the projectionspace's right border. (Default = canvas.clientWidth)
-         * @param _bottom The positionvalue of the projectionspace's bottom border.(Default = canvas.clientHeight)
-         * @param _top The positionvalue of the projectionspace's top border.(Default = 0)
+         * Set the camera to orthographic projection. Default values are derived the canvas client dimensions
+         * @param _left The positionvalue of the projectionspace's left border.
+         * @param _right The positionvalue of the projectionspace's right border.
+         * @param _bottom The positionvalue of the projectionspace's bottom border.
+         * @param _top The positionvalue of the projectionspace's top border.
          */
         projectOrthographic(_left?: number, _right?: number, _bottom?: number, _top?: number): void;
         /**
@@ -3094,6 +3102,7 @@ declare namespace FudgeCore {
         /**
          * Computes and returns a matrix with the given translation, its z-axis pointing directly at the given target,
          * and a minimal angle between its y-axis and the given up-{@link Vector3}, respetively calculating yaw and pitch.
+         * The pitch may be restricted to the up-vector to only calculate yaw.
          */
         static LOOK_AT(_translation: Vector3, _target: Vector3, _up?: Vector3, _restrict?: boolean): Matrix4x4;
         /**
@@ -3204,16 +3213,11 @@ declare namespace FudgeCore {
         /**
          * Adjusts the rotation of this matrix to point the z-axis directly at the given target and tilts it to accord with the given up-{@link Vector3},
          * respectively calculating yaw and pitch. If no up-{@link Vector3} is given, the previous up-{@link Vector3} is used.
-         * When _preserveScaling is false, a rotated identity matrix is the result.
+         * The pitch may be restricted to the up-vector to only calculate yaw.
          */
         lookAt(_target: Vector3, _up?: Vector3, _restrict?: boolean): void;
         /**
          * Same as {@link Matrix4x4.lookAt}, but optimized and needs testing
-         */
-        /**
-         * Adjusts the rotation of this matrix to match its y-axis with the given up-{@link Vector3} and facing its z-axis toward the given target at minimal angle,
-         * respectively calculating yaw only. If no up-{@link Vector3} is given, the previous up-{@link Vector3} is used.
-         * When _preserveScaling is false, a rotated identity matrix is the result.
          */
         /**
          * Add a translation by the given {@link Vector3} to this matrix.
@@ -5134,6 +5138,7 @@ declare namespace FudgeCore {
          * render passes.
          */
         static prepare(_branch: Node, _options?: RenderPrepareOptions, _mtxWorld?: Matrix4x4, _shadersUsed?: (typeof Shader)[]): void;
+        static addLights(cmpLights: ComponentLight[]): void;
         /**
          * Used with a {@link Picker}-camera, this method renders one pixel with picking information
          * for each node in the line of sight and return that as an unsorted {@link Pick}-array
@@ -5436,7 +5441,7 @@ declare namespace FudgeCore {
      * Keeps a list of the resources and generates ids to retrieve them.
      * Resources are objects referenced multiple times but supposed to be stored only once
      */
-    export abstract class Project {
+    export abstract class Project extends EventTargetStatic {
         static resources: Resources;
         static serialization: SerializationOfResources;
         static scriptNamespaces: ScriptNamespaces;
@@ -5451,7 +5456,8 @@ declare namespace FudgeCore {
         static register(_resource: SerializableResource, _idResource?: string): void;
         static deregister(_resource: SerializableResource): void;
         static clear(): void;
-        static getResourcesOfType<T>(_type: new (_args: General) => T): Resources;
+        static getResourcesByType<T>(_type: new (_args: General) => T): SerializableResource[];
+        static getResourcesByName(_name: string): SerializableResource[];
         /**
          * Generate a user readable and unique id using the type of the resource, the date and random numbers
          * @param _resource
