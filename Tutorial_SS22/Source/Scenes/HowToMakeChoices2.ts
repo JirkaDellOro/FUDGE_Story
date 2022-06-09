@@ -25,8 +25,6 @@ namespace Tutorial_SS22 {
     await ƒS.update(1.5);
 
 
-
-
     let firstDialogueElementAnswers = {
       iSayOk: "Okay.",
       iSayYes: "Ja.",
@@ -34,29 +32,56 @@ namespace Tutorial_SS22 {
       iSayBla: "Bla"
     };
 
-
+    let pickedOk: boolean;
+    let pickedYes: boolean;
+    let pickedNo: boolean;
+    let pickedBla: boolean;
+    
     do {
+
+      // if (pickedYes || pickedBla || pickedNo || pickedOk || pickedYes) {
+      //   delete firstDialogueElementAnswers.iSayYes;
+      // }
+      // Achtung falls hier Punkte vergeben werden o. ä. - da delete das Ganze so erscheinen lässt, als ob die Auswahl hier nie existiert hätte!
+      if (pickedYes) {
+        delete firstDialogueElementAnswers.iSayYes;
+      }
+      else if (pickedNo) {
+        delete firstDialogueElementAnswers.iSayNo;
+      }
+      else if (pickedOk) {
+        delete firstDialogueElementAnswers.iSayOk;
+      }
+      else if (pickedBla) {
+        delete firstDialogueElementAnswers.iSayBla;
+      }
+
       let firstDialogueElement = await ƒS.Menu.getInput(firstDialogueElementAnswers, "choicesCSSclass");
 
       switch (firstDialogueElement) {
         case firstDialogueElementAnswers.iSayOk:
           // continue path here
+          pickedOk = true;
           console.log(dataForSave.aisakaScore);
           await ƒS.Speech.tell(characters.aisaka, "Okay");
           ƒS.Speech.clear();
           break;
         case firstDialogueElementAnswers.iSayYes:
           // continue path here
+          pickedYes = true;
           await ƒS.Speech.tell(characters.aisaka, "Ja");
           ƒS.Character.hide(characters.aisaka);
+          delete firstDialogueElementAnswers.iSayYes;
           break;
         case firstDialogueElementAnswers.iSayNo:
           // continue path here
+          pickedNo = true;
           await ƒS.Speech.tell(characters.aisaka, "Nein");
           ƒS.Speech.clear();
           break;
         case firstDialogueElementAnswers.iSayBla:
           // continue path here
+          pickedBla = true;
           dataForSave.pickedChoice = true;
           await ƒS.Speech.tell(characters.aisaka, "Bla");
           ƒS.Speech.clear();
@@ -64,9 +89,12 @@ namespace Tutorial_SS22 {
       }
     } while (!dataForSave.pickedChoice);
 
-    if (dataForSave.pickedChoice) {
-      return "Good Ending";
-    }
+    // function allChoicesTrue(): string {
+    //   if (pickedYes && pickedBla && pickedNo && pickedOk && pickedYes) {
+    //     return "Good Ending";
+    //   }
+    // }
+
   }
 
 }

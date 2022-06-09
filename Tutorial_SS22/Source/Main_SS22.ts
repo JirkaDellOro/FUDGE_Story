@@ -37,13 +37,11 @@ namespace Tutorial_SS22 {
     bathroomFoggy: {
       name: "Bathroom foggy",
       background: "Images/Backgrounds/Bathroom_Foggy.png"
-    }
-  };
-
-  export let radio = {
-    myRadio: {
-      name: "",
-      path: "Images/Backgrounds/.png"
+    },
+    radio: {
+      name: "Radio",
+      background: "Images/Backgrounds/radio.png"
+      // foreground: "Images/Backgrounds/radio.png"
     }
   };
 
@@ -75,6 +73,8 @@ namespace Tutorial_SS22 {
       }
     }
   };
+
+
 
   // **** ITEMS ****
   // items is declared here as well as initialized
@@ -127,7 +127,6 @@ namespace Tutorial_SS22 {
     pickedInventoryScene: false,
     pickedMeterScene: false,
     pickedChoice: false
-   
   };
 
 
@@ -247,6 +246,7 @@ namespace Tutorial_SS22 {
       // { scene: HowToText, name: "Text Scene" },
       // { scene: HowToMakeChoices, name: "Choices" },
       { scene: HowToMakeChoices2, name: "Choices" },
+      // { scene: HowToMakeARadio, name: "Radio" },
       // { scene: HowToMakeAMeterBar, name: "Meter bar" },
 
       // The id field of "next" must be filled with the id of the next wished scene to play
@@ -264,7 +264,7 @@ namespace Tutorial_SS22 {
 
     let uiElement: HTMLElement = document.querySelector("[type=interface]");
     dataForSave = ƒS.Progress.setData(dataForSave, uiElement);
-  
+
 
     // start the sequence
     ƒS.Progress.go(scenes);

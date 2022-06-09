@@ -24,11 +24,9 @@ declare namespace Tutorial_SS22 {
             name: string;
             background: string;
         };
-    };
-    let radio: {
-        myRadio: {
+        radio: {
             name: string;
-            path: string;
+            background: string;
         };
     };
     let characters: {
@@ -136,6 +134,9 @@ declare namespace Tutorial_SS22 {
 }
 declare namespace Tutorial_SS22 {
     function HowToMakeAMeterBar(): ƒS.SceneReturn;
+}
+declare namespace Tutorial_SS22 {
+    function HowToMakeARadio(): ƒS.SceneReturn;
 }
 declare namespace Tutorial_SS22 {
     function HowToMakeAnInventory(): ƒS.SceneReturn;

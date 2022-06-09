@@ -34,12 +34,11 @@ var Tutorial_SS22;
         bathroomFoggy: {
             name: "Bathroom foggy",
             background: "Images/Backgrounds/Bathroom_Foggy.png"
-        }
-    };
-    Tutorial_SS22.radio = {
-        myRadio: {
-            name: "",
-            path: "Images/Backgrounds/.png"
+        },
+        radio: {
+            name: "Radio",
+            background: "Images/Backgrounds/radio.png"
+            // foreground: "Images/Backgrounds/radio.png"
         }
     };
     // **** CHARACTERS ****
@@ -227,6 +226,7 @@ var Tutorial_SS22;
             // { scene: HowToText, name: "Text Scene" },
             // { scene: HowToMakeChoices, name: "Choices" },
             { scene: Tutorial_SS22.HowToMakeChoices2, name: "Choices" },
+            // { scene: HowToMakeARadio, name: "Radio" },
             // { scene: HowToMakeAMeterBar, name: "Meter bar" },
             // The id field of "next" must be filled with the id of the next wished scene to play
             { id: "Animation Scene", scene: Tutorial_SS22.HowToAnimate, name: "Animations", next: "Good Ending" },
@@ -354,6 +354,19 @@ var Tutorial_SS22;
         // return "Good Ending";
     }
     Tutorial_SS22.HowToMakeAMeterBar = HowToMakeAMeterBar;
+})(Tutorial_SS22 || (Tutorial_SS22 = {}));
+var Tutorial_SS22;
+(function (Tutorial_SS22) {
+    async function HowToMakeARadio() {
+        console.log("Let's make a radio!");
+        Tutorial_SS22.ƒS.Speech.hide();
+        await Tutorial_SS22.ƒS.Location.show(Tutorial_SS22.locations.radio);
+        await Tutorial_SS22.ƒS.update(2);
+        // await ƒS.Character.show(characters.aisaka, characters.aisaka.pose.happy, ƒS.positions.bottomcenter);
+        // await ƒS.update();
+        await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, "Cool");
+    }
+    Tutorial_SS22.HowToMakeARadio = HowToMakeARadio;
 })(Tutorial_SS22 || (Tutorial_SS22 = {}));
 var Tutorial_SS22;
 (function (Tutorial_SS22) {
@@ -510,36 +523,63 @@ var Tutorial_SS22;
             iSayNo: "Nein.",
             iSayBla: "Bla"
         };
+        let pickedOk;
+        let pickedYes;
+        let pickedNo;
+        let pickedBla;
         do {
+            // if (pickedYes || pickedBla || pickedNo || pickedOk || pickedYes) {
+            //   delete firstDialogueElementAnswers.iSayYes;
+            // }
+            // Achtung falls hier Punkte vergeben werden o. ä. - da delete das Ganze so erscheinen lässt, als ob die Auswahl hier nie existiert hätte!
+            if (pickedYes) {
+                delete firstDialogueElementAnswers.iSayYes;
+            }
+            else if (pickedNo) {
+                delete firstDialogueElementAnswers.iSayNo;
+            }
+            else if (pickedOk) {
+                delete firstDialogueElementAnswers.iSayOk;
+            }
+            else if (pickedBla) {
+                delete firstDialogueElementAnswers.iSayBla;
+            }
             let firstDialogueElement = await Tutorial_SS22.ƒS.Menu.getInput(firstDialogueElementAnswers, "choicesCSSclass");
             switch (firstDialogueElement) {
                 case firstDialogueElementAnswers.iSayOk:
                     // continue path here
+                    pickedOk = true;
                     console.log(Tutorial_SS22.dataForSave.aisakaScore);
                     await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, "Okay");
                     Tutorial_SS22.ƒS.Speech.clear();
                     break;
                 case firstDialogueElementAnswers.iSayYes:
                     // continue path here
+                    pickedYes = true;
                     await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, "Ja");
                     Tutorial_SS22.ƒS.Character.hide(Tutorial_SS22.characters.aisaka);
+                    delete firstDialogueElementAnswers.iSayYes;
                     break;
                 case firstDialogueElementAnswers.iSayNo:
                     // continue path here
+                    pickedNo = true;
                     await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, "Nein");
                     Tutorial_SS22.ƒS.Speech.clear();
                     break;
                 case firstDialogueElementAnswers.iSayBla:
                     // continue path here
+                    pickedBla = true;
                     Tutorial_SS22.dataForSave.pickedChoice = true;
                     await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, "Bla");
                     Tutorial_SS22.ƒS.Speech.clear();
                     break;
             }
         } while (!Tutorial_SS22.dataForSave.pickedChoice);
-        if (Tutorial_SS22.dataForSave.pickedChoice) {
-            return "Good Ending";
-        }
+        // function allChoicesTrue(): string {
+        //   if (pickedYes && pickedBla && pickedNo && pickedOk && pickedYes) {
+        //     return "Good Ending";
+        //   }
+        // }
     }
     Tutorial_SS22.HowToMakeChoices2 = HowToMakeChoices2;
 })(Tutorial_SS22 || (Tutorial_SS22 = {}));
