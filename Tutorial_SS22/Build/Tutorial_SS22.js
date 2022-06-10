@@ -531,7 +531,6 @@ var Tutorial_SS22;
             // if (pickedYes || pickedBla || pickedNo || pickedOk || pickedYes) {
             //   delete firstDialogueElementAnswers.iSayYes;
             // }
-            // Achtung falls hier Punkte vergeben werden o. ä. - da delete das Ganze so erscheinen lässt, als ob die Auswahl hier nie existiert hätte!
             if (pickedYes) {
                 delete firstDialogueElementAnswers.iSayYes;
             }
@@ -632,4 +631,6 @@ var Tutorial_SS22;
 // document.getElementsByName("aisakaScore").forEach(meterStuff => meterStuff.hidden = true);
 // document.getElementsByName("scoreForAisaka").forEach(meterStuff => meterStuff.hidden = true);
 // document.getElementById("scoreForAisaka").style.display = "none";
+// TS Lint
+// npm install -g tslint typescript
 //# sourceMappingURL=Tutorial_SS22.js.map

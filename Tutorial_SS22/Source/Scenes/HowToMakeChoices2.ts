@@ -42,7 +42,6 @@ namespace Tutorial_SS22 {
       // if (pickedYes || pickedBla || pickedNo || pickedOk || pickedYes) {
       //   delete firstDialogueElementAnswers.iSayYes;
       // }
-      // Achtung falls hier Punkte vergeben werden o. ä. - da delete das Ganze so erscheinen lässt, als ob die Auswahl hier nie existiert hätte!
       if (pickedYes) {
         delete firstDialogueElementAnswers.iSayYes;
       }
