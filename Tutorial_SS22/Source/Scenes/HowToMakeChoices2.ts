@@ -9,6 +9,9 @@ namespace Tutorial_SS22 {
       }
     };
 
+    ƒS.Speech.setTickerDelays(50, 2);
+    let signalDelay2: ƒS.Signal = ƒS.Progress.defineSignal([() => ƒS.Progress.delay(2)]);
+    // let signalDelay1: ƒS.Signal = ƒS.Progress.defineSignal([() => ƒS.Progress.delay(1)]);
 
     // ƒS.Sound.fade(sound.nightclub, 1, 2, true);
     ƒS.Speech.hide();
@@ -20,6 +23,9 @@ namespace Tutorial_SS22 {
     // ƒS.Character.hide(characters.aisaka);
     // ƒS.Character.hideAll();
     await ƒS.Speech.tell(characters.aisaka, text.Aisaka.T0000);
+    await signalDelay2();
+    await ƒS.Speech.tell(characters.aisaka, "test", false);
+
     ƒS.Speech.clear();
     ƒS.Speech.hide();
     await ƒS.update(1.5);
@@ -36,7 +42,7 @@ namespace Tutorial_SS22 {
     let pickedYes: boolean;
     let pickedNo: boolean;
     let pickedBla: boolean;
-    
+
     do {
 
       // if (pickedYes || pickedBla || pickedNo || pickedOk || pickedYes) {
@@ -70,7 +76,7 @@ namespace Tutorial_SS22 {
           pickedYes = true;
           await ƒS.Speech.tell(characters.aisaka, "Ja");
           ƒS.Character.hide(characters.aisaka);
-          delete firstDialogueElementAnswers.iSayYes;
+          // delete firstDialogueElementAnswers.iSayYes;
           break;
         case firstDialogueElementAnswers.iSayNo:
           // continue path here

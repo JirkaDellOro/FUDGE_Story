@@ -243,7 +243,7 @@ namespace Tutorial_SS22 {
     buttonFunctionalities("Close");
     // **** SCENE HIERARCHY ****
     let scenes: ƒS.Scenes = [
-      // { scene: HowToText, name: "Text Scene" },
+      { scene: HowToText, name: "Text Scene" },
       // { scene: HowToMakeChoices, name: "Choices" },
       { scene: HowToMakeChoices2, name: "Choices" },
       // { scene: HowToMakeARadio, name: "Radio" },

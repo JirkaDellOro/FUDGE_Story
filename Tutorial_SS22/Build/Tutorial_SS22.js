@@ -223,7 +223,7 @@ var Tutorial_SS22;
         buttonFunctionalities("Close");
         // **** SCENE HIERARCHY ****
         let scenes = [
-            // { scene: HowToText, name: "Text Scene" },
+            { scene: Tutorial_SS22.HowToText, name: "Text Scene" },
             // { scene: HowToMakeChoices, name: "Choices" },
             { scene: Tutorial_SS22.HowToMakeChoices2, name: "Choices" },
             // { scene: HowToMakeARadio, name: "Radio" },
@@ -504,6 +504,9 @@ var Tutorial_SS22;
                 T0001: "Schön, dass du dabei warst!"
             }
         };
+        Tutorial_SS22.ƒS.Speech.setTickerDelays(50, 2);
+        let signalDelay2 = Tutorial_SS22.ƒS.Progress.defineSignal([() => Tutorial_SS22.ƒS.Progress.delay(2)]);
+        // let signalDelay1: ƒS.Signal = ƒS.Progress.defineSignal([() => ƒS.Progress.delay(1)]);
         // ƒS.Sound.fade(sound.nightclub, 1, 2, true);
         Tutorial_SS22.ƒS.Speech.hide();
         await Tutorial_SS22.ƒS.Location.show(Tutorial_SS22.locations.bedroomAtNight);
@@ -514,6 +517,8 @@ var Tutorial_SS22;
         // ƒS.Character.hide(characters.aisaka);
         // ƒS.Character.hideAll();
         await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, text.Aisaka.T0000);
+        await signalDelay2();
+        await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, "test", false);
         Tutorial_SS22.ƒS.Speech.clear();
         Tutorial_SS22.ƒS.Speech.hide();
         await Tutorial_SS22.ƒS.update(1.5);
@@ -557,7 +562,7 @@ var Tutorial_SS22;
                     pickedYes = true;
                     await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, "Ja");
                     Tutorial_SS22.ƒS.Character.hide(Tutorial_SS22.characters.aisaka);
-                    delete firstDialogueElementAnswers.iSayYes;
+                    // delete firstDialogueElementAnswers.iSayYes;
                     break;
                 case firstDialogueElementAnswers.iSayNo:
                     // continue path here
@@ -593,6 +598,8 @@ var Tutorial_SS22;
         //     T0001: "Kleiner Scherz, willkommen zum Tutorial!"
         //   }
         // };
+        let signalDelay1 = Tutorial_SS22.ƒS.Progress.defineSignal([() => Tutorial_SS22.ƒS.Progress.delay(1)]);
+        // let signalDelay2: ƒS.Signal = ƒS.Progress.defineSignal([() => ƒS.Progress.delay(2)]);
         Tutorial_SS22.ƒS.Speech.hide();
         await Tutorial_SS22.ƒS.Location.show(Tutorial_SS22.locations.bedroomAtNight);
         await Tutorial_SS22.ƒS.update(Tutorial_SS22.transitions.puzzle.duration, Tutorial_SS22.transitions.puzzle.alpha, Tutorial_SS22.transitions.puzzle.edge);
@@ -602,6 +609,30 @@ var Tutorial_SS22;
         await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, Tutorial_SS22.textAusgelagert.Aisaka.T0001);
         await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, "...und <strong>dieser</strong> Text wird als direkter String in der tell-Methode ausgegeben.");
         await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, "Hierfür wird lediglich nach Angabe des Charakters, bei dem dieser Text erscheinen soll, der Text in Anführungsstrichen dahinter geschrieben.");
+        await signalDelay1();
+        Tutorial_SS22.ƒS.Speech.hide();
+        let pages = ["<strong>Ende-zu-Ende-Verschlüsselung:</strong><br\>Nur beide Kommunikationspartner nehmen das Ver- und Entschlüsseln der übertragenen Informationen direkt vor. \
+          Andere Stationen die an der Übertragung der Informationen beteiligt sind, können nicht darauf zugreifen.<br\><br\><br\><br\><br\><br\><br\>Seite 1", "Langzeitverschlüsselung,\
+          <br\>Verschlüsselte Nutzerprofile,<br\>Telefonbuch-Kontakte werden nicht auf die Betriebsserver geladen,<br\>Sicherung und Schutz persönlicher Informationen durch persönliche PIN,\
+          <br\>Gesprächsverschlüsselung,<br\>kein Tracking \
+          <br\><br\>Seite 2", "Seite 3", "Seite 4", "Seite 5", "Seite 6", "Seite 7", "Seite 8"];
+        let current = 0;
+        let flip = { back: "Back", next: "Next", done: "Close" };
+        let choice;
+        Tutorial_SS22.ƒS.Text.addClass("flip");
+        do {
+            Tutorial_SS22.ƒS.Text.print(pages[current]);
+            choice = await Tutorial_SS22.ƒS.Menu.getInput(flip, "flip");
+            switch (choice) {
+                case flip.back:
+                    current = Math.max(0, current - 1);
+                    break;
+                case flip.next:
+                    current = Math.min(2, current + 1);
+                    break;
+            }
+        } while (choice != flip.done);
+        Tutorial_SS22.ƒS.Text.close();
     }
     Tutorial_SS22.HowToText = HowToText;
 })(Tutorial_SS22 || (Tutorial_SS22 = {}));
