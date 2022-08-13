@@ -357,19 +357,6 @@ var Tutorial_SS22;
 })(Tutorial_SS22 || (Tutorial_SS22 = {}));
 var Tutorial_SS22;
 (function (Tutorial_SS22) {
-    async function HowToMakeARadio() {
-        console.log("Let's make a radio!");
-        Tutorial_SS22.ƒS.Speech.hide();
-        await Tutorial_SS22.ƒS.Location.show(Tutorial_SS22.locations.radio);
-        await Tutorial_SS22.ƒS.update(2);
-        // await ƒS.Character.show(characters.aisaka, characters.aisaka.pose.happy, ƒS.positions.bottomcenter);
-        // await ƒS.update();
-        await Tutorial_SS22.ƒS.Speech.tell(Tutorial_SS22.characters.aisaka, "Cool");
-    }
-    Tutorial_SS22.HowToMakeARadio = HowToMakeARadio;
-})(Tutorial_SS22 || (Tutorial_SS22 = {}));
-var Tutorial_SS22;
-(function (Tutorial_SS22) {
     async function HowToMakeAnInventory() {
         console.log("Let's make an inventory!");
         let text = {
@@ -636,32 +623,4 @@ var Tutorial_SS22;
     }
     Tutorial_SS22.HowToText = HowToText;
 })(Tutorial_SS22 || (Tutorial_SS22 = {}));
-// async function showAllText(path = text.aisaka): Promise<void> {
-//   for (let diaSequence of Object.values(path)) {
-//       await ƒS.Speech.tell(characters.aisaka, diaSequence);
-//   }
-// for (const t in text.Navigator) {
-//   await ƒS.Speech.tell(characters.aisaka, t);
-//   }
-// async function texto(): Promise<void> {
-//   await ƒS.Speech.tell(characters.aisaka, "bla1");
-//   await ƒS.Speech.tell(characters.aisaka, "bla2");
-// }
-// HashMap (Pause and Panda?) fast das gleiche wie n switch case
-// if (dataForSave.pickedThisScene) {
-//   return HowToMakeChoices();
-// }
-// else {
-//   return HowToAnimate();
-// }
-// Keine Veränderung/Umkehrung des Werts; nur ABFRAGE!!
-// if (dataForSave.pickedAnimationScene) {
-//   return HowToText();
-// }
-// Meter stuff
-// document.getElementsByName("aisakaScore").forEach(meterStuff => meterStuff.hidden = true);
-// document.getElementsByName("scoreForAisaka").forEach(meterStuff => meterStuff.hidden = true);
-// document.getElementById("scoreForAisaka").style.display = "none";
-// TS Lint
-// npm install -g tslint typescript
 //# sourceMappingURL=Tutorial_SS22.js.map

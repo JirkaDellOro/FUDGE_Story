@@ -392,6 +392,174 @@ declare namespace FudgeCore {
     }
 }
 declare namespace FudgeCore {
+    interface MapClassToComponents {
+        [className: string]: Component[];
+    }
+    /**
+     * Represents a node in the scenetree.
+     * @authors Jascha Karagöl, HFU, 2019 | Jirka Dell'Oro-Friedl, HFU, 2019
+     * @link https://github.com/JirkaDellOro/FUDGE/wiki/Graph
+     */
+    class Node extends EventTargetƒ implements Serializable {
+        #private;
+        name: string;
+        readonly mtxWorld: Matrix4x4;
+        timestampUpdate: number;
+        /** The number of nodes of the whole branch including this node and all successors */
+        nNodesInBranch: number;
+        /** The radius of the bounding sphere in world dimensions enclosing the geometry of this node and all successors in the branch */
+        radius: number;
+        private parent;
+        private children;
+        private components;
+        private listeners;
+        private captures;
+        private active;
+        /**
+         * Creates a new node with a name and initializes all attributes
+         */
+        constructor(_name: string);
+        get isActive(): boolean;
+        /**
+         * Shortcut to retrieve this nodes {@link ComponentTransform}
+         */
+        get cmpTransform(): ComponentTransform;
+        /**
+         * Shortcut to retrieve the local {@link Matrix4x4} attached to this nodes {@link ComponentTransform}
+         * Fails if no {@link ComponentTransform} is attached
+         */
+        get mtxLocal(): Matrix4x4;
+        get mtxWorldInverse(): Matrix4x4;
+        /**
+         * Returns the number of children attached to this
+         */
+        get nChildren(): number;
+        /**
+         * Generator yielding the node and all decendants in the graph below for iteration
+         * Inactive nodes and their descendants can be filtered
+         */
+        getIterator(_active?: boolean): IterableIterator<Node>;
+        [Symbol.iterator](): IterableIterator<Node>;
+        activate(_on: boolean): void;
+        /**
+         * Returns a reference to this nodes parent node
+         */
+        getParent(): Node | null;
+        /**
+         * Traces back the ancestors of this node and returns the first
+         */
+        getAncestor(): Node | null;
+        /**
+         * Traces the hierarchy upwards to the first ancestor and returns the path through the graph to this node
+         */
+        getPath(): Node[];
+        /**
+         * Returns child at the given index in the list of children
+         */
+        getChild(_index: number): Node;
+        /**
+         * Returns a clone of the list of children
+         */
+        getChildren(): Node[];
+        /**
+         * Returns an array of references to childnodes with the supplied name.
+         */
+        getChildrenByName(_name: string): Node[];
+        /**
+         * Simply calls {@link addChild}. This reference is here solely because appendChild is the equivalent method in DOM.
+         * See and preferably use {@link addChild}
+         */
+        readonly appendChild: (_child: Node) => void;
+        /**
+         * Adds the given reference to a node to the list of children, if not already in
+         * @throws Error when trying to add an ancestor of this
+         */
+        addChild(_child: Node): void;
+        /**
+         * Removes the reference to the give node from the list of children
+         */
+        removeChild(_child: Node): void;
+        /**
+         * Removes all references in the list of children
+         */
+        removeAllChildren(): void;
+        /**
+         * Returns the position of the node in the list of children or -1 if not found
+         */
+        findChild(_search: Node): number;
+        /**
+         * Replaces a child node with another, preserving the position in the list of children
+         */
+        replaceChild(_replace: Node, _with: Node): boolean;
+        isUpdated(_timestampUpdate: number): boolean;
+        isDescendantOf(_ancestor: Node): boolean;
+        /**
+         * Applies a Mutator from {@link Animation} to all its components and transfers it to its children.
+         */
+        applyAnimation(_mutator: Mutator): void;
+        /**
+         * Returns a list of all components attached to this node, independent of type.
+         */
+        getAllComponents(): Component[];
+        /**
+         * Returns a clone of the list of components of the given class attached to this node.
+         */
+        getComponents<T extends Component>(_class: new () => T): T[];
+        /**
+         * Returns the first compontent found of the given class attached this node or null, if list is empty or doesn't exist
+         */
+        getComponent<T extends Component>(_class: new () => T): T;
+        /**
+         * Attach the given component to this node. Identical to {@link addComponent}
+         */
+        attach(_component: Component): void;
+        /**
+         * Attach the given component to this node
+         */
+        addComponent(_component: Component): void;
+        /**
+         * Detach the given component from this node. Identical to {@link removeComponent}
+         */
+        detach(_component: Component): void;
+        /**
+         * Removes the given component from the node, if it was attached, and sets its parent to null.
+         */
+        removeComponent(_component: Component): void;
+        serialize(): Serialization;
+        deserialize(_serialization: Serialization): Promise<Serializable>;
+        /**
+         * Creates a string as representation of this node and its descendants
+         */
+        toHierarchyString(_node?: Node, _level?: number): string;
+        /**
+         * Adds an event listener to the node. The given handler will be called when a matching event is passed to the node.
+         * Deviating from the standard EventTarget, here the _handler must be a function and _capture is the only option.
+         */
+        addEventListener(_type: EVENT | string, _handler: EventListenerƒ, _capture?: boolean): void;
+        /**
+         * Removes an event listener from the node. The signature must match the one used with addEventListener
+         */
+        removeEventListener(_type: EVENT | string, _handler: EventListenerƒ, _capture?: boolean): void;
+        /**
+         * Dispatches a synthetic event to target. This implementation always returns true (standard: return true only if either event's cancelable attribute value is false or its preventDefault() method was not invoked)
+         * The event travels into the hierarchy to this node dispatching the event, invoking matching handlers of the nodes ancestors listening to the capture phase,
+         * than the matching handler of the target node in the target phase, and back out of the hierarchy in the bubbling phase, invoking appropriate handlers of the anvestors
+         */
+        dispatchEvent(_event: Event): boolean;
+        /**
+         * Dispatches a synthetic event to target without travelling through the graph hierarchy neither during capture nor bubbling phase
+         */
+        dispatchEventToTargetOnly(_event: Event): boolean;
+        /**
+         * Broadcasts a synthetic event to this node and from there to all nodes deeper in the hierarchy,
+         * invoking matching handlers of the nodes listening to the capture phase. Watch performance when there are many nodes involved
+         */
+        broadcastEvent(_event: Event): void;
+        private broadcastEventRecursive;
+        private callListeners;
+    }
+}
+declare namespace FudgeCore {
     /**
      * Superclass for all {@link Component}s that can be attached to {@link Node}s.
      * @authors Jirka Dell'Oro-Friedl, HFU, 2020 | Jascha Karagöl, HFU, 2019
@@ -871,174 +1039,6 @@ declare namespace FudgeCore {
     class RenderInjectorTexture extends RenderInjector {
         static decorate(_constructor: Function): void;
         protected static injectTexture(this: Texture): void;
-    }
-}
-declare namespace FudgeCore {
-    interface MapClassToComponents {
-        [className: string]: Component[];
-    }
-    /**
-     * Represents a node in the scenetree.
-     * @authors Jascha Karagöl, HFU, 2019 | Jirka Dell'Oro-Friedl, HFU, 2019
-     * @link https://github.com/JirkaDellOro/FUDGE/wiki/Graph
-     */
-    class Node extends EventTargetƒ implements Serializable {
-        #private;
-        name: string;
-        readonly mtxWorld: Matrix4x4;
-        timestampUpdate: number;
-        /** The number of nodes of the whole branch including this node and all successors */
-        nNodesInBranch: number;
-        /** The radius of the bounding sphere in world dimensions enclosing the geometry of this node and all successors in the branch */
-        radius: number;
-        private parent;
-        private children;
-        private components;
-        private listeners;
-        private captures;
-        private active;
-        /**
-         * Creates a new node with a name and initializes all attributes
-         */
-        constructor(_name: string);
-        get isActive(): boolean;
-        /**
-         * Shortcut to retrieve this nodes {@link ComponentTransform}
-         */
-        get cmpTransform(): ComponentTransform;
-        /**
-         * Shortcut to retrieve the local {@link Matrix4x4} attached to this nodes {@link ComponentTransform}
-         * Fails if no {@link ComponentTransform} is attached
-         */
-        get mtxLocal(): Matrix4x4;
-        get mtxWorldInverse(): Matrix4x4;
-        /**
-         * Returns the number of children attached to this
-         */
-        get nChildren(): number;
-        /**
-         * Generator yielding the node and all decendants in the graph below for iteration
-         * Inactive nodes and their descendants can be filtered
-         */
-        getIterator(_active?: boolean): IterableIterator<Node>;
-        [Symbol.iterator](): IterableIterator<Node>;
-        activate(_on: boolean): void;
-        /**
-         * Returns a reference to this nodes parent node
-         */
-        getParent(): Node | null;
-        /**
-         * Traces back the ancestors of this node and returns the first
-         */
-        getAncestor(): Node | null;
-        /**
-         * Traces the hierarchy upwards to the first ancestor and returns the path through the graph to this node
-         */
-        getPath(): Node[];
-        /**
-         * Returns child at the given index in the list of children
-         */
-        getChild(_index: number): Node;
-        /**
-         * Returns a clone of the list of children
-         */
-        getChildren(): Node[];
-        /**
-         * Returns an array of references to childnodes with the supplied name.
-         */
-        getChildrenByName(_name: string): Node[];
-        /**
-         * Simply calls {@link addChild}. This reference is here solely because appendChild is the equivalent method in DOM.
-         * See and preferably use {@link addChild}
-         */
-        readonly appendChild: (_child: Node) => void;
-        /**
-         * Adds the given reference to a node to the list of children, if not already in
-         * @throws Error when trying to add an ancestor of this
-         */
-        addChild(_child: Node): void;
-        /**
-         * Removes the reference to the give node from the list of children
-         */
-        removeChild(_child: Node): void;
-        /**
-         * Removes all references in the list of children
-         */
-        removeAllChildren(): void;
-        /**
-         * Returns the position of the node in the list of children or -1 if not found
-         */
-        findChild(_search: Node): number;
-        /**
-         * Replaces a child node with another, preserving the position in the list of children
-         */
-        replaceChild(_replace: Node, _with: Node): boolean;
-        isUpdated(_timestampUpdate: number): boolean;
-        isDescendantOf(_ancestor: Node): boolean;
-        /**
-         * Applies a Mutator from {@link Animation} to all its components and transfers it to its children.
-         */
-        applyAnimation(_mutator: Mutator): void;
-        /**
-         * Returns a list of all components attached to this node, independent of type.
-         */
-        getAllComponents(): Component[];
-        /**
-         * Returns a clone of the list of components of the given class attached to this node.
-         */
-        getComponents<T extends Component>(_class: new () => T): T[];
-        /**
-         * Returns the first compontent found of the given class attached this node or null, if list is empty or doesn't exist
-         */
-        getComponent<T extends Component>(_class: new () => T): T;
-        /**
-         * Attach the given component to this node. Identical to {@link addComponent}
-         */
-        attach(_component: Component): void;
-        /**
-         * Attach the given component to this node
-         */
-        addComponent(_component: Component): void;
-        /**
-         * Detach the given component from this node. Identical to {@link removeComponent}
-         */
-        detach(_component: Component): void;
-        /**
-         * Removes the given component from the node, if it was attached, and sets its parent to null.
-         */
-        removeComponent(_component: Component): void;
-        serialize(): Serialization;
-        deserialize(_serialization: Serialization): Promise<Serializable>;
-        /**
-         * Creates a string as representation of this node and its descendants
-         */
-        toHierarchyString(_node?: Node, _level?: number): string;
-        /**
-         * Adds an event listener to the node. The given handler will be called when a matching event is passed to the node.
-         * Deviating from the standard EventTarget, here the _handler must be a function and _capture is the only option.
-         */
-        addEventListener(_type: EVENT | string, _handler: EventListenerƒ, _capture?: boolean): void;
-        /**
-         * Removes an event listener from the node. The signature must match the one used with addEventListener
-         */
-        removeEventListener(_type: EVENT | string, _handler: EventListenerƒ, _capture?: boolean): void;
-        /**
-         * Dispatches a synthetic event to target. This implementation always returns true (standard: return true only if either event's cancelable attribute value is false or its preventDefault() method was not invoked)
-         * The event travels into the hierarchy to this node dispatching the event, invoking matching handlers of the nodes ancestors listening to the capture phase,
-         * than the matching handler of the target node in the target phase, and back out of the hierarchy in the bubbling phase, invoking appropriate handlers of the anvestors
-         */
-        dispatchEvent(_event: Event): boolean;
-        /**
-         * Dispatches a synthetic event to target without travelling through the graph hierarchy neither during capture nor bubbling phase
-         */
-        dispatchEventToTargetOnly(_event: Event): boolean;
-        /**
-         * Broadcasts a synthetic event to this node and from there to all nodes deeper in the hierarchy,
-         * invoking matching handlers of the nodes listening to the capture phase. Watch performance when there are many nodes involved
-         */
-        broadcastEvent(_event: Event): void;
-        private broadcastEventRecursive;
-        private callListeners;
     }
 }
 declare namespace FudgeCore {
@@ -1873,9 +1873,9 @@ declare namespace FudgeCore {
 }
 declare namespace FudgeCore {
     enum FIELD_OF_VIEW {
-        HORIZONTAL = 0,
-        VERTICAL = 1,
-        DIAGONAL = 2
+        HORIZONTAL = "horizontal",
+        VERTICAL = "vertical",
+        DIAGONAL = "diagonal"
     }
     /**
      * Defines identifiers for the various projections a camera can provide.
@@ -1910,6 +1910,7 @@ declare namespace FudgeCore {
          * yielding the worldspace to viewspace matrix
          */
         get mtxWorldToView(): Matrix4x4;
+        get mtxCameraInverse(): Matrix4x4;
         resetWorldToView(): void;
         getProjection(): PROJECTION;
         getBackgroundEnabled(): boolean;
@@ -2107,9 +2108,8 @@ declare namespace FudgeCore {
         PHYSICS = "physics"
     }
     /**
-     * Base class for scripts the user writes
+     * Attaches picking functionality to the node
      * @authors Jirka Dell'Oro-Friedl, HFU, 2022
-     * @link https://github.com/JirkaDellOro/FUDGE/wiki/Component
      */
     class ComponentPick extends Component {
         static readonly iSubclass: number;
@@ -2141,7 +2141,7 @@ declare namespace FudgeCore {
         NODE = 3
     }
     /**
-     * Attaches a transform-[[Matrix4x4} to the node, moving, scaling and rotating it in space relative to its parent.
+     * Attaches a transform-{@link Matrix4x4} to the node, moving, scaling and rotating it in space relative to its parent.
      * @authors Jirka Dell'Oro-Friedl, HFU, 2019
      */
     class ComponentTransform extends Component {
@@ -2623,7 +2623,7 @@ declare namespace FudgeCore {
         WHEEL = "\u0192wheel"
     }
     /**
-     * A supclass of WheelEvent. Events that occur due to the user moving a mouse wheel or similar input device.
+     * A subclass of WheelEvent. Events that occur due to the user moving a mouse wheel or similar input device.
      * */
     class EventWheel extends WheelEvent {
         constructor(type: string, _event: EventWheel);
@@ -2814,6 +2814,21 @@ declare namespace FudgeCore {
     }
 }
 declare namespace FudgeCore {
+    /**
+     * Abstract class supporting various arithmetical helper functions
+     */
+    abstract class Calc {
+        /** factor multiplied with angle in degrees yields the angle in radian */
+        static readonly deg2rad: number;
+        /** factor multiplied with angle in radian yields the angle in degrees */
+        static readonly rad2deg: number;
+        /**
+         * Returns one of the values passed in, either _value if within _min and _max or the boundary being exceeded by _value
+         */
+        static clamp<T>(_value: T, _min: T, _max: T, _isSmaller?: (_value1: T, _value2: T) => boolean): T;
+    }
+}
+declare namespace FudgeCore {
     interface Border {
         left: number;
         top: number;
@@ -2942,7 +2957,6 @@ declare namespace FudgeCore {
      * @authors Jascha Karagöl, HFU, 2019 | Jirka Dell'Oro-Friedl, HFU, 2020
      */
     class Matrix3x3 extends Mutable implements Serializable, Recycable {
-        private static deg2rad;
         private data;
         private mutator;
         private vectors;
@@ -3071,7 +3085,6 @@ declare namespace FudgeCore {
      */
     export class Matrix4x4 extends Mutable implements Serializable, Recycable {
         #private;
-        private static deg2rad;
         private data;
         private mutator;
         private vectors;
@@ -5242,17 +5255,17 @@ declare namespace FudgeCore {
          */
         get hasFocus(): boolean;
         /**
-         * Connects the viewport to the given canvas to render the given branch to using the given camera-component, and names the viewport as given.
-         */
-        initialize(_name: string, _branch: Node, _camera: ComponentCamera, _canvas: HTMLCanvasElement): void;
-        /**
          * Retrieve the destination canvas
          */
-        getCanvas(): HTMLCanvasElement;
+        get canvas(): HTMLCanvasElement;
         /**
          * Retrieve the 2D-context attached to the destination canvas
          */
-        getContext(): CanvasRenderingContext2D;
+        get context(): CanvasRenderingContext2D;
+        /**
+         * Connects the viewport to the given canvas to render the given branch to using the given camera-component, and names the viewport as given.
+         */
+        initialize(_name: string, _branch: Node, _camera: ComponentCamera, _canvas: HTMLCanvasElement): void;
         /**
          * Retrieve the size of the destination canvas as a rectangle, x and y are always 0
          */
@@ -5338,22 +5351,6 @@ declare namespace FudgeCore {
          * // TODO: examine, if this can be achieved by regular DOM-Focus and tabindex=0
          */
         setFocus(_on: boolean): void;
-        /**
-         * De- / Activates the given pointer event to be propagated into the viewport as FUDGE-Event
-         */
-        activatePointerEvent(_type: EVENT_POINTER, _on: boolean): void;
-        /**
-         * De- / Activates the given keyboard event to be propagated into the viewport as FUDGE-Event
-         */
-        activateKeyboardEvent(_type: EVENT_KEYBOARD, _on: boolean): void;
-        /**
-         * De- / Activates the given drag-drop event to be propagated into the viewport as FUDGE-Event
-         */
-        activateDragDropEvent(_type: EVENT_DRAGDROP, _on: boolean): void;
-        /**
-         * De- / Activates the wheel event to be propagated into the viewport as FUDGE-Event
-         */
-        activateWheelEvent(_type: EVENT_WHEEL, _on: boolean): void;
         /**
          * Handle drag-drop events and dispatch to viewport as FUDGE-Event
          */
@@ -5486,6 +5483,7 @@ declare namespace FudgeCore {
         static registerGraphInstanceForResync(_instance: GraphInstance): void;
         static resyncGraphInstances(_graph: Graph): Promise<void>;
         static registerScriptNamespace(_namespace: Object): void;
+        static clearScriptNamespaces(): void;
         static getComponentScripts(): ComponentScripts;
         static loadScript(_url: RequestInfo): Promise<void>;
         static loadResources(_url: RequestInfo): Promise<Resources>;
@@ -6223,6 +6221,11 @@ declare namespace FudgeCore {
     }
 }
 declare namespace FudgeCore {
+    let shaderSources: {
+        [source: string]: string;
+    };
+}
+declare namespace FudgeCore {
     /**
      * Static superclass for the representation of WebGl shaderprograms.
      * @authors Jascha Karagöl, HFU, 2019 | Jirka Dell'Oro-Friedl, HFU, 2019
@@ -6233,8 +6236,6 @@ declare namespace FudgeCore {
         /** list of all the subclasses derived from this class, if they registered properly*/
         static readonly subclasses: typeof Shader[];
         static define: string[];
-        static vertexShaderSource: string;
-        static fragmentShaderSource: string;
         static program: WebGLProgram;
         static attributes: {
             [name: string]: number;
@@ -6254,107 +6255,76 @@ declare namespace FudgeCore {
     }
 }
 declare namespace FudgeCore {
-    /** Code generated by CompileShaders.mjs using the information in CompileShaders.json */
     abstract class ShaderFlat extends Shader {
         static readonly iSubclass: number;
         static define: string[];
         static getCoat(): typeof Coat;
-        static getVertexShaderSource(): string;
-        static getFragmentShaderSource(): string;
     }
 }
 declare namespace FudgeCore {
-    /** Code generated by CompileShaders.mjs using the information in CompileShaders.json */
     abstract class ShaderFlatSkin extends Shader {
         static readonly iSubclass: number;
         static define: string[];
         static getCoat(): typeof Coat;
-        static getVertexShaderSource(): string;
-        static getFragmentShaderSource(): string;
     }
 }
 declare namespace FudgeCore {
-    /** Code generated by CompileShaders.mjs using the information in CompileShaders.json */
     abstract class ShaderFlatTextured extends Shader {
         static readonly iSubclass: number;
         static define: string[];
         static getCoat(): typeof Coat;
-        static getVertexShaderSource(): string;
-        static getFragmentShaderSource(): string;
     }
 }
 declare namespace FudgeCore {
-    /** Code generated by CompileShaders.mjs using the information in CompileShaders.json */
     abstract class ShaderGouraud extends Shader {
         static readonly iSubclass: number;
         static define: string[];
         static getCoat(): typeof Coat;
-        static getVertexShaderSource(): string;
-        static getFragmentShaderSource(): string;
     }
 }
 declare namespace FudgeCore {
-    /** Code generated by CompileShaders.mjs using the information in CompileShaders.json */
     abstract class ShaderGouraudSkin extends Shader {
         static readonly iSubclass: number;
         static define: string[];
         static getCoat(): typeof Coat;
-        static getVertexShaderSource(): string;
-        static getFragmentShaderSource(): string;
     }
 }
 declare namespace FudgeCore {
-    /** Code generated by CompileShaders.mjs using the information in CompileShaders.json */
     abstract class ShaderGouraudTextured extends Shader {
         static readonly iSubclass: number;
         static define: string[];
         static getCoat(): typeof Coat;
-        static getVertexShaderSource(): string;
-        static getFragmentShaderSource(): string;
     }
 }
 declare namespace FudgeCore {
-    /** Code generated by CompileShaders.mjs using the information in CompileShaders.json */
     abstract class ShaderLit extends Shader {
         static readonly iSubclass: number;
         static define: string[];
-        static getCoat(): typeof Coat;
-        static getVertexShaderSource(): string;
-        static getFragmentShaderSource(): string;
     }
 }
 declare namespace FudgeCore {
-    /** Code generated by CompileShaders.mjs using the information in CompileShaders.json */
     abstract class ShaderLitTextured extends Shader {
         static readonly iSubclass: number;
         static define: string[];
         static getCoat(): typeof Coat;
-        static getVertexShaderSource(): string;
-        static getFragmentShaderSource(): string;
     }
 }
 declare namespace FudgeCore {
-    /** Code generated by CompileShaders.mjs using the information in CompileShaders.json */
     abstract class ShaderMatCap extends Shader {
         static readonly iSubclass: number;
         static define: string[];
         static getCoat(): typeof Coat;
-        static getVertexShaderSource(): string;
-        static getFragmentShaderSource(): string;
     }
 }
 declare namespace FudgeCore {
-    /** Code generated by CompileShaders.mjs using the information in CompileShaders.json */
     abstract class ShaderPhong extends Shader {
         static readonly iSubclass: number;
         static define: string[];
         static getCoat(): typeof Coat;
-        static getVertexShaderSource(): string;
         static getFragmentShaderSource(): string;
     }
 }
 declare namespace FudgeCore {
-    /** Code generated by CompileShaders.mjs using the information in CompileShaders.json */
     abstract class ShaderPick extends Shader {
         static define: string[];
         static getVertexShaderSource(): string;
@@ -6362,17 +6332,11 @@ declare namespace FudgeCore {
     }
 }
 declare namespace FudgeCore {
-    /** Code generated by CompileShaders.mjs using the information in CompileShaders.json */
     abstract class ShaderPickTextured extends Shader {
         static define: string[];
         static getVertexShaderSource(): string;
         static getFragmentShaderSource(): string;
     }
-}
-declare namespace FudgeCore {
-    let shaderSources: {
-        [source: string]: string;
-    };
 }
 declare namespace FudgeCore {
     interface BoneList {

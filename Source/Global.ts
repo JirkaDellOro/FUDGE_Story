@@ -43,7 +43,7 @@ namespace FudgeStory {
       return;
     }
 
-    let crc2: CanvasRenderingContext2D = viewport.getContext();
+    let crc2: CanvasRenderingContext2D = viewport.context;
     let imgOld: ImageData = crc2.getImageData(0, 0, crc2.canvas.width, crc2.canvas.height);
     viewport.draw();
     let imgNew: ImageData = crc2.getImageData(0, 0, crc2.canvas.width, crc2.canvas.height);

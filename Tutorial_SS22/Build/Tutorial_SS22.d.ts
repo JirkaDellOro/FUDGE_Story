@@ -136,9 +136,6 @@ declare namespace Tutorial_SS22 {
     function HowToMakeAMeterBar(): ƒS.SceneReturn;
 }
 declare namespace Tutorial_SS22 {
-    function HowToMakeARadio(): ƒS.SceneReturn;
-}
-declare namespace Tutorial_SS22 {
     function HowToMakeAnInventory(): ƒS.SceneReturn;
 }
 declare namespace Tutorial_SS22 {

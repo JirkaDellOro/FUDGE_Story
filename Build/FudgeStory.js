@@ -358,7 +358,7 @@ var FudgeStory;
             viewport.draw();
             return;
         }
-        let crc2 = viewport.getContext();
+        let crc2 = viewport.context;
         let imgOld = crc2.getImageData(0, 0, crc2.canvas.width, crc2.canvas.height);
         viewport.draw();
         let imgNew = crc2.getImageData(0, 0, crc2.canvas.width, crc2.canvas.height);
@@ -1125,7 +1125,7 @@ var FudgeStory;
          * Called by {@link update} to blend from the old display of a scene to the new. Don't call directly.
          */
         static async blend(_imgOld, _imgNew, _duration = 1000, _transition, _factor = 0.5) {
-            let crc2 = FudgeStory.Base.viewport.getContext();
+            let crc2 = FudgeStory.Base.viewport.context;
             let bmpNew = await createImageBitmap(_imgNew);
             if (!_transition) {
                 function simpleFade(_progress) {
@@ -1161,8 +1161,8 @@ var FudgeStory;
             await txtTransition.load(_url);
             // TODO: move to get(...)
             let canvasTransition = document.createElement("canvas");
-            canvasTransition.width = FudgeStory.Base.viewport.getCanvas().width;
-            canvasTransition.height = FudgeStory.Base.viewport.getCanvas().height;
+            canvasTransition.width = FudgeStory.Base.viewport.canvas.width;
+            canvasTransition.height = FudgeStory.Base.viewport.canvas.height;
             let crcTransition = canvasTransition.getContext("2d");
             crcTransition.imageSmoothingEnabled = false;
             crcTransition.drawImage(txtTransition.image, 0, 0, txtTransition.image.width, txtTransition.image.height, 0, 0, canvasTransition.width, canvasTransition.height);

@@ -11,7 +11,7 @@ namespace FudgeStory {
      * Called by {@link update} to blend from the old display of a scene to the new. Don't call directly.
      */
     public static async blend(_imgOld: ImageData, _imgNew: ImageData, _duration: number = 1000, _transition: Uint8ClampedArray, _factor: number = 0.5): Promise<void> {
-      let crc2: CanvasRenderingContext2D = Base.viewport.getContext();
+      let crc2: CanvasRenderingContext2D = Base.viewport.context;
       let bmpNew: ImageBitmap = await createImageBitmap(_imgNew);
 
       if (!_transition) {
@@ -54,8 +54,8 @@ namespace FudgeStory {
 
       // TODO: move to get(...)
       let canvasTransition: HTMLCanvasElement = document.createElement("canvas");
-      canvasTransition.width = Base.viewport.getCanvas().width;
-      canvasTransition.height = Base.viewport.getCanvas().height;
+      canvasTransition.width = Base.viewport.canvas.width;
+      canvasTransition.height = Base.viewport.canvas.height;
       let crcTransition: CanvasRenderingContext2D = canvasTransition.getContext("2d");
       crcTransition.imageSmoothingEnabled = false;
       crcTransition.drawImage(txtTransition.image, 0, 0, txtTransition.image.width, txtTransition.image.height, 0, 0, canvasTransition.width, canvasTransition.height);
