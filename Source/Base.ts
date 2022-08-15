@@ -19,6 +19,9 @@ namespace FudgeStory {
     public static getGraph(): ƒ.Node {
       return Base.graph;
     }
+    public static getViewport(): ƒ.Viewport {
+      return Base.viewport;
+    }
 
     /**
      * Will be called once by {@link Progress} before anything else may happen.

@@ -13,6 +13,7 @@ declare namespace FudgeStory {
         private static graph;
         private static size;
         static getGraph(): ƒ.Node;
+        static getViewport(): ƒ.Viewport;
         /**
          * Will be called once by {@link Progress} before anything else may happen.
          */
@@ -263,6 +264,7 @@ declare namespace FudgeStory {
      * Pass values in percent relative to the upper left corner.
      */
     function positionPercent(_x: number, _y: number): Position;
+    function pointCanvasToMiddleGround(_point: ƒ.Vector2): ƒ.Vector3;
 }
 declare namespace FudgeStory {
     /**

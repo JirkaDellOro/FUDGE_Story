@@ -11,16 +11,33 @@ var Test;
         Test.ƒ.Debug.branch(graph);
         // let city: ƒ.Node = graph.getChildrenByName("Back")[0].getChildren()[0];
         // let cmpMesh: ƒ.ComponentMesh = city.getComponent(ƒ.ComponentMesh);
-        graph.addComponent(new Test.ƒ.ComponentTransform());
+        // graph.addComponent(new ƒ.ComponentTransform());
         console.log(graph);
-        function jitter() {
-            // graph.mtxLocal.translateX(ƒ.Random.default.getRangeFloored(-2, 3));
-            // graph.mtxLocal.translateY(ƒ.Random.default.getRangeFloored(-2, 3));
-            // cmpMesh.mtxPivot.translateX(Math.sin(performance.now() / 100) / 100);
-            graph.mtxLocal.rotateZ(1);
-            Test.ƒS.update();
+        // function jitter(): void {
+        //   // graph.mtxLocal.translateX(ƒ.Random.default.getRangeFloored(-2, 3));
+        //   // graph.mtxLocal.translateY(ƒ.Random.default.getRangeFloored(-2, 3));
+        //   // cmpMesh.mtxPivot.translateX(Math.sin(performance.now() / 100) / 100);
+        //   graph.mtxLocal.rotateZ(1);
+        //   ƒS.update();
+        // }
+        // ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, jitter);
+        let logo = {
+            name: "Logo",
+            origin: Test.ƒS.ORIGIN.CENTER,
+            pose: {
+                default: "Images/Fudge_48.png"
+            }
+        };
+        await Test.ƒS.Character.show(logo, logo.pose.default, Test.ƒS.positionPercent(50, 50));
+        let nodeLogo = await Test.ƒS.Character.get(logo).getPose(logo.pose.default);
+        let canvas = Test.ƒS.Base.getViewport().canvas;
+        canvas.addEventListener("mousemove", hndMouse);
+        function hndMouse(_event) {
+            let offset = new Test.ƒ.Vector2(_event.offsetX, _event.offsetY);
+            let position = Test.ƒS.pointCanvasToMiddleGround(offset);
+            nodeLogo.mtxLocal.translation = position;
+            Test.ƒS.update(0);
         }
-        Test.ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, jitter);
         let menu = Test.ƒS.Menu.create({ a: "Opt1", b: "Opt2" }, null);
         await Test.ƒS.Speech.tell("characters.Sue", "Dies ist nur ein langer Text um zu prüfen, ob das Menü nun das Click-Event frisst", false);
         menu.close();
@@ -39,7 +56,7 @@ var Test;
         Test.ƒS.update(0.5);
         await Test.ƒS.Speech.tell("characters.Sue", "Willkommen zum Test von FUDGE-Story", false);
         // await ƒS.Character.show(characters.Sue, characters.Sue.pose.normal, ƒS.positions.bottomcenter);
-        await Test.ƒS.update(2);
+        await Test.ƒS.update(0.5);
     }
     Test.Main = Main;
 })(Test || (Test = {}));

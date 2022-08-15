@@ -36,13 +36,13 @@ namespace FudgeStory {
    * The parameters define the duration of the blend, the grayscale image for special effects and the edges (smooth 0 - 2 sharp)
    */
   export async function update(_duration?: number, _url?: RequestInfo, _edge?: number): Promise<void> {
-    let viewport: ƒ.Viewport = Reflect.get(Base, "viewport");
-    viewport.adjustingFrames = false;
+    let viewport: ƒ.Viewport = Base.getViewport();
     if (!_duration) {
       viewport.draw();
       return;
     }
 
+    viewport.adjustingFrames = false;
     let crc2: CanvasRenderingContext2D = viewport.context;
     let imgOld: ImageData = crc2.getImageData(0, 0, crc2.canvas.width, crc2.canvas.height);
     viewport.draw();
@@ -53,6 +53,7 @@ namespace FudgeStory {
     if (_url)
       transition = await Transition.get(_url);
     await Transition.blend(imgOld, imgNew, _duration * 1000, transition, _edge);
+    viewport.adjustingFrames = true;
   }
 
   /**
@@ -110,5 +111,13 @@ namespace FudgeStory {
     size.y *= -_y / 100;
     position.add(size);
     return position;
+  }
+  
+  export function pointCanvasToMiddleGround(_point: ƒ.Vector2): ƒ.Vector3 {
+    // let point: ƒ.Vector2 = Base.getViewport().poi
+    let ray: ƒ.Ray = Base.getViewport().getRayFromClient(_point);
+    let middle: ƒ.Node = (<ƒ.Node>Reflect.get(Base, "middle"));
+    let result: ƒ.Vector3 = ray.intersectPlane(ƒ.Vector3.ZERO(), ƒ.Vector3.Z());
+    return result;
   }
 }
