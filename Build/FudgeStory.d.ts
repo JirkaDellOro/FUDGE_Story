@@ -438,6 +438,7 @@ declare namespace FudgeStory {
          *
          */
         static defineSignal(_promiseFactoriesOrEventTypes: (Function | EVENT)[]): Signal;
+        static createEventPromise(_target: EventTarget, _eventType: string): Promise<Event>;
         /**
          * Wait for the given amount of time in seconds to pass
          */
@@ -464,6 +465,8 @@ declare namespace FudgeStory {
         private loop;
         private fadingToVolume;
         private constructor();
+        static getSound(_url: RequestInfo): boolean;
+        static isPlaying(_url: RequestInfo): Sound;
         /**
          * Plays the audiofile defined by the given url with the given volume and loops it, if desired
          */

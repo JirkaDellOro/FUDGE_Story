@@ -18,6 +18,17 @@ namespace FudgeStory {
       Sound.sounds.set(_url, this);
     }
 
+    public static getSound(_url: RequestInfo): boolean {
+      let sound: Sound = Sound.sounds.get(_url);
+      if (!sound)
+        return false;
+      return sound.cmpAudio.isPlaying;
+    }
+
+    public static isPlaying(_url: RequestInfo): Sound {
+      return Sound.sounds.get(_url);
+    }
+
     /**
      * Plays the audiofile defined by the given url with the given volume and loops it, if desired
      */
@@ -25,7 +36,7 @@ namespace FudgeStory {
       let sound: Sound = Sound.sounds.get(_url);
       if (!sound || _loop != sound.loop)
         sound = new Sound(_url, _loop);
-      
+
       sound.cmpAudio.volume = _volume;
       sound.cmpAudio.play(true);
       return sound;
@@ -35,9 +46,9 @@ namespace FudgeStory {
      * Set the overall volume for the sound mix
      */
     public static setMasterVolume(_volume: number): void {
-         ƒ.AudioManager.default.volume = _volume;
+      ƒ.AudioManager.default.volume = _volume;
     }
-    
+
     /**
      * Changes the volume of the sound defined by the url linearly of the given duration to the define volume.
      * If the sound is not currently playing, it starts it respecting the loop-flag.
@@ -106,7 +117,7 @@ namespace FudgeStory {
       ƒ.AudioManager.default.listenTo(nodeSound);
       return nodeSound;
     }
-    
+
     public get audio(): ƒ.ComponentAudio {
       return this.cmpAudio;
     }

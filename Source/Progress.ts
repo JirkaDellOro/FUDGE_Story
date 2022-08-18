@@ -117,6 +117,16 @@ namespace FudgeStory {
       };
     }
 
+    public static createEventPromise(_target: EventTarget, _eventType: string): Promise<Event> {
+      return new Promise((resolve) => {
+        let hndEvent: EventListener = function (_event: Event): void {
+          _target.removeEventListener(_eventType, hndEvent);
+          resolve(_event);
+        };
+        _target.addEventListener(_eventType, hndEvent);
+      });
+    }
+
     /**
      * Wait for the given amount of time in seconds to pass
      */
