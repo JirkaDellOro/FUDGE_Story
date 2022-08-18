@@ -917,6 +917,9 @@ var FudgeStory;
             ƒ.AudioManager.default.listenTo(nodeSound);
             return nodeSound;
         }
+        get audio() {
+            return this.cmpAudio;
+        }
     }
     FudgeStory.Sound = Sound;
 })(FudgeStory || (FudgeStory = {}));

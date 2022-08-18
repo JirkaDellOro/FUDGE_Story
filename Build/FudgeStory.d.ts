@@ -486,6 +486,7 @@ declare namespace FudgeStory {
          */
         static deserialize(_serialization: ƒ.Serialization[]): void;
         private static setup;
+        get audio(): ƒ.ComponentAudio;
     }
 }
 declare namespace FudgeStory {

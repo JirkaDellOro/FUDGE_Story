@@ -106,5 +106,9 @@ namespace FudgeStory {
       ƒ.AudioManager.default.listenTo(nodeSound);
       return nodeSound;
     }
+    
+    public get audio(): ƒ.ComponentAudio {
+      return this.cmpAudio;
+    }
   }
 }
