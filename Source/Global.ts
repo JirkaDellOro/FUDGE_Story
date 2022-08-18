@@ -117,7 +117,7 @@ namespace FudgeStory {
     // let point: ƒ.Vector2 = Base.getViewport().poi
     let ray: ƒ.Ray = Base.getViewport().getRayFromClient(_point);
     let middle: ƒ.Node = (<ƒ.Node>Reflect.get(Base, "middle"));
-    let result: ƒ.Vector3 = ray.intersectPlane(ƒ.Vector3.ZERO(), ƒ.Vector3.Z());
+    let result: ƒ.Vector3 = ray.intersectPlane(middle.mtxWorld.translation, ƒ.Vector3.Z());
     return result;
   }
 }

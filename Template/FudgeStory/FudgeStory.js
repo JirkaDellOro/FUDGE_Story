@@ -432,7 +432,7 @@ var FudgeStory;
         // let point: ƒ.Vector2 = Base.getViewport().poi
         let ray = FudgeStory.Base.getViewport().getRayFromClient(_point);
         let middle = Reflect.get(FudgeStory.Base, "middle");
-        let result = ray.intersectPlane(ƒ.Vector3.ZERO(), ƒ.Vector3.Z());
+        let result = ray.intersectPlane(middle.mtxWorld.translation, ƒ.Vector3.Z());
         return result;
     }
     FudgeStory.pointCanvasToMiddleGround = pointCanvasToMiddleGround;
