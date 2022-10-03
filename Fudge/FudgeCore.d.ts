@@ -67,6 +67,9 @@ declare namespace FudgeCore {
          * De- / Activate a filter for the given DebugTarget.
          */
         static setFilter(_target: DebugTarget, _filter: DEBUG_FILTER): void;
+        static getFilter(_target: DebugTarget): DEBUG_FILTER;
+        static addFilter(_target: DebugTarget, _filter: DEBUG_FILTER): void;
+        static removeFilter(_target: DebugTarget, _filter: DEBUG_FILTER): void;
         /**
          * Info(...) displays additional information with low priority
          */
@@ -2361,14 +2364,6 @@ declare namespace FudgeCore {
 }
 declare namespace FudgeCore {
     /**
-     * Mappings of standard DOM/Browser-Events as passed from a canvas to the viewport
-     */
-    const enum EVENT_KEYBOARD {
-        UP = "\u0192keyup",
-        DOWN = "\u0192keydown",
-        PRESS = "\u0192keypress"
-    }
-    /**
      * The codes sent from a standard english keyboard layout
      */
     enum KEYBOARD_CODE {
@@ -2557,8 +2552,8 @@ declare namespace FudgeCore {
         CALL = "\u0192lapse"
     }
     /**
-     * An event that represents a call from a Timer
-     * */
+     * An event that represents a call from a {@link Timer}
+     */
     class EventTimer {
         type: EVENT_TIMER;
         target: Timer;
@@ -2567,6 +2562,67 @@ declare namespace FudgeCore {
         lastCall: boolean;
         count: number;
         constructor(_timer: Timer, ..._arguments: Object[]);
+    }
+}
+declare namespace FudgeCore {
+    /**
+     * Custom touch events
+     */
+    enum EVENT_TOUCH {
+        /** custom event fired in addition to the standard touchmove, details offset to starting touch */
+        MOVE = "touchMove",
+        /** custom event fired when the touches haven't moved outside of the tap radius */
+        TAP = "touchTap",
+        /** custom event fired when the touches have moved outside of the notch radius, details offset and cardinal direction */
+        NOTCH = "touchNotch",
+        /** custom event fired when the touches haven't moved outside of the tap radius for some time */
+        LONG = "touchLong",
+        /** custom event fired when two taps were detected in short succession */
+        DOUBLE = "touchDouble",
+        /** custom event fired when the distance between the only two touches changes beyond a tolerance */
+        PINCH = "touchPinch",
+        /** custom event not implemented yet */
+        ROTATE = "touchRotate"
+    }
+    /** Details for CustomTouchEvents, use as generic CustomEvent<EventTouchDetail> */
+    interface EventTouchDetail {
+        position: Vector2;
+        touches: TouchList;
+        offset?: Vector2;
+        movement?: Vector2;
+        cardinal?: Vector2;
+        pinch?: Vector2;
+        pinchDelta?: number;
+    }
+    /**
+     * Dispatches CustomTouchEvents to the EventTarget given with the constructor.
+     * When using touch events, make sure to set `touch-action: none` in CSS
+     * @author Jirka Dell'Oro-Friedl, HFU, 2022
+     */
+    class TouchEventDispatcher {
+        posStart: Vector2;
+        posNotch: Vector2;
+        radiusTap: number;
+        radiusNotch: number;
+        private target;
+        private posPrev;
+        private moved;
+        private timerDouble;
+        private timerLong;
+        private timeDouble;
+        private timeLong;
+        private time;
+        private pinchDistance;
+        private pinchTolerance;
+        constructor(_target: EventTarget, _radiusTap?: number, _radiusNotch?: number, _timeDouble?: number, _timerLong?: number);
+        /**
+         * De-/Activates the dispatch of CustomTouchEvents
+         */
+        activate(_on: boolean): void;
+        private hndEvent;
+        private detectPinch;
+        private startGesture;
+        private calcAveragePosition;
     }
 }
 declare namespace FudgeCore {
@@ -3391,11 +3447,11 @@ declare namespace FudgeCore {
         /**
          * Returns a randomly selected property name from the given object
          */
-        getPropertyName(_object: Object): string;
+        getPropertyName<T>(_object: T): keyof T;
         /**
          * Returns a randomly selected symbol from the given object, if symbols are used as keys
          */
-        getPropertySymbol(_object: Object): symbol;
+        getPropertySymbol<T>(_object: T): symbol;
         /**
          * Returns a random three-dimensional vector in the limits of the box defined by the vectors given as [_corner0, _corner1[
          */
@@ -5223,11 +5279,6 @@ declare namespace FudgeCore {
          */
         getBranch(): Node;
         /**
-         * Logs this viewports scenegraph to the console.
-         * TODO: remove this method, since it's implemented in Debug
-         */
-        showSceneGraph(): void;
-        /**
          * Draw this viewport displaying its branch. By default, the transforms in the branch are recalculated first.
          * Pass `false` if calculation was already done for this frame
          */
@@ -5236,6 +5287,11 @@ declare namespace FudgeCore {
          * Calculate the cascade of transforms in this branch and store the results as mtxWorld in the {@link Node}s and {@link ComponentMesh}es
          */
         calculateTransforms(): void;
+        /**
+         * Performs a pick on all {@link ComponentPick}s in the branch of this viewport
+         * using a ray from its camera through the client coordinates given in the event.
+         * Dispatches the event to all nodes hit.
+         */
         dispatchPointerEvent(_event: PointerEvent): void;
         /**
          * Adjust all frames involved in the rendering process from the display area in the client up to the renderer canvas
@@ -5285,12 +5341,6 @@ declare namespace FudgeCore {
          * Returns a point in the browser page matching the given point of the viewport
          */
         pointClientToScreen(_client: Vector2): Vector2;
-        /**
-         * Switch the viewports focus on or off. Only one viewport in one FUDGE instance can have the focus, thus receiving keyboard events.
-         * So a viewport currently having the focus will lose it, when another one receives it. The viewports fire {@link EventUnified}s accordingly.
-         * // TODO: examine, if this can be achieved by regular DOM-Focus and tabindex=0
-         */
-        setFocus(_on: boolean): void;
     }
 }
 declare namespace FudgeCore {
