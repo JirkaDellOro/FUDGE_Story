@@ -16,6 +16,10 @@ declare namespace Tutorial_WS22 {
             name: string;
             background: string;
         };
+        beachEvening: {
+            name: string;
+            background: string;
+        };
     };
     let characters: {
         narrator: {
@@ -39,5 +43,8 @@ declare namespace Tutorial_WS22 {
     };
 }
 declare namespace Tutorial_WS22 {
-    function Texting(): ƒS.SceneReturn;
+    function Scene2(): ƒS.SceneReturn;
+}
+declare namespace Tutorial_WS22 {
+    function Text(): ƒS.SceneReturn;
 }

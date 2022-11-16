@@ -3,6 +3,7 @@
     "commonSourceDirectory": "..",
     "sourceFiles": [
       "../Source/Main_WS22.ts",
+      "../Source/Scenes/Scene2.ts",
       "../Source/Scenes/Texting.ts"
     ],
     "js": {
@@ -15,7 +16,7 @@
         },
         {
           "pos": 15,
-          "end": 2134,
+          "end": 6323,
           "kind": "text"
         }
       ],
@@ -43,7 +44,7 @@
       "sections": [
         {
           "pos": 0,
-          "end": 951,
+          "end": 1123,
           "kind": "text"
         }
       ]
