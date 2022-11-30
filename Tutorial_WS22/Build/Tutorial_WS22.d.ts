@@ -38,13 +38,20 @@ declare namespace Tutorial_WS22 {
             };
         };
     };
+    function getAnimation(): ƒS.AnimationDefinition;
     let dataForSave: {
         nameProtagonist: string;
+        interrupt: boolean;
     };
-}
-declare namespace Tutorial_WS22 {
-    function Scene2(): ƒS.SceneReturn;
+    function horizontalShake(): Promise<void>;
+    function verticalShake(): Promise<void>;
 }
 declare namespace Tutorial_WS22 {
     function Text(): ƒS.SceneReturn;
+}
+declare namespace Tutorial_WS22 {
+    function Choices(): ƒS.SceneReturn;
+}
+declare namespace Tutorial_WS22 {
+    function Animations(): ƒS.SceneReturn;
 }

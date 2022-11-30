@@ -30,6 +30,8 @@ namespace Tutorial_WS22 {
     }
   };
 
+
+
   export let characters = {
     narrator: {
       name: ""
@@ -48,11 +50,57 @@ namespace Tutorial_WS22 {
     }
   };
 
+
+
+  export function getAnimation(): ƒS.AnimationDefinition {
+    return {
+      start: { translation: ƒS.positions.bottomleft },
+      end: { translation: ƒS.positions.bottomright },
+      duration: 1,
+      playmode: ƒS.ANIMATION_PLAYMODE.LOOP
+    };
+  }
+
+
   // **** DATA THAT WILL BE SAVED (GAME PROGRESS) ****
   export let dataForSave = {
-    nameProtagonist: ""
+    nameProtagonist: "",
+    interrupt: false
   };
 
+
+  // horizontal Shaker
+  export async function horizontalShake(): Promise<void> {
+    let scene: HTMLElement = <HTMLElement>document.getElementsByTagName("scene")[0];
+
+    for (let i: number = 0; i < 15; i++) {
+      if (i % 2 == 0) {
+        scene.style.transform = `translateX(20px)`;
+      }
+      else {
+        scene.style.transform = `translateX(-20px)`;
+      }
+      await new Promise(resolve => setTimeout(resolve, 40));
+    }
+    scene.style.transform = `translateX(0px)`;
+  }
+
+
+  // vertical Shaker
+  export async function verticalShake(): Promise<void> {
+    let scene: HTMLElement = <HTMLElement>document.getElementsByTagName("scene")[0];
+
+    for (let i: number = 0; i < 15; i++) {
+      if (i % 2 == 0) {
+        scene.style.transform = `translateY(20px)`;
+      }
+      else {
+        scene.style.transform = `translateY(-20px)`;
+      }
+      await new Promise(resolve => setTimeout(resolve, 40));
+    }
+    scene.style.transform = `translateY(0px)`;
+  }
 
   // Menu shortcuts
   let inGameMenuButtons = {
@@ -63,12 +111,12 @@ namespace Tutorial_WS22 {
 
   let gameMenu: ƒS.Menu;
 
-  // open entspricht Menü ist offen und false zu 
+  // open = Menü ist offen und false = Menü ist zu 
   let menuIsOpen: boolean = true;
 
   async function buttonFunctionalities(_option: string): Promise<void> {
     console.log(_option);
-    switch(_option) {
+    switch (_option) {
       case inGameMenuButtons.save:
         await ƒS.Progress.save();
         break;
@@ -118,8 +166,8 @@ namespace Tutorial_WS22 {
     // **** SCENE HIERARCHY ****
     let scenes: ƒS.Scenes = [
       // { scene: Texting, name: "How To Text"}
-      { scene: Text, name: "Text Scene" },
-      { scene: Scene2, name: "Scene2" }
+      { scene: Text, name: "We write some text" },
+      { scene: Choices, name: "We build in some choices" }
 
     ];
 
