@@ -4,7 +4,7 @@ A FUDGE module for the easy development of interactive stories, visual novels an
 
 # References
 - [APIs](https://jirkadelloro.github.io/FUDGE_Story/Documentation/Reference/#fudge-story-reference)
-- [Pages-Link](https://jirkadelloro.github.io/FUDGE_Story/Tutorial_SS22/Tutorial_SS22.html)
+- [Pages-Link](https://jirkadelloro.github.io/FUDGE_Story/Tutorial_WS22/Tutorial_WS22.html)
 
 ## Bewertungskriterien
 © Prof. Dipl.-Ing. Jirka R. Dell'Oro-Friedl, HFU  
