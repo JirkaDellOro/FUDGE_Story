@@ -6,8 +6,7 @@
       "../Source/Scenes/01_Text.ts",
       "../Source/Scenes/02_Choices.ts",
       "../Source/Scenes/03_Animations.ts",
-      "../Source/Scenes/SpriteSheetAnimation.ts",
-      "../Source/Scenes/test.ts"
+      "../Source/Scenes/SpriteSheetAnimation.ts"
     ],
     "js": {
       "sections": [
