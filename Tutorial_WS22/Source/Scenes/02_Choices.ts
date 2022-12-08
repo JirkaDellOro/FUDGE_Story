@@ -28,6 +28,7 @@ namespace Tutorial_WS22 {
         // continue path here
         console.log(dialogue.iSayYes);
         await ƒS.Speech.tell(characters.aisaka, "ja");
+        dataForSave.aisakaPoints += 10;
         break;
       case dialogue.iSayNo:
         // continue path here
@@ -37,6 +38,8 @@ namespace Tutorial_WS22 {
       case dialogue.iSayOk:
         // continue path here
         console.log(dialogue.iSayOk);
+        // dataForSave.pickedOk = true;
+        // return "Text()";
         await ƒS.Speech.tell(characters.aisaka, "ok");
         break;
       case dialogue.iSayBla:

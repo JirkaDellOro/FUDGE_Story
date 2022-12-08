@@ -50,6 +50,15 @@ namespace Tutorial_WS22 {
     }
   };
 
+  export let items = {
+    egg: {
+      name: "L*egg",
+      description: "An eggish egg",
+      image: "Images/Items/Egg.png",
+      // static: true
+    }
+  };
+
 
 
   export function getAnimation(): ƒS.AnimationDefinition {
@@ -65,7 +74,9 @@ namespace Tutorial_WS22 {
   // **** DATA THAT WILL BE SAVED (GAME PROGRESS) ****
   export let dataForSave = {
     nameProtagonist: "",
-    interrupt: false
+    interrupt: false,
+    aisakaPoints: 0,
+    pickedOk: false
   };
 
 
@@ -102,11 +113,16 @@ namespace Tutorial_WS22 {
     scene.style.transform = `translateY(0px)`;
   }
 
+  function credits(): void {
+    ƒS.Text.print("");
+  }
+
   // Menu shortcuts
   let inGameMenuButtons = {
     save: "Save",
     load: "Load",
-    close: "Close"
+    close: "Close",
+    credits: "Credits"
   };
 
   let gameMenu: ƒS.Menu;
@@ -127,6 +143,8 @@ namespace Tutorial_WS22 {
         gameMenu.close();
         menuIsOpen = false;
         break;
+      case inGameMenuButtons.credits:
+        credits();
     }
   }
 

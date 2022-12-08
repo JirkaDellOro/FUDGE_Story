@@ -34,7 +34,7 @@ dialog[type="splash"] {
   height: 100%;
 }
 
-dialog[type="splash"] > p {
+dialog[type="splash"]>p {
   font-size: 2vmin;
   color: white;
   text-align: center;
@@ -64,6 +64,19 @@ speech content {
   font-size: 1.7vmin;
   position: absolute;
   left: 10px;
+  /* color: white; */
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+  /* font-family: 'Akronim', cursive; 
+  font-family: 'Frijole', cursive;
+  font-family: 'Macondo', cursive;
+  font-family: 'Marhey', cursive;
+  font-family: 'Merienda', cursive;
+  font-family: 'Reenie Beanie', cursive;
+  font-family: 'Rubik Iso', cursive;
+  font-family: 'Splash', cursive;
+  font-family: 'Yeon Sung', cursive; */
+
+
 }
 
 name {
@@ -72,6 +85,3 @@ name {
   color: rgb(218, 69, 171);
   margin-bottom: 10px;
 }
-
-
-

@@ -43,6 +43,14 @@ var Tutorial_WS22;
             }
         }
     };
+    Tutorial_WS22.items = {
+        egg: {
+            name: "L*egg",
+            description: "An eggish egg",
+            image: "Images/Items/Egg.png",
+            // static: true
+        }
+    };
     function getAnimation() {
         return {
             start: { translation: Tutorial_WS22.ƒS.positions.bottomleft },
@@ -55,7 +63,9 @@ var Tutorial_WS22;
     // **** DATA THAT WILL BE SAVED (GAME PROGRESS) ****
     Tutorial_WS22.dataForSave = {
         nameProtagonist: "",
-        interrupt: false
+        interrupt: false,
+        aisakaPoints: 0,
+        pickedOk: false
     };
     // horizontal Shaker
     async function horizontalShake() {
@@ -87,11 +97,15 @@ var Tutorial_WS22;
         scene.style.transform = `translateY(0px)`;
     }
     Tutorial_WS22.verticalShake = verticalShake;
+    function credits() {
+        Tutorial_WS22.ƒS.Text.print("");
+    }
     // Menu shortcuts
     let inGameMenuButtons = {
         save: "Save",
         load: "Load",
-        close: "Close"
+        close: "Close",
+        credits: "Credits"
     };
     let gameMenu;
     // open = Menü ist offen und false = Menü ist zu 
@@ -109,6 +123,8 @@ var Tutorial_WS22;
                 gameMenu.close();
                 menuIsOpen = false;
                 break;
+            case inGameMenuButtons.credits:
+                credits();
         }
     }
     //  Menu shortcuts
@@ -164,6 +180,7 @@ var Tutorial_WS22;
                 T0002: ""
             }
         };
+        // cpms = characters per millisecond
         Tutorial_WS22.ƒS.Speech.setTickerDelays(80, 5000);
         let signalDelay3 = Tutorial_WS22.ƒS.Progress.defineSignal([() => Tutorial_WS22.ƒS.Progress.delay(3)]);
         // function getAnimation(): ƒS.AnimationDefinition {
@@ -179,13 +196,20 @@ var Tutorial_WS22;
         await Tutorial_WS22.ƒS.update(Tutorial_WS22.transition.puzzle.duration, Tutorial_WS22.transition.puzzle.alpha, Tutorial_WS22.transition.puzzle.edge);
         await Tutorial_WS22.ƒS.Speech.tell(Tutorial_WS22.characters.aisaka, "Dieser Text wurde direkt über die tell()-Methode wiedergegeben.");
         signalDelay3();
+        Tutorial_WS22.ƒS.Inventory.add(Tutorial_WS22.items.egg);
+        for (let i = 0; i < 5; i++) {
+            Tutorial_WS22.ƒS.Inventory.add(Tutorial_WS22.items.egg);
+        }
+        await Tutorial_WS22.ƒS.Inventory.open();
         await Tutorial_WS22.ƒS.Speech.tell(Tutorial_WS22.characters.aisaka, text.Aisaka.T0000 + Tutorial_WS22.dataForSave.nameProtagonist);
+        // await ƒS.Speech.tell(characters.protagonist, "hi ich bin der protagonist aka der Spieler", true, "Player");
         Tutorial_WS22.dataForSave.nameProtagonist = await Tutorial_WS22.ƒS.Speech.getInput();
         Tutorial_WS22.characters.protagonist.name = Tutorial_WS22.dataForSave.nameProtagonist;
         console.log(Tutorial_WS22.dataForSave.nameProtagonist);
         // await ƒS.Character.show(characters.aisaka, characters.aisaka.pose.happy, ƒS.positionPercent(70, 100));
         await Tutorial_WS22.ƒS.Character.show(Tutorial_WS22.characters.aisaka, Tutorial_WS22.characters.aisaka.pose.happy, Tutorial_WS22.ƒS.positions.bottomcenter);
         Tutorial_WS22.ƒS.update(5);
+        Tutorial_WS22.ƒS.Speech.clear();
     }
     Tutorial_WS22.Text = Text;
 })(Tutorial_WS22 || (Tutorial_WS22 = {}));
@@ -211,6 +235,7 @@ var Tutorial_WS22;
                 // continue path here
                 console.log(dialogue.iSayYes);
                 await Tutorial_WS22.ƒS.Speech.tell(Tutorial_WS22.characters.aisaka, "ja");
+                Tutorial_WS22.dataForSave.aisakaPoints += 10;
                 break;
             case dialogue.iSayNo:
                 // continue path here
@@ -220,6 +245,8 @@ var Tutorial_WS22;
             case dialogue.iSayOk:
                 // continue path here
                 console.log(dialogue.iSayOk);
+                // dataForSave.pickedOk = true;
+                // return "Text()";
                 await Tutorial_WS22.ƒS.Speech.tell(Tutorial_WS22.characters.aisaka, "ok");
                 break;
             case dialogue.iSayBla:

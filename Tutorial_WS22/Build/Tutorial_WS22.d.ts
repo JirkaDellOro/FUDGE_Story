@@ -38,10 +38,19 @@ declare namespace Tutorial_WS22 {
             };
         };
     };
+    let items: {
+        egg: {
+            name: string;
+            description: string;
+            image: string;
+        };
+    };
     function getAnimation(): ƒS.AnimationDefinition;
     let dataForSave: {
         nameProtagonist: string;
         interrupt: boolean;
+        aisakaPoints: number;
+        pickedOk: boolean;
     };
     function horizontalShake(): Promise<void>;
     function verticalShake(): Promise<void>;
