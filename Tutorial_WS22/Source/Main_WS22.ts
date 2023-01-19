@@ -52,9 +52,9 @@ namespace Tutorial_WS22 {
 
   export let items = {
     egg: {
-      name: "L*egg",
+      name: "Egg",
       description: "An eggish egg",
-      image: "Images/Items/Egg.png",
+      image: "Images/Items/Egg.png"
       // static: true
     }
   };
@@ -64,9 +64,9 @@ namespace Tutorial_WS22 {
   export function getAnimation(): ƒS.AnimationDefinition {
     return {
       start: { translation: ƒS.positions.bottomleft },
-      end: { translation: ƒS.positions.bottomright },
+      end: { translation: ƒS.positionPercent(70, 100) },
       duration: 1,
-      playmode: ƒS.ANIMATION_PLAYMODE.LOOP
+      playmode: ƒS.ANIMATION_PLAYMODE.PLAYONCE
     };
   }
 
@@ -76,7 +76,10 @@ namespace Tutorial_WS22 {
     nameProtagonist: "",
     interrupt: false,
     aisakaPoints: 0,
-    pickedOk: false
+    pickedOk: false,
+    pickedMeterBar: false,
+    aisakaScore: 0
+
   };
 
 
@@ -183,9 +186,12 @@ namespace Tutorial_WS22 {
     buttonFunctionalities("Close");
     // **** SCENE HIERARCHY ****
     let scenes: ƒS.Scenes = [
-      // { scene: Texting, name: "How To Text"}
-      { scene: Text, name: "We write some text" },
-      { scene: Choices, name: "We build in some choices" }
+      { id: "Write", scene: Text, name: "We write some text" },
+      { id: "Choose", scene: Choices, name: "We build in some choices"},
+      { id: "Animate", scene: Animations, name: "We animate"},
+      { id: "Fill", scene: MeterBar, name: "We create a meter bar" }
+
+
 
     ];
 

@@ -75,8 +75,6 @@ speech content {
   font-family: 'Rubik Iso', cursive;
   font-family: 'Splash', cursive;
   font-family: 'Yeon Sung', cursive; */
-
-
 }
 
 name {
@@ -84,4 +82,46 @@ name {
   display: block;
   color: rgb(218, 69, 171);
   margin-bottom: 10px;
+}
+
+
+/***** METER BAR *****/
+meter::-webkit-meter-bar {
+  background-color: #ececec;
+}
+
+meter[id="aisakaMeter"] {
+  position: absolute;
+  transform:rotate(-90deg);
+  bottom: 50%;
+  left: -14%;
+  width: 35%;
+  height: 10%;
+}
+
+
+meter[id="aisakaMeter"]::-webkit-meter-optimum-value {
+  background-image: linear-gradient(
+    90deg, 
+    #8bcf69 5%, 
+    #e6d450 5%,
+    #e6d450 15%,
+    #f28f68 15%,
+    #f28f68 55%,
+    #cf82bf 55%,
+    #cf82bf 95%,
+    #719fd1 95%,
+    #719fd1 100%
+  );
+  /* background-color: #719fd1; */
+}
+
+input[id="scoreForAisaka"] {
+  color: rgb(255, 248, 253);
+  background-color:rgb(155, 42, 95);
+  font-size: 11pt;
+  position: absolute;
+  left: 1.2%;
+  bottom: 19.5%;
+  width: 4%;
 }

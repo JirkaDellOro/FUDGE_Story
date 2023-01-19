@@ -45,18 +45,18 @@ var Tutorial_WS22;
     };
     Tutorial_WS22.items = {
         egg: {
-            name: "L*egg",
+            name: "Egg",
             description: "An eggish egg",
-            image: "Images/Items/Egg.png",
+            image: "Images/Items/Egg.png"
             // static: true
         }
     };
     function getAnimation() {
         return {
             start: { translation: Tutorial_WS22.ƒS.positions.bottomleft },
-            end: { translation: Tutorial_WS22.ƒS.positions.bottomright },
+            end: { translation: Tutorial_WS22.ƒS.positionPercent(70, 100) },
             duration: 1,
-            playmode: Tutorial_WS22.ƒS.ANIMATION_PLAYMODE.LOOP
+            playmode: Tutorial_WS22.ƒS.ANIMATION_PLAYMODE.PLAYONCE
         };
     }
     Tutorial_WS22.getAnimation = getAnimation;
@@ -65,7 +65,9 @@ var Tutorial_WS22;
         nameProtagonist: "",
         interrupt: false,
         aisakaPoints: 0,
-        pickedOk: false
+        pickedOk: false,
+        pickedMeterBar: false,
+        aisakaScore: 0
     };
     // horizontal Shaker
     async function horizontalShake() {
@@ -159,9 +161,10 @@ var Tutorial_WS22;
         buttonFunctionalities("Close");
         // **** SCENE HIERARCHY ****
         let scenes = [
-            // { scene: Texting, name: "How To Text"}
-            { scene: Tutorial_WS22.Text, name: "We write some text" },
-            { scene: Tutorial_WS22.Choices, name: "We build in some choices" }
+            { id: "Write", scene: Tutorial_WS22.Text, name: "We write some text" },
+            { id: "Choose", scene: Tutorial_WS22.Choices, name: "We build in some choices" },
+            { id: "Animate", scene: Tutorial_WS22.Animations, name: "We animate" },
+            { id: "Fill", scene: Tutorial_WS22.MeterBar, name: "We create a meter bar" }
         ];
         let uiElement = document.querySelector("[type=interface]");
         Tutorial_WS22.dataForSave = Tutorial_WS22.ƒS.Progress.setData(Tutorial_WS22.dataForSave, uiElement);
@@ -175,41 +178,50 @@ var Tutorial_WS22;
         console.log("Text Scene");
         let text = {
             Aisaka: {
-                T0000: "Hallöchen <p>Dies ist ein Paragraph.</p>",
+                T0000: "Dieser Text ist über die text-Variable definiert. <p>Dies hingegen ist ein Paragraph.</p>",
                 T0001: "",
                 T0002: ""
             }
         };
+        document.getElementsByName("aisakaScore").forEach(meterStuff => meterStuff.hidden = true);
+        document.getElementById("scoreForAisaka").style.display = "none";
         // cpms = characters per millisecond
         Tutorial_WS22.ƒS.Speech.setTickerDelays(80, 5000);
         let signalDelay3 = Tutorial_WS22.ƒS.Progress.defineSignal([() => Tutorial_WS22.ƒS.Progress.delay(3)]);
-        // function getAnimation(): ƒS.AnimationDefinition {
-        //   return {
-        //     start: { translation: ƒS.positions.bottomleft },
-        //     end: { translation: ƒS.positions.bottomright },
-        //     duration: 1,
-        //     playmode: ƒS.ANIMATION_PLAYMODE.LOOP
-        //   };
-        // }
         Tutorial_WS22.ƒS.Speech.hide();
         await Tutorial_WS22.ƒS.Location.show(Tutorial_WS22.locations.beachEvening);
         await Tutorial_WS22.ƒS.update(Tutorial_WS22.transition.puzzle.duration, Tutorial_WS22.transition.puzzle.alpha, Tutorial_WS22.transition.puzzle.edge);
-        await Tutorial_WS22.ƒS.Speech.tell(Tutorial_WS22.characters.aisaka, "Dieser Text wurde direkt über die tell()-Methode wiedergegeben.");
-        signalDelay3();
-        Tutorial_WS22.ƒS.Inventory.add(Tutorial_WS22.items.egg);
-        for (let i = 0; i < 5; i++) {
-            Tutorial_WS22.ƒS.Inventory.add(Tutorial_WS22.items.egg);
-        }
-        await Tutorial_WS22.ƒS.Inventory.open();
-        await Tutorial_WS22.ƒS.Speech.tell(Tutorial_WS22.characters.aisaka, text.Aisaka.T0000 + Tutorial_WS22.dataForSave.nameProtagonist);
-        // await ƒS.Speech.tell(characters.protagonist, "hi ich bin der protagonist aka der Spieler", true, "Player");
+        await Tutorial_WS22.ƒS.Character.show(Tutorial_WS22.characters.aisaka, Tutorial_WS22.characters.aisaka.pose.happy, Tutorial_WS22.ƒS.positions.bottomcenter);
+        Tutorial_WS22.ƒS.update(1);
+        await Tutorial_WS22.ƒS.Speech.tell(Tutorial_WS22.characters.aisaka, "Hi, ich bin Aisaka!");
+        await Tutorial_WS22.ƒS.Speech.tell(Tutorial_WS22.characters.aisaka, text.Aisaka.T0000);
+        // signalDelay3();
+        // ------ INVENTORY AUSLAGERN ------
+        // ƒS.Inventory.add(items.egg);
+        // Mit einer for-Schleife mehrere Items auf einmal generieren:
+        // for (let i: number = 0; i < 5; i++) {
+        //   ƒS.Inventory.add(items.egg);
+        // }
+        // Öffnet das Inventar
+        // await ƒS.Inventory.open();
+        // await ƒS.Speech.tell(characters.aisaka, text.Aisaka.T0000 + dataForSave.nameProtagonist);
+        // ƒS.Text.addClass("novelpage");
+        // await ƒS.Text.print("Hi");
+        await Tutorial_WS22.ƒS.Speech.tell(Tutorial_WS22.characters.aisaka, "Und wie heißt du?");
+        await Tutorial_WS22.ƒS.Speech.tell(Tutorial_WS22.characters.protagonist, "Hi ich bin der Protagonist aka der Spieler. " + "Ich heiße ", true, "Player");
         Tutorial_WS22.dataForSave.nameProtagonist = await Tutorial_WS22.ƒS.Speech.getInput();
         Tutorial_WS22.characters.protagonist.name = Tutorial_WS22.dataForSave.nameProtagonist;
         console.log(Tutorial_WS22.dataForSave.nameProtagonist);
+        await Tutorial_WS22.ƒS.Speech.tell(Tutorial_WS22.characters.aisaka, "Hi " + Tutorial_WS22.dataForSave.nameProtagonist + "!");
         // await ƒS.Character.show(characters.aisaka, characters.aisaka.pose.happy, ƒS.positionPercent(70, 100));
-        await Tutorial_WS22.ƒS.Character.show(Tutorial_WS22.characters.aisaka, Tutorial_WS22.characters.aisaka.pose.happy, Tutorial_WS22.ƒS.positions.bottomcenter);
-        Tutorial_WS22.ƒS.update(5);
+        // ƒS.update(1);
+        // dmg-visualization
+        // ƒS.Text.addClass("testCSSClass");
+        // ƒS.Text.print("-5 dmg");
         Tutorial_WS22.ƒS.Speech.clear();
+        Tutorial_WS22.ƒS.Speech.hide();
+        // ƒS.Character.hide(characters.aisaka);
+        Tutorial_WS22.ƒS.update(1);
     }
     Tutorial_WS22.Text = Text;
 })(Tutorial_WS22 || (Tutorial_WS22 = {}));
@@ -217,12 +229,17 @@ var Tutorial_WS22;
 (function (Tutorial_WS22) {
     async function Choices() {
         console.log("Choices");
+        Tutorial_WS22.ƒS.Speech.hide();
+        document.getElementsByName("aisakaScore").forEach(meterStuff => meterStuff.hidden = true);
+        document.getElementById("scoreForAisaka").style.display = "none";
         await Tutorial_WS22.ƒS.Location.show(Tutorial_WS22.locations.beachDay);
-        Tutorial_WS22.ƒS.update();
-        await Tutorial_WS22.ƒS.Character.show(Tutorial_WS22.characters.aisaka, Tutorial_WS22.characters.aisaka.pose.happy, Tutorial_WS22.ƒS.positions.bottomcenter);
+        await Tutorial_WS22.ƒS.update(Tutorial_WS22.transition.puzzle.duration, Tutorial_WS22.transition.puzzle.alpha, Tutorial_WS22.transition.puzzle.edge);
+        await Tutorial_WS22.ƒS.Character.show(Tutorial_WS22.characters.aisaka, Tutorial_WS22.characters.aisaka.pose.happy, Tutorial_WS22.ƒS.positionPercent(70, 100));
+        Tutorial_WS22.ƒS.update(1);
         await Tutorial_WS22.ƒS.Speech.tell(Tutorial_WS22.characters.aisaka, "Versuchen wir nun einmal ein paar Auswahlmöglichkeiten einzubauen, " + Tutorial_WS22.dataForSave.nameProtagonist + "!");
         await Tutorial_WS22.ƒS.Speech.tell(Tutorial_WS22.characters.aisaka, "Kannst du mir dabei helfen?");
-        Tutorial_WS22.ƒS.update(2);
+        // return "Text";
+        // ƒS.update(2);
         let dialogue = {
             iSayYes: "Klar",
             iSayOk: "Okay",
@@ -241,13 +258,14 @@ var Tutorial_WS22;
                 // continue path here
                 console.log(dialogue.iSayNo);
                 await Tutorial_WS22.ƒS.Speech.tell(Tutorial_WS22.characters.aisaka, "nein");
+                // return Text();
                 break;
             case dialogue.iSayOk:
                 // continue path here
                 console.log(dialogue.iSayOk);
                 // dataForSave.pickedOk = true;
-                // return "Text()";
                 await Tutorial_WS22.ƒS.Speech.tell(Tutorial_WS22.characters.aisaka, "ok");
+                return "Write";
                 break;
             case dialogue.iSayBla:
                 // continue path here
@@ -255,6 +273,9 @@ var Tutorial_WS22;
                 await Tutorial_WS22.ƒS.Speech.tell(Tutorial_WS22.characters.aisaka, "bla");
                 break;
         }
+        Tutorial_WS22.ƒS.Speech.clear();
+        Tutorial_WS22.ƒS.Speech.hide();
+        // return "Text";
     }
     Tutorial_WS22.Choices = Choices;
 })(Tutorial_WS22 || (Tutorial_WS22 = {}));
@@ -262,14 +283,54 @@ var Tutorial_WS22;
 (function (Tutorial_WS22) {
     async function Animations() {
         console.log("Animation scene started");
+        document.getElementsByName("aisakaScore").forEach(meterStuff => meterStuff.hidden = true);
+        document.getElementById("scoreForAisaka").style.display = "none";
+        Tutorial_WS22.ƒS.Speech.hide();
         await Tutorial_WS22.ƒS.Location.show(Tutorial_WS22.locations.beachDay);
-        Tutorial_WS22.ƒS.update(1);
-        // await ƒS.update(1, "Images/jigsaw_06.jpg");
+        // await ƒS.update(transition.puzzle.duration, transition.puzzle.alpha, transition.puzzle.edge);
+        await Tutorial_WS22.ƒS.update(1, "Images/Transitions/jigsaw_06.jpg");
+        await Tutorial_WS22.ƒS.Speech.tell(Tutorial_WS22.characters.aisaka, "Gleich wirst du eine Animation sehen.");
+        await Tutorial_WS22.ƒS.Speech.tell(Tutorial_WS22.characters.aisaka, "Bist du bereit?");
         await Tutorial_WS22.ƒS.Character.show(Tutorial_WS22.characters.aisaka, Tutorial_WS22.characters.aisaka.pose.happy, Tutorial_WS22.ƒS.positions.bottomcenter);
-        // await ƒS.Character.animate(characters.aisaka, characters.aisaka.pose.happy, ghostAnimation());
-        Tutorial_WS22.ƒS.update(1);
+        Tutorial_WS22.ƒS.update(2);
+        await Tutorial_WS22.ƒS.Speech.tell(Tutorial_WS22.characters.aisaka, "Los geht's!");
+        await Tutorial_WS22.ƒS.Character.animate(Tutorial_WS22.characters.aisaka, Tutorial_WS22.characters.aisaka.pose.happy, Tutorial_WS22.getAnimation());
+        Tutorial_WS22.ƒS.update(2);
+        await Tutorial_WS22.ƒS.Speech.tell(Tutorial_WS22.characters.aisaka, "Tadaah.");
+        Tutorial_WS22.ƒS.Speech.clear();
+        Tutorial_WS22.ƒS.Speech.hide();
+        // ƒS.update(1);
     }
     Tutorial_WS22.Animations = Animations;
+})(Tutorial_WS22 || (Tutorial_WS22 = {}));
+var Tutorial_WS22;
+(function (Tutorial_WS22) {
+    async function MeterBar() {
+        console.log("Meterbar");
+        let text = {
+            Aisaka: {
+                T0000: "Lass uns zusammen eine Meterbar erstellen!</p>",
+                T0001: "",
+                T0002: ""
+            }
+        };
+        document.getElementsByName("aisakaScore").forEach(meterStuff => meterStuff.hidden = false);
+        Tutorial_WS22.ƒS.Speech.hide();
+        await Tutorial_WS22.ƒS.Location.show(Tutorial_WS22.locations.beachEvening);
+        await Tutorial_WS22.ƒS.update(2, "Images/Transitions/jigsaw_06.jpg");
+        await Tutorial_WS22.ƒS.Speech.tell(Tutorial_WS22.characters.aisaka, "Nun kommen wir zur Meterbar");
+        // Punktevergabe, visualisiert durch eine Skala
+        Tutorial_WS22.dataForSave.aisakaScore += 20;
+        // Test-Novelpage
+        Tutorial_WS22.ƒS.Text.addClass("novelpage");
+        await Tutorial_WS22.ƒS.Text.print("Hi");
+        Tutorial_WS22.dataForSave.aisakaScore += 50;
+        console.log(Tutorial_WS22.dataForSave.nameProtagonist);
+        await Tutorial_WS22.ƒS.Speech.tell(Tutorial_WS22.characters.aisaka, "Hast du gesehen wie sie sich füllt?");
+        Tutorial_WS22.ƒS.Speech.clear();
+        Tutorial_WS22.ƒS.Speech.hide();
+    }
+    Tutorial_WS22.MeterBar = MeterBar;
 })(Tutorial_WS22 || (Tutorial_WS22 = {}));
 // namespace Script {
 //   import ƒ = FudgeCore;

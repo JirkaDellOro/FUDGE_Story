@@ -51,6 +51,8 @@ declare namespace Tutorial_WS22 {
         interrupt: boolean;
         aisakaPoints: number;
         pickedOk: boolean;
+        pickedMeterBar: boolean;
+        aisakaScore: number;
     };
     function horizontalShake(): Promise<void>;
     function verticalShake(): Promise<void>;
@@ -63,4 +65,7 @@ declare namespace Tutorial_WS22 {
 }
 declare namespace Tutorial_WS22 {
     function Animations(): ƒS.SceneReturn;
+}
+declare namespace Tutorial_WS22 {
+    function MeterBar(): ƒS.SceneReturn;
 }

@@ -10,8 +10,8 @@ namespace Tutorial_SS22 {
       }
     };
 
-    // dataForSave.pickedMeterScene = true;
-    // document.getElementsByName("aisakaScore").forEach(meterStuff => meterStuff.hidden = true);
+    dataForSave.pickedMeterScene = true;
+    document.getElementsByName("aisakaScore").forEach(meterStuff => meterStuff.hidden = false);
     // document.getElementById("scoreForAisaka").style.display = "none";
 
     ƒS.Speech.hide();

@@ -10,6 +10,11 @@ namespace Tutorial_SS22 {
     //   }
     // };
 
+    // dataForSave.pickedMeterScene = true;
+    document.getElementsByName("aisakaScore").forEach(meterStuff => meterStuff.hidden = true);
+    document.getElementById("scoreForAisaka").style.display = "none";
+
+
     let signalDelay1: ƒS.Signal = ƒS.Progress.defineSignal([() => ƒS.Progress.delay(1)]);
     // let signalDelay2: ƒS.Signal = ƒS.Progress.defineSignal([() => ƒS.Progress.delay(2)]);
 

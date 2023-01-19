@@ -2,14 +2,19 @@ namespace Tutorial_WS22 {
   export async function Choices(): ƒS.SceneReturn {
     console.log("Choices");
 
+    ƒS.Speech.hide();
 
+    document.getElementsByName("aisakaScore").forEach(meterStuff => meterStuff.hidden = true);
+    document.getElementById("scoreForAisaka").style.display = "none";
 
     await ƒS.Location.show(locations.beachDay);
-    ƒS.update();
-    await ƒS.Character.show(characters.aisaka, characters.aisaka.pose.happy, ƒS.positions.bottomcenter);
+    await ƒS.update(transition.puzzle.duration, transition.puzzle.alpha, transition.puzzle.edge);
+    await ƒS.Character.show(characters.aisaka, characters.aisaka.pose.happy, ƒS.positionPercent(70, 100));
+    ƒS.update(1);
     await ƒS.Speech.tell(characters.aisaka, "Versuchen wir nun einmal ein paar Auswahlmöglichkeiten einzubauen, " + dataForSave.nameProtagonist + "!");
     await ƒS.Speech.tell(characters.aisaka, "Kannst du mir dabei helfen?");
-    ƒS.update(2);
+    // return "Text";
+    // ƒS.update(2);
 
 
     let dialogue = {
@@ -34,13 +39,14 @@ namespace Tutorial_WS22 {
         // continue path here
         console.log(dialogue.iSayNo);
         await ƒS.Speech.tell(characters.aisaka, "nein");
+        // return Text();
         break;
       case dialogue.iSayOk:
         // continue path here
         console.log(dialogue.iSayOk);
         // dataForSave.pickedOk = true;
-        // return "Text()";
         await ƒS.Speech.tell(characters.aisaka, "ok");
+        return "Write";
         break;
       case dialogue.iSayBla:
         // continue path here
@@ -48,5 +54,10 @@ namespace Tutorial_WS22 {
         await ƒS.Speech.tell(characters.aisaka, "bla");
         break;
     }
+
+    ƒS.Speech.clear();
+    ƒS.Speech.hide();
+
+    // return "Text";
   }
 }
