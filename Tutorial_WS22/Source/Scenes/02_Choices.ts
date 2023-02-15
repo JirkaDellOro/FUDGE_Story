@@ -10,7 +10,7 @@ namespace Tutorial_WS22 {
     await ƒS.Location.show(locations.beachDay);
     await ƒS.update(transition.puzzle.duration, transition.puzzle.alpha, transition.puzzle.edge);
     await ƒS.Character.show(characters.aisaka, characters.aisaka.pose.happy, ƒS.positionPercent(70, 100));
-    ƒS.update(1);
+    await ƒS.update(1);
     await ƒS.Speech.tell(characters.aisaka, "Versuchen wir nun einmal ein paar Auswahlmöglichkeiten einzubauen, " + dataForSave.nameProtagonist + "!");
     await ƒS.Speech.tell(characters.aisaka, "Kannst du mir dabei helfen?");
     // return "Text";

@@ -7,6 +7,36 @@ declare namespace Tutorial_WS22 {
             alpha: string;
             edge: number;
         };
+        puzzle2: {
+            duration: number;
+            alpha: string;
+            edge: number;
+        };
+        puzzle3: {
+            duration: number;
+            alpha: string;
+            edge: number;
+        };
+        puzzle4: {
+            duration: number;
+            alpha: string;
+            edge: number;
+        };
+        puzzle5: {
+            duration: number;
+            alpha: string;
+            edge: number;
+        };
+        puzzle6: {
+            duration: number;
+            alpha: string;
+            edge: number;
+        };
+        puzzle7: {
+            duration: number;
+            alpha: string;
+            edge: number;
+        };
     };
     let sound: {
         drop: string;

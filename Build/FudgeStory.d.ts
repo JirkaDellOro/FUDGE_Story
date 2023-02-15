@@ -285,7 +285,10 @@ declare namespace FudgeStory {
         static?: boolean;
         handler?: (_event: CustomEvent) => void;
     }
-    const Inventory_base: any;
+    const Inventory_base: {
+        new (): HTMLDialogElement;
+        prototype: HTMLDialogElement;
+    };
     /**
      * Manages the inventory
      */
@@ -545,7 +548,10 @@ declare namespace FudgeStory {
     }
 }
 declare namespace FudgeStory {
-    const Text_base: any;
+    const Text_base: {
+        new (): HTMLDialogElement;
+        prototype: HTMLDialogElement;
+    };
     /**
      * Displays a longer narrative text to convey larger parts of the story not told by a character
      */

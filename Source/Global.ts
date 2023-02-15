@@ -53,7 +53,7 @@ namespace FudgeStory {
     if (_url)
       transition = await Transition.get(_url);
     await Transition.blend(imgOld, imgNew, _duration * 1000, transition, _edge);
-    viewport.adjustingFrames = true;
+    // viewport.adjustingFrames = true;
   }
 
   /**

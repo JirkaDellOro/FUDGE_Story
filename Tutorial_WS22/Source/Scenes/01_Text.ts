@@ -18,7 +18,7 @@ namespace Tutorial_WS22 {
 
     // cpms = characters per millisecond
     ƒS.Speech.setTickerDelays(80, 5000);
-    let signalDelay3: ƒS.Signal = ƒS.Progress.defineSignal([() => ƒS.Progress.delay(3)]);
+    // let signalDelay3: ƒS.Signal = ƒS.Progress.defineSignal([() => ƒS.Progress.delay(3)]);
 
 
 

@@ -9,6 +9,36 @@ var Tutorial_WS22;
             duration: 1,
             alpha: "Images/Transitions/jigsaw_06.jpg",
             edge: 1
+        },
+        puzzle2: {
+            duration: 1,
+            alpha: "Images/Transitions/jigsaw_04.png",
+            edge: 1
+        },
+        puzzle3: {
+            duration: 1,
+            alpha: "Images/Transitions/jigsaw_05.jpg",
+            edge: 1
+        },
+        puzzle4: {
+            duration: 1,
+            alpha: "Images/Transitions/jigsaw_07.png",
+            edge: 1
+        },
+        puzzle5: {
+            duration: 1,
+            alpha: "Images/Transitions/jigsaw_08.png",
+            edge: 1
+        },
+        puzzle6: {
+            duration: 1,
+            alpha: "Images/Transitions/jigsaw_09.png",
+            edge: 1
+        },
+        puzzle7: {
+            duration: 1,
+            alpha: "Images/Transitions/jigsaw_10.png",
+            edge: 1
         }
     };
     Tutorial_WS22.sound = {
@@ -161,8 +191,8 @@ var Tutorial_WS22;
         buttonFunctionalities("Close");
         // **** SCENE HIERARCHY ****
         let scenes = [
-            { id: "Write", scene: Tutorial_WS22.Text, name: "We write some text" },
-            { id: "Choose", scene: Tutorial_WS22.Choices, name: "We build in some choices" },
+            // { id: "Write", scene: Text, name: "We write some text" },
+            // { id: "Choose", scene: Choices, name: "We build in some choices"},
             { id: "Animate", scene: Tutorial_WS22.Animations, name: "We animate" },
             { id: "Fill", scene: Tutorial_WS22.MeterBar, name: "We create a meter bar" }
         ];
@@ -187,7 +217,7 @@ var Tutorial_WS22;
         document.getElementById("scoreForAisaka").style.display = "none";
         // cpms = characters per millisecond
         Tutorial_WS22.ƒS.Speech.setTickerDelays(80, 5000);
-        let signalDelay3 = Tutorial_WS22.ƒS.Progress.defineSignal([() => Tutorial_WS22.ƒS.Progress.delay(3)]);
+        // let signalDelay3: ƒS.Signal = ƒS.Progress.defineSignal([() => ƒS.Progress.delay(3)]);
         Tutorial_WS22.ƒS.Speech.hide();
         await Tutorial_WS22.ƒS.Location.show(Tutorial_WS22.locations.beachEvening);
         await Tutorial_WS22.ƒS.update(Tutorial_WS22.transition.puzzle.duration, Tutorial_WS22.transition.puzzle.alpha, Tutorial_WS22.transition.puzzle.edge);
@@ -235,7 +265,7 @@ var Tutorial_WS22;
         await Tutorial_WS22.ƒS.Location.show(Tutorial_WS22.locations.beachDay);
         await Tutorial_WS22.ƒS.update(Tutorial_WS22.transition.puzzle.duration, Tutorial_WS22.transition.puzzle.alpha, Tutorial_WS22.transition.puzzle.edge);
         await Tutorial_WS22.ƒS.Character.show(Tutorial_WS22.characters.aisaka, Tutorial_WS22.characters.aisaka.pose.happy, Tutorial_WS22.ƒS.positionPercent(70, 100));
-        Tutorial_WS22.ƒS.update(1);
+        await Tutorial_WS22.ƒS.update(1);
         await Tutorial_WS22.ƒS.Speech.tell(Tutorial_WS22.characters.aisaka, "Versuchen wir nun einmal ein paar Auswahlmöglichkeiten einzubauen, " + Tutorial_WS22.dataForSave.nameProtagonist + "!");
         await Tutorial_WS22.ƒS.Speech.tell(Tutorial_WS22.characters.aisaka, "Kannst du mir dabei helfen?");
         // return "Text";
@@ -283,6 +313,7 @@ var Tutorial_WS22;
 (function (Tutorial_WS22) {
     async function Animations() {
         console.log("Animation scene started");
+        let signalDelay1 = Tutorial_WS22.ƒS.Progress.defineSignal([() => Tutorial_WS22.ƒS.Progress.delay(1)]);
         document.getElementsByName("aisakaScore").forEach(meterStuff => meterStuff.hidden = true);
         document.getElementById("scoreForAisaka").style.display = "none";
         Tutorial_WS22.ƒS.Speech.hide();
@@ -292,14 +323,17 @@ var Tutorial_WS22;
         await Tutorial_WS22.ƒS.Speech.tell(Tutorial_WS22.characters.aisaka, "Gleich wirst du eine Animation sehen.");
         await Tutorial_WS22.ƒS.Speech.tell(Tutorial_WS22.characters.aisaka, "Bist du bereit?");
         await Tutorial_WS22.ƒS.Character.show(Tutorial_WS22.characters.aisaka, Tutorial_WS22.characters.aisaka.pose.happy, Tutorial_WS22.ƒS.positions.bottomcenter);
-        Tutorial_WS22.ƒS.update(2);
+        await Tutorial_WS22.ƒS.update(1);
         await Tutorial_WS22.ƒS.Speech.tell(Tutorial_WS22.characters.aisaka, "Los geht's!");
+        // signalDelay1();
         await Tutorial_WS22.ƒS.Character.animate(Tutorial_WS22.characters.aisaka, Tutorial_WS22.characters.aisaka.pose.happy, Tutorial_WS22.getAnimation());
-        Tutorial_WS22.ƒS.update(2);
         await Tutorial_WS22.ƒS.Speech.tell(Tutorial_WS22.characters.aisaka, "Tadaah.");
+        await Tutorial_WS22.ƒS.Character.hide(Tutorial_WS22.characters.aisaka);
+        await Tutorial_WS22.ƒS.update(1);
         Tutorial_WS22.ƒS.Speech.clear();
         Tutorial_WS22.ƒS.Speech.hide();
-        // ƒS.update(1);
+        await Tutorial_WS22.ƒS.update(0.5);
+        // signalDelay1();
     }
     Tutorial_WS22.Animations = Animations;
 })(Tutorial_WS22 || (Tutorial_WS22 = {}));
@@ -307,17 +341,23 @@ var Tutorial_WS22;
 (function (Tutorial_WS22) {
     async function MeterBar() {
         console.log("Meterbar");
-        let text = {
-            Aisaka: {
-                T0000: "Lass uns zusammen eine Meterbar erstellen!</p>",
-                T0001: "",
-                T0002: ""
-            }
-        };
+        // let text = {
+        //   Aisaka: {
+        //     T0000: "Lass uns zusammen eine Meterbar erstellen!</p>",
+        //     T0001: "",
+        //     T0002: ""
+        //   }
+        // };
         document.getElementsByName("aisakaScore").forEach(meterStuff => meterStuff.hidden = false);
         Tutorial_WS22.ƒS.Speech.hide();
+        // ƒS.update(2);
         await Tutorial_WS22.ƒS.Location.show(Tutorial_WS22.locations.beachEvening);
-        await Tutorial_WS22.ƒS.update(2, "Images/Transitions/jigsaw_06.jpg");
+        // await ƒS.update(5, "Images/Transitions/jigsaw_06.jpg");
+        await Tutorial_WS22.ƒS.update(3, Tutorial_WS22.transition.puzzle4.alpha, Tutorial_WS22.transition.puzzle4.edge);
+        // await ƒS.update(transition.puzzle4.duration, transition.puzzle4.alpha, transition.puzzle4.edge);
+        // ƒS.update(2);
+        // await ƒS.Character.show(characters.aisaka, characters.aisaka.pose.happy, ƒS.positions.bottomcenter);
+        // ƒS.update(1);
         await Tutorial_WS22.ƒS.Speech.tell(Tutorial_WS22.characters.aisaka, "Nun kommen wir zur Meterbar");
         // Punktevergabe, visualisiert durch eine Skala
         Tutorial_WS22.dataForSave.aisakaScore += 20;

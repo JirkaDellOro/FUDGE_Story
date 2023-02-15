@@ -8,6 +8,36 @@ namespace Tutorial_WS22 {
       duration: 1,
       alpha: "Images/Transitions/jigsaw_06.jpg",
       edge: 1
+    },
+    puzzle2: {
+      duration: 1,
+      alpha: "Images/Transitions/jigsaw_04.png",
+      edge: 1
+    },
+    puzzle3: {
+      duration: 1,
+      alpha: "Images/Transitions/jigsaw_05.jpg",
+      edge: 1
+    },
+    puzzle4: {
+      duration: 1,
+      alpha: "Images/Transitions/jigsaw_07.png",
+      edge: 1
+    },
+    puzzle5: {
+      duration: 1,
+      alpha: "Images/Transitions/jigsaw_08.png",
+      edge: 1
+    },
+    puzzle6: {
+      duration: 1,
+      alpha: "Images/Transitions/jigsaw_09.png",
+      edge: 1
+    },
+    puzzle7: {
+      duration: 1,
+      alpha: "Images/Transitions/jigsaw_10.png",
+      edge: 1
     }
   };
 
@@ -186,8 +216,8 @@ namespace Tutorial_WS22 {
     buttonFunctionalities("Close");
     // **** SCENE HIERARCHY ****
     let scenes: ƒS.Scenes = [
-      { id: "Write", scene: Text, name: "We write some text" },
-      { id: "Choose", scene: Choices, name: "We build in some choices"},
+      // { id: "Write", scene: Text, name: "We write some text" },
+      // { id: "Choose", scene: Choices, name: "We build in some choices"},
       { id: "Animate", scene: Animations, name: "We animate"},
       { id: "Fill", scene: MeterBar, name: "We create a meter bar" }
 
