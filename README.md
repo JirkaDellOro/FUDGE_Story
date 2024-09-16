@@ -7,7 +7,7 @@ A FUDGE module for the easy development of interactive stories, visual novels an
 - [Pages-Link](https://jirkadelloro.github.io/FUDGE_Story/Tutorial_WS22/Tutorial_WS22.html)
 
 ## Bewertungskriterien
-© Prof. Dipl.-Ing. Jirka R. Dell'Oro-Friedl, HFU  
+© Riem Yasin, Prof. Dipl.-Ing. Jirka R. Dell'Oro-Friedl, HFU  
 
 | Nr | Bezeichnung           | Inhalt |
 |---:|-----------------------|------|
